@@ -31,15 +31,25 @@ theme: {
             },
             colors: {
                 primary: {
-                    light: lighten(0.1, "#2e6e9e"),
-                    DEFAULT: "#2e6e9e",
-                    dark: "#1d4563",
+                    light: "#003F7F",
+                    DEFAULT: "#001F3F",
+                    dark: "#000F1F",
                 },
                 secondary: {
-                    light: lighten(0.1, "#4d95cb"),
-                    DEFAULT: "#4d95cb",
-                    dark: "#326489",
+                    light: "#6AA9D5",
+                    DEFAULT: "#3D85C6",
+                    dark: "#3570A3",
                 },
+				accent: {
+					light: "#FF8E66",
+					DEFAULT: "#FF5733",
+					dark: "#D1401F",
+				},
+				neutral: {
+					white: "#FFFFFF",
+					"light-grey": "#F5F5F5",
+					"dark-grey": "#333333",
+				},
                 success: {
                     light: lighten(0.1, "#34b339"),
                     DEFAULT: "#34b339",
@@ -63,8 +73,9 @@ theme: {
     },
 
     plugins: [
-        require('@tailwindcss/forms'), 
+        require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
-        require('@tailwindcss/aspect-ratio')
+        require('@tailwindcss/aspect-ratio'),
+		require('@headlessui/tailwindcss')({ prefix: 'ui' })
     ],
 };

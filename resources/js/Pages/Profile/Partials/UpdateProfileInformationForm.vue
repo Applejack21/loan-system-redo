@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { router, Link, useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import JetButton from '@/Jetstream/Button.vue';
 import JetFormSection from '@/Jetstream/FormSection.vue';
 import JetInput from '@/Jetstream/Input.vue';

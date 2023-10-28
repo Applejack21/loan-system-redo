@@ -23,10 +23,12 @@
         "vue-loader": "^16.2.0"
     },
     "dependencies": {
+        "@headlessui/tailwindcss": "^0.2.0",
         "@headlessui/vue": "^1.7.16",
         "@heroicons/vue": "^2.0.18",
         "@inertiajs/vue3": "^1.0.12",
         "@vue/compiler-sfc": "^3.3.6",
+        "dayjs": "^1.11.10",
         "highcharts": "^11.1.0",
         "highcharts-vue": "^1.4.3",
         "polished": "^4.2.2",
