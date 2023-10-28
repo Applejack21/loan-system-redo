@@ -1,11 +1,11 @@
 <template>
 	<AppLayout :title="title">
 		<div>
-			<p>TODO: Dashboard with data about logged in user's loans</p>
+			<p>TODO: Dashboard with data about loans, maybe some charts etc.</p>
 		</div>
 	</AppLayout>
 </template>
 
 <script setup>
-const title = "Dashboard";
+const title = "Admin Dashboard";
 </script>

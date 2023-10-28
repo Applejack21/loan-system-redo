@@ -10,13 +10,16 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use CreatesApplication;
 
-    public User $user;
+    public User $admin;
+
+    public User $customer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->admin = User::factory(['role' => 'admin'])->create();
+        $this->customer = User::factory(['role' => 'customer'])->create();
 
         // remove vite from testing
         $this->withoutVite();

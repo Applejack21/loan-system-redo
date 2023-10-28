@@ -9,11 +9,6 @@ export default defineConfig({
             include: ['tailwind.config.js', 'node_modules/**']
         }
     },
-    server: {
-        hmr: {
-            host: 'localhost',
-        },
-    },
     plugins: [
         laravel([
             'resources/js/app.js',
