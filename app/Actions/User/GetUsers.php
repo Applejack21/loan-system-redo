@@ -8,10 +8,13 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GetUsers
 {
-    public function execute(): AnonymousResourceCollection
-    {
-        $users = User::paginate();
+	public function execute(array|null $request): AnonymousResourceCollection
+	{
+		$users = User::search($request['search'] ?? '')
+			->orderBy('name')
+			->paginate()
+			->appends(['query' => null]);
 
-        return UserResource::collection($users);
-    }
+		return UserResource::collection($users);
+	}
 }

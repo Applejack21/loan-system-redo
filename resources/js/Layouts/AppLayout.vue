@@ -248,7 +248,7 @@
 						</div>
 					</header>
 
-					<div class="px-9 pt-9">
+					<div class="p-5 bg-neutral-light-grey">
 						<slot />
 					</div>
 				</div>
@@ -262,6 +262,14 @@ import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessu
 import { ref, computed } from 'vue'
 import { usePage, Head } from '@inertiajs/vue3'
 import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
+import { useSharedData } from "@/modules/sharedData.js";
+
+const {
+    message,
+    watchMessage
+} = useSharedData()
+
+watchMessage()
 
 const props = defineProps({
 	title: {

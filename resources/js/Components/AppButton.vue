@@ -19,7 +19,7 @@ const props = defineProps({
     colour: {
         type: String,
         default: 'primary',
-        validator: (value) => ['prmary', 'secondary', 'accent'].includes(value)
+        validator: (value) => ['prmary', 'secondary', 'accent', 'light-grey', 'dark-grey'].includes(value)
     },
     size: {
         type: String,
@@ -37,6 +37,8 @@ const getButtonColours = (colour) => {
         case 'primary': return 'bg-primary text-white hover:bg-primary-dark focus:ring-primary-light'
         case 'secondary': return 'bg-secondary text-white hover:bg-secondary-dark focus:ring-secondary-light'
         case 'accent': return 'bg-accent text-white hover:bg-accent-dark focus:ring-accent-light'
+		case 'light-grey': return 'bg-neutral-light-grey text-white hover:bg-neutral-dark-grey focus:ring-neutral-light-grey'
+		case 'dark-grey': return 'bg-neutral-dark-grey text-white hover:bg-neutral-light-grey focus:ring-neutral-dark-grey'
         default: return ''
     }
 }
