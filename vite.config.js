@@ -27,6 +27,7 @@ export default defineConfig({
             '@root': path.resolve(__dirname),
             '@': '/resources/js',
             'tailwind-config': path.resolve(__dirname, 'tailwind.config.js'),
+			'custom-css': '/resources/css',
         }
     },
     optimizeDeps: {

@@ -18,8 +18,8 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->admin = User::factory(['role' => 'admin'])->create();
-        $this->customer = User::factory(['role' => 'customer'])->create();
+        $this->admin = User::factory(['type' => 'admin'])->create();
+        $this->customer = User::factory(['type' => 'customer'])->create();
 
         // remove vite from testing
         $this->withoutVite();

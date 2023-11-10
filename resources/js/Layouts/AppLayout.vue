@@ -154,8 +154,10 @@
 						</li>
 						<!-- admin items -->
 						<li v-if="isAdmin">
-							<div class="text-neutral-light-grey font-semibold leading-6 text-sm">
-								Admin Area
+							<div class="relative flex pt-2 items-center">
+								<div class="flex-grow border-t border-neutral-light-grey"></div>
+								<span class="flex-shrink mx-4 text-neutral-light-grey">Admin Area</span>
+								<div class="flex-grow border-t border-neutral-light-grey"></div>
 							</div>
 							<ul class="-mx-2 flex flex-1 flex-col gap-y-2 mt-2" role="list">
 								<li v-for="item in adminNavigation">
@@ -226,12 +228,15 @@
 				<div class="gap-x-6 self-stretch flex-1 sm:flex sm:divide-x-2">
 					<form class="hidden sm:flex flex-1 relative w-full">
 						<input class="mt-2 text-sm text-neutral-dark-grey pr-0 pl-8 pt-0 border-0 w-full block focus:ring-0"
-							type="search" placeholder="Search..." name="search" />
+							type="search" placeholder="Search equipment..." name="search" />
 						<MagnifyingGlassIcon class="h-full w-5 left-0 top-0 bottom-0 absolute" />
 					</form>
 					<div class="mt-2 sm:mt-0 gap-x-6 flex items-center pl-5">
 						<div class="ml-auto">
 							<AppButton>
+								<template #iconRight>
+									<PlusIcon />
+								</template>
 								Request a Loan
 							</AppButton>
 						</div>
@@ -242,13 +247,17 @@
 			<!-- page content -->
 			<main>
 				<div>
-					<header class="bg-white shadow font-semibold text-lg text-gray-800 leading-tight">
-						<div class="py-6 px-9">
+					<header
+						class="bg-white shadow font-semibold text-lg text-gray-800 leading-tight py-6 px-9 border-b-2 border-b-secondary">
+						<div v-if="breadcrumbs">
+							<Breadcrumbs :breadcrumbs="breadcrumbs" />
+						</div>
+						<div v-else>
 							{{ title }}
 						</div>
 					</header>
 
-					<div class="px-9 pt-9">
+					<div class="p-5 bg-neutral-light-grey">
 						<slot />
 					</div>
 				</div>
@@ -261,9 +270,17 @@
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ref, computed } from 'vue'
 import { usePage, Head } from '@inertiajs/vue3'
-import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
+import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { useSharedData } from "@/modules/sharedData.js";
+import { Breadcrumbs } from '@/Components';
+
+const {
+	message,
+	watchMessage
+} = useSharedData()
 
 const props = defineProps({
+	breadcrumbs: Object,
 	title: {
 		type: String,
 		default: 'Title',
@@ -275,8 +292,8 @@ const navigation = [
 ];
 
 const adminNavigation = [
-	{ name: 'Dashboard', icon: HomeIcon, href: route('dashboard-admin.index'), current: route().current('dashboard-admin.index') },
-	{ name: 'Users', icon: UserGroupIcon, href: route('user.index'), current: route().current('user.*') },
+	{ name: 'Dashboard', icon: HomeIcon, href: route('admin.dashboard.index'), current: route().current('admin.dashboard.index') },
+	{ name: 'Users', icon: UserGroupIcon, href: route('admin.user.index'), current: route().current('admin.user.*') },
 ]
 
 const userNavigation = [

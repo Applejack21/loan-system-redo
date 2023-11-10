@@ -13,75 +13,83 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    /**
-     * Create the controller instance.
-     * This automatically applies the user policies to the default functions this controller has.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(User::class, 'user');
-    }
+	/**
+	 * Create the controller instance.
+	 * This automatically applies the user policies to the default functions this controller has.
+	 */
+	public function __construct()
+	{
+		$this->authorizeResource(User::class, 'user');
+	}
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        $users = (new GetUsers())->execute();
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index(Request $request, GetUsers $getUsers)
+	{
+		return Inertia::render('User/Index', [
+			'title' => 'Users',
+			'users' => fn () => $getUsers->execute($request->all()),
+			'filters' => $request->only('search', 'type'),
+			'breadcrumbs' => [
+				'Admin Dashboard' => route('admin.dashboard.index'),
+				'Users' => null,
+			]
+		]);
+	}
 
-        return Inertia::render('User/Index', [
-            'title' => 'Users',
-            'users' => $users,
-        ]);
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 */
+	public function store(Request $request, CreateUser $createUser)
+	{
+		$user = $createUser->execute($request->all());
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request, CreateUser $createUser)
-    {
-        $user = $createUser->execute($request->all());
+		return redirect()->back()->with('message', [
+			'type' => 'success',
+			'message' => 'User created successfully.',
+		]);
+	}
 
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'message' => 'User created successfully.',
-        ]);
-    }
+	/**
+	 * Display the specified resource.
+	 */
+	public function show(User $user)
+	{
+		return Inertia::render('User/Show', [
+			'title' => 'Viewing: ' . $user->name,
+			'user' => new UserResource($user),
+			'breadcrumbs' => [
+				'Admin Dashboard' => route('admin.dashboard.index'),
+				'Users' => route('admin.user.index'),
+				$user->name => null,
+			]
+		]);
+	}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        return Inertia::render('User/Show', [
-            'title' => 'Viewing - ' . $user->name,
-            'user' => new UserResource($user),
-        ]);
-    }
+	/**
+	 * Update the specified resource in storage.
+	 */
+	public function update(Request $request, User $user, UpdateUser $updateUser)
+	{
+		$user = $updateUser->execute($user, $request->all());
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user, UpdateUser $updateUser)
-    {
-        $user = $updateUser->execute($user, $request->all());
+		return redirect()->back()->with('message', [
+			'type' => 'success',
+			'message' => 'User updated successfully.',
+		]);
+	}
 
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'message' => 'User updated successfully.',
-        ]);
-    }
+	/**
+	 * Remove the specified resource from storage.
+	 */
+	public function destroy(User $user, DeleteUser $deleteUser)
+	{
+		$user = $deleteUser->execute($user);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user, DeleteUser $deleteUser)
-    {
-        $user = $deleteUser->execute($user);
-
-        return redirect()->back()->with('message', [
-            'type' => 'success',
-            'message' => 'User deleted successfully.',
-        ]);
-    }
+		return redirect()->route('admin.user.index')->with('message', [
+			'type' => 'success',
+			'message' => 'User deleted successfully.',
+		]);
+	}
 }

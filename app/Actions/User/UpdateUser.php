@@ -24,7 +24,9 @@ class UpdateUser
 		return Validator::validate($request, [
 			'name' => 'required|max:255',
 			'email' => ['required', Rule::unique('users')->ignore($user->id), 'max:255', 'email'],
-			'role' => 'required|string|in:customer,admin',
+			'type' => 'required|string|in:customer,admin',
+			'address' => ['nullable', 'array'],
+			'phone_number' => ['nullable', 'string'],
 		]);
 	}
 }
