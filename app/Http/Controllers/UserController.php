@@ -30,7 +30,11 @@ class UserController extends Controller
 		return Inertia::render('User/Index', [
 			'title' => 'Users',
 			'users' => fn () => $getUsers->execute($request->all()),
-			'filters' => $request->only('search'),
+			'filters' => $request->only('search', 'type'),
+			'breadcrumbs' => [
+				'Admin Dashboard' => route('admin.dashboard.index'),
+				'Users' => null,
+			]
 		]);
 	}
 
@@ -53,8 +57,13 @@ class UserController extends Controller
 	public function show(User $user)
 	{
 		return Inertia::render('User/Show', [
-			'title' => 'Viewing - ' . $user->name,
+			'title' => 'Viewing: ' . $user->name,
 			'user' => new UserResource($user),
+			'breadcrumbs' => [
+				'Admin Dashboard' => route('admin.dashboard.index'),
+				'Users' => route('admin.user.index'),
+				$user->name => null,
+			]
 		]);
 	}
 
@@ -78,7 +87,7 @@ class UserController extends Controller
 	{
 		$user = $deleteUser->execute($user);
 
-		return redirect()->back()->with('message', [
+		return redirect()->route('admin.user.index')->with('message', [
 			'type' => 'success',
 			'message' => 'User deleted successfully.',
 		]);

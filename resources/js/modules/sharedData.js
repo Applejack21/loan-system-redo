@@ -1,13 +1,9 @@
-import { computed, watch } from "vue"
+import { computed } from "vue"
 import { usePage } from "@inertiajs/vue3"
 import { useToast } from "vue-toastification"
 
 
 function useSharedData() {
-
-	const message = computed(() => {
-		return usePage().props.message
-	})
 
 	const showMessage = (message) => {
 		if (!message) return
@@ -37,20 +33,17 @@ function useSharedData() {
 		}
 	}
 
-	const watchMessage = () => {
-		watch(message, (newVal, oldVal) => {
-			showMessage(newVal)
-		})
-	}
+	const message = computed(() => {
+		return usePage().props.message
+	});
 
-	if (usePage().props.message) {
-		showMessage(usePage().props.message);
+	if (message.value) {
+		showMessage(message.value);
 	}
 
 	return {
 		message,
 		showMessage,
-		watchMessage
 	}
 }
 

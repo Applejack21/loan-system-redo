@@ -22,8 +22,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 		Route::get('/', 'index')->name('index');
 	});
 
-	Route::prefix('admin')->group(function () {
-		Route::controller(DashboardController::class)->name('dashboard-admin.')->group(function () {
+	Route::prefix('admin')->name('admin.')->group(function () {
+		Route::controller(DashboardController::class)->name('dashboard.')->group(function () {
 			Route::get('/', 'indexAdmin')->name('index');
 		});
 

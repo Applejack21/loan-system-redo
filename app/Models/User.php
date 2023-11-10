@@ -30,7 +30,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'type',
+		'phone_number',
+		'address',
     ];
 
     /**
@@ -52,6 +54,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+		'address' => 'array',
     ];
 
     /**
@@ -73,17 +76,19 @@ class User extends Authenticatable
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'role' => $this->role,
+            'type' => $this->type,
+			'phone_number' => $this->phone_number,
+			'address' => $this->address,
         ];
     }
 
     public function isCustomer(): bool
     {
-        return strtolower($this->role) == 'customer';
+        return strtolower($this->type) == 'customer';
     }
 
     public function isAdmin(): bool
     {
-        return strtolower($this->role) == 'admin';
+        return strtolower($this->type) == 'admin';
     }
 }

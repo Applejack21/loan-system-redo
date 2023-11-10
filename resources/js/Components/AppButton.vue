@@ -19,7 +19,7 @@ const props = defineProps({
     colour: {
         type: String,
         default: 'primary',
-        validator: (value) => ['prmary', 'secondary', 'accent', 'light-grey', 'dark-grey'].includes(value)
+        validator: (value) => ['prmary', 'secondary', 'accent', 'light-grey', 'dark-grey', 'red'].includes(value)
     },
     size: {
         type: String,
@@ -39,6 +39,7 @@ const getButtonColours = (colour) => {
         case 'accent': return 'bg-accent text-white hover:bg-accent-dark focus:ring-accent-light'
 		case 'light-grey': return 'bg-neutral-light-grey text-white hover:bg-neutral-dark-grey focus:ring-neutral-light-grey'
 		case 'dark-grey': return 'bg-neutral-dark-grey text-white hover:bg-neutral-light-grey focus:ring-neutral-dark-grey'
+		case 'red': return 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-700'
         default: return ''
     }
 }
@@ -46,7 +47,7 @@ const getButtonColours = (colour) => {
 const getButtonSizes = (size) => {
     switch (size) {
         case 'sm': return 'h-6 px-2 text-sm'
-        case 'md': return 'h-11 px-4 text-lg'
+        case 'md': return 'h-11 px-4 text-md'
         default: return ''
     }
 }

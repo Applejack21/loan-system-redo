@@ -7,5 +7,8 @@
 </template>
 
 <script setup>
-const title = "Dashboard";
+const props = defineProps({
+	title: String,
+	breadcrumbs: Object,
+});
 </script>

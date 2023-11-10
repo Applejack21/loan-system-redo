@@ -1,5 +1,5 @@
 <template>
-	<AppLayout :title="title">
+	<AppLayout :title="title" :breadcrumbs="breadcrumbs">
 		<div>
 			<p>TODO: Dashboard with data about loans, maybe some charts etc.</p>
 		</div>
@@ -7,5 +7,8 @@
 </template>
 
 <script setup>
-const title = "Admin Dashboard";
+const props = defineProps({
+	title: String,
+	breadcrumbs: Object,
+});
 </script>

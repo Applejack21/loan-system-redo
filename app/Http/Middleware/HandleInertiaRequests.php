@@ -35,6 +35,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'isAdmin' => optional(auth()->user())->isAdmin(),
+			'message' => $request->session()->get('message', null),
         ]);
     }
 }

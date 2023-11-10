@@ -2,7 +2,7 @@
 	<slot name="button" :state="state" v-if="button">
 		<AppButton @click="state.visible = true" :size="buttonSize" :colour="buttonColour">
 			<slot name="open-text">Open Form</slot>
-			<template #iconLeft>
+			<template #iconRight>
 				<slot name="open-icon">
 					<PlusIcon />
 				</slot>

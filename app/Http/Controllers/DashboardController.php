@@ -11,7 +11,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Dashboard', [
+			'title' => 'Dashboard',
+			'breadcrumbs' => [
+				'Dashboard' => null,
+			]
+		]);
     }
 
 	/**
@@ -19,6 +24,11 @@ class DashboardController extends Controller
 	 */
 	public function indexAdmin()
     {
-        return Inertia::render('DashboardAdmin');
+        return Inertia::render('DashboardAdmin', [
+			'title' => 'Admin Dashboard',
+			'breadcrumbs' => [
+				'Admin Dashboard' => null,
+			],
+		]);
     }
 }
