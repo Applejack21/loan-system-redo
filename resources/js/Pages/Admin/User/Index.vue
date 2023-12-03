@@ -188,7 +188,10 @@ watch(filters, throttle(function (value) {
 	});
 
 	router.reload({
-		data: { ...data },
+		data: {
+			...data,
+			page: undefined, // reset page to find results on all pages
+		},
 		only: ['users'],
 	});
 }, 300));

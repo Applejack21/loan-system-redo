@@ -30,7 +30,7 @@ class UserController extends Controller
 	{
 		return Inertia::render('Admin/User/Index', [
 			'title' => 'Users',
-			'users' => fn () => (new GetUsers())->execute($request->all()),
+			'users' => fn () => (new GetUsers())->execute($request),
 			'filters' => $request->only('search', 'type'),
 			'breadcrumbs' => [
 				'Admin Dashboard' => route('admin.dashboard.index'),
