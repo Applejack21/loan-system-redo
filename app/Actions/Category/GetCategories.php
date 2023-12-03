@@ -4,15 +4,16 @@ namespace App\Actions\Category;
 
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GetCategories
 {
-	public function execute(): AnonymousResourceCollection
+	public function execute(Request $request): AnonymousResourceCollection
 	{
-		$categories = Category::search($request['search'] ?? '')
-			->orderBy($request['order_by'] ?? 'name')
-			->paginate($request['per_page'] ?? 15)
+		$categories = Category::search($request->search)
+			->orderBy('name')
+			->paginate()
 			->appends(['query' => null]);
 
 		return CategoryResource::collection($categories);

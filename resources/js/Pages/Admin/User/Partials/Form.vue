@@ -66,8 +66,6 @@ const types = [
 
 // if editing a user
 if(props.form.type) {
-	console.log(props.form.type);
 	props.form.type = types.find(type => type.value === props.form.type);
-	console.log(props.form.type);
 }
 </script>
