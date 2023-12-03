@@ -66,7 +66,7 @@ class CategoryController extends Controller
 	{
 		return Inertia::render('Admin/Category/Show', [
 			'title' => $category->name,
-			'category' => new CategoryResource($category),
+			'category' => new CategoryResource($category->loadMissing('createdBy', 'updatedBy')),
 			'breadcrumbs' => [
 				'Admin Dashboard' => route('admin.dashboard.index'),
 				'Categories' => route('admin.category.index'),

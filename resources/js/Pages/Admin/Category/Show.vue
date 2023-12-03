@@ -53,6 +53,18 @@
 
 				<div class="flex flex-col mt-5">
 					<dl class="divide-y-2 divide-neutral-dark-grey">
+						<div class="sm:py-5 sm:px-6 sm:flex sm:items-center">
+							<dt class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
+								Created By
+							</dt>
+							<UserPreview :user="category.data.created_by" size="sm" />
+						</div>
+						<div class="sm:py-5 sm:px-6 sm:flex sm:items-center">
+							<dt class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
+								Last Updated By
+							</dt>
+							<UserPreview :user="category.data.updated_by" size="sm" />
+						</div>
 						<div class="sm:py-5 sm:px-6 sm:flex">
 							<dt class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 								Created At
@@ -90,7 +102,7 @@
 import { PencilSquareIcon } from '@heroicons/vue/24/outline'
 import dayjs from "dayjs";
 import { useForm } from "@inertiajs/vue3";
-import { FormModal, ConfirmDelete } from "@/Components";
+import { FormModal, ConfirmDelete, UserPreview } from "@/Components";
 import { Card, CardHeader } from "@/Components/Card";
 import Form from "./Partials/Form.vue";
 

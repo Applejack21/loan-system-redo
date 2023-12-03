@@ -18,6 +18,8 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
 			'slug' => $this->slug,
+			'created_by' => new UserResource($this->whenLoaded('createdBy')),
+			'updated_by' => new UserResource($this->whenLoaded('updatedBy')),
 			// TODO: add equipment collection once model is done
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
