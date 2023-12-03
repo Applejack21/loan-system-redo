@@ -32,7 +32,7 @@
 			</TableRow>
 		</TableBody>
 	</TableOuter>
-	<Pagination v-if="paginationLinks" :links="paginationLinks" class="my-5" />
+	<Pagination v-if="paginationLinks" :links="paginationLinks" :only="only" class="my-5" />
 </template>
 
 <script setup>
@@ -79,6 +79,11 @@ const props = defineProps({
 		default: 'md'
 	},
 	border: Boolean,
+	only: {
+		type: Array,
+		required: false,
+		default: () => [],
+	}
 })
 
 provide("tableBreakpoint", props.breakpoint)

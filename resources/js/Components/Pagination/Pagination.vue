@@ -6,7 +6,7 @@
 				<PaginationDivider />
 			</template>
 			<template v-else>
-				<Link :href="link.url">
+				<Link :href="link.url" :only="only">
 				<!-- by default prev and next have their own icons, but replace these with just heroicon arrows -->
 				<template v-if="link.label.includes('Previous')">
 					<PaginationButton>
@@ -55,5 +55,9 @@ const props = defineProps({
 		type: Object,
 		required: false,
 	},
+	only: {
+		type: Array,
+		required: false,
+	}
 });
 </script>

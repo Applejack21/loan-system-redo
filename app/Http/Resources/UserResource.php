@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,9 +23,9 @@ class UserResource extends JsonResource
 			'phone_number' => $this->phone_number,
 			'address' => $this->address,
             'profile_photo_url' => $this->profile_photo_url,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+			'created_at' => $this->created_at->tz(config('app.convert_timezone'))->toDateTimeString(),
+			'updated_at' => $this->updated_at->tz(config('app.convert_timezone'))->toDateTimeString(),
+			'deleted_at' => $this->deleted_at?->tz(config('app.convert_timezone'))->toDateTimeString(),
         ];
     }
 }

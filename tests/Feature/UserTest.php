@@ -12,14 +12,12 @@ test('index page has users returned', function () {
 		->assertStatus(200);
 
 	$response->assertInertia(function (Assert $page) use ($expectedUsersCount) {
-		$page->component('User/Index')
+		$page->component('Admin/User/Index')
 			->has('users.data', $expectedUsersCount);
 	});
 });
 
 test('customers cannot view index page of all users', function () {
-	$expectedUsersCount = User::count();
-
 	$response = $this->actingAs($this->customer)
 		->getJson(route('admin.user.index'))
 		->assertStatus(403);
@@ -64,7 +62,7 @@ test('cannot create a user with the same email', function () {
 		->post(route('admin.user.store'), $data);
 
 	$this->assertDatabaseMissing('users', [
-		'email' => $data['name'],
+		'name' => $data['name'],
 	]);
 });
 
@@ -88,7 +86,7 @@ test('can view user details', function () {
 		->assertStatus(200);
 
 	$response->assertInertia(function (Assert $page) {
-		$page->component('User/Show')
+		$page->component('Admin/User/Show')
 			->has('user', 1);
 	});
 });

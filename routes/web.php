@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DashboardController as FrontendDashboardController;
+use App\Http\Middleware\AdminRoutes;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -18,21 +21,35 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
 
-	Route::controller(DashboardController::class)->name('dashboard.')->group(function () {
+	Route::controller(FrontendDashboardController::class)->name('dashboard.')->group(function () {
 		Route::get('/', 'index')->name('index');
 	});
 
-	Route::prefix('admin')->name('admin.')->group(function () {
-		Route::controller(DashboardController::class)->name('dashboard.')->group(function () {
-			Route::get('/', 'indexAdmin')->name('index');
-		});
+	/**
+	 * Routes only for admins. Models have their own policies to make sure certain users are allowed access to the controller methods.
+	 */
+	Route::middleware(AdminRoutes::class)->group(function () {
+		Route::prefix('admin')->name('admin.')->group(function () {
 
-		Route::controller(UserController::class)->name('user.')->group(function () {
-			Route::get('users', 'index')->name('index');
-			Route::get('user/{user}', 'show')->name('show');
-			Route::post('/', 'store')->name('store');
-			Route::patch('{user}', 'update')->name('update');
-			Route::delete('{user}', 'destroy')->name('destroy');
+			Route::controller(DashboardController::class)->name('dashboard.')->group(function () {
+				Route::get('/', 'index')->name('index');
+			});
+
+			Route::controller(UserController::class)->name('user.')->group(function () {
+				Route::get('users', 'index')->name('index');
+				Route::get('user/{user}', 'show')->name('show');
+				Route::post('/user', 'store')->name('store');
+				Route::patch('user/{user}', 'update')->name('update');
+				Route::delete('user/{user}', 'destroy')->name('destroy');
+			});
+
+			Route::controller(CategoryController::class)->name('category.')->group(function () {
+				Route::get('categories', 'index')->name('index');
+				Route::get('category/{category}', 'show')->name('show');
+				Route::post('/category', 'store')->name('store');
+				Route::patch('category/{category}', 'update')->name('update');
+				Route::delete('category/{category}', 'destroy')->name('destroy');
+			});
 		});
 	});
 });

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Actions\User\CreateUser;
 use App\Actions\User\DeleteUser;
 use App\Actions\User\GetUsers;
@@ -25,11 +26,11 @@ class UserController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(Request $request, GetUsers $getUsers)
+	public function index(Request $request)
 	{
-		return Inertia::render('User/Index', [
+		return Inertia::render('Admin/User/Index', [
 			'title' => 'Users',
-			'users' => fn () => $getUsers->execute($request->all()),
+			'users' => fn () => (new GetUsers())->execute($request->all()),
 			'filters' => $request->only('search', 'type'),
 			'breadcrumbs' => [
 				'Admin Dashboard' => route('admin.dashboard.index'),
@@ -41,9 +42,9 @@ class UserController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request, CreateUser $createUser)
+	public function store(Request $request)
 	{
-		$user = $createUser->execute($request->all());
+		$user = (new CreateUser())->execute($request->all());
 
 		return redirect()->back()->with('message', [
 			'type' => 'success',
@@ -56,7 +57,9 @@ class UserController extends Controller
 	 */
 	public function show(User $user)
 	{
-		return Inertia::render('User/Show', [
+		// dd(UserResource::collection(collect($user)));
+		// dd(new UserResource($user));
+		return Inertia::render('Admin/User/Show', [
 			'title' => 'Viewing: ' . $user->name,
 			'user' => new UserResource($user),
 			'breadcrumbs' => [
@@ -70,9 +73,9 @@ class UserController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, User $user, UpdateUser $updateUser)
+	public function update(Request $request, User $user)
 	{
-		$user = $updateUser->execute($user, $request->all());
+		$user = (new UpdateUser())->execute($user, $request->all());
 
 		return redirect()->back()->with('message', [
 			'type' => 'success',
@@ -83,9 +86,9 @@ class UserController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(User $user, DeleteUser $deleteUser)
+	public function destroy(User $user)
 	{
-		$user = $deleteUser->execute($user);
+		$user = (new DeleteUser())->execute($user);
 
 		return redirect()->route('admin.user.index')->with('message', [
 			'type' => 'success',
