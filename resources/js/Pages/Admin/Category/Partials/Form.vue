@@ -4,7 +4,7 @@
 		<div class="-mt-5 bg-white gap-4 sm:p-6 grid grid-cols-2">
 
 			<TextInput label="Name" v-model="form.name" id="name" name="name" required />
-			<TextInput label="Slug" v-model="form.slug" id="slug" name="slug" required />
+			<TextInput label="Slug (for URL)" v-model="form.slug" id="slug" name="slug" required />
 
 		</div>
 	</Wrapper>
