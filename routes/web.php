@@ -39,16 +39,16 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 				Route::get('users', 'index')->name('index');
 				Route::get('user/{user}', 'show')->name('show');
 				Route::post('/user', 'store')->name('store');
-				Route::patch('{user}', 'update')->name('update');
-				Route::delete('{user}', 'destroy')->name('destroy');
+				Route::patch('user/{user}', 'update')->name('update');
+				Route::delete('user/{user}', 'destroy')->name('destroy');
 			});
 
 			Route::controller(CategoryController::class)->name('category.')->group(function () {
 				Route::get('categories', 'index')->name('index');
 				Route::get('category/{category}', 'show')->name('show');
 				Route::post('/category', 'store')->name('store');
-				Route::patch('{category}', 'update')->name('update');
-				Route::delete('{category}', 'destroy')->name('destroy');
+				Route::patch('category/{category}', 'update')->name('update');
+				Route::delete('category/{category}', 'destroy')->name('destroy');
 			});
 		});
 	});

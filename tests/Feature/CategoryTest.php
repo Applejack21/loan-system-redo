@@ -46,7 +46,7 @@ test('cannot create a category with the same name', function () {
 
 test('cannot create a category with the same slug', function () {
 	$category = Category::factory()->create();
-	$data = Category::factory()->make(['slug' => $category->name])->toArray();
+	$data = Category::factory()->make(['slug' => $category->slug])->toArray();
 
 	$response = $this->actingAs($this->admin)
 		->post(route('admin.category.store'), $data);
@@ -91,7 +91,7 @@ test('can update a category', function () {
 	$category = Category::factory()->create();
 
 	$response = $this->actingAs($this->admin)
-		->patch(route('admin.category.update', $category), ['name' => 'new name',]);
+		->patch(route('admin.category.update', $category), ['name' => 'new name', 'slug' => $category->slug]);
 
 	expect($category->refresh()->name)->toBe('new name');
 });

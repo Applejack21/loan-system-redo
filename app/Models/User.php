@@ -10,7 +10,6 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
-use App\Enums\UserType;
 
 class User extends Authenticatable
 {
@@ -54,7 +53,6 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $casts = [
-		'type' => UserType::class,
 		'email_verified_at' => 'datetime',
 		'address' => 'array',
 		'deleted_at' => 'datetime',
@@ -87,11 +85,11 @@ class User extends Authenticatable
 
 	public function isCustomer(): bool
 	{
-		return $this->type === UserType::CUSTOMER;
+		return strtolower($this->type) == 'customer';
 	}
 
 	public function isAdmin(): bool
 	{
-		return $this->type === UserType::ADMIN;
+		return strtolower($this->type) == 'admin';
 	}
 }

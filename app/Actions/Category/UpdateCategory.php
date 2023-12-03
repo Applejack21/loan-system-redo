@@ -23,8 +23,8 @@ class UpdateCategory
 	private function validate(array $request, Category $category): array
 	{
 		return Validator::validate($request, [
-			'name' => ['required', Rule::unique('category')->ignore($category->id), 'max:255'],
-			'slug' => ['required', Rule::unique('category')->ignore($category->id), 'max:255'],
+			'name' => ['required', Rule::unique('categories', 'name')->ignore($category->id), 'max:255'],
+			'slug' => ['required', Rule::unique('categories', 'slug')->ignore($category->id), 'max:255'],
 		]);
 	}
 }

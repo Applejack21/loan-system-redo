@@ -59,7 +59,7 @@ class CategoryController extends Controller
 	{
 		return Inertia::render('Admin/Category/Show', [
 			'title' => $category->name,
-			'category' => $category,
+			'category' => new CategoryResource($category),
 			'breadcrumbs' => [
 				'Admin Dashboard' => route('admin.dashboard.index'),
 				'Categories' => route('admin.category.index'),

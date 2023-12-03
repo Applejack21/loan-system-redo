@@ -14,6 +14,7 @@ class UpdateUser
 
 		$user->update([
 			...$request,
+			'type' => $request['type'],
 		]);
 
 		return tap($user)->refresh();
@@ -23,8 +24,8 @@ class UpdateUser
 	{
 		return Validator::validate($request, [
 			'name' => 'required|max:255',
-			'email' => ['required', Rule::unique('users')->ignore($user->id), 'max:255', 'email'],
-			'type' => 'required|string|in:customer,admin',
+			'email' => ['required', Rule::unique('users', 'email')->ignore($user->id), 'max:255', 'email'],
+			'type' => ['required', 'string', 'in:customer,admin'],
 			'address' => ['nullable', 'array'],
 			'phone_number' => ['nullable', 'string'],
 		]);
