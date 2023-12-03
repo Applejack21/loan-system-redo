@@ -36,7 +36,7 @@
 					</template>
 				</SelectInput>
 			</div>
-			<Table :rows="users.data" :columns="tableColumns" :paginationLinks="users.meta" :border="true">
+			<Table :rows="users.data" :columns="tableColumns" :paginationLinks="users.meta" :only="['users']" :border="true">
 				<template #td-actions="{ row, index }">
 					<DropdownMenu :links="dropdownLinks(row)" :openVertical="index == 0 ? 'bottom' : 'top'">
 						<template #extra>

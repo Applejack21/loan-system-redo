@@ -34,7 +34,7 @@
 							</div>
 						</div>
 						<AppButton colour="red" class="flex justify-center w-1/2 sm:w-full mt-1">
-							Remove avatar
+							Remove avatar - TODO: functionality
 						</AppButton>
 					</div>
 					<div class="sm:flex-1 sm:ml-6 sm:mt-6">

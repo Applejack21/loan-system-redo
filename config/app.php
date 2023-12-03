@@ -71,6 +71,8 @@ return [
 
     'timezone' => env('APP_TIMEZONE', 'UTC'),
 
+	'convert_timezone' => env('APP_TIMESTAMP_CONVERT', 'UTC'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -108,7 +110,7 @@ return [
     |
     */
 
-    'faker_locale' => env('FAKER_LOCALE', 'en_GB'),
+    'faker_locale' => env('FAKER_LOCALE', 'en_US'),
 
     /*
     |--------------------------------------------------------------------------

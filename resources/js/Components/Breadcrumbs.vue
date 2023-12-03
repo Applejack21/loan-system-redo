@@ -1,6 +1,6 @@
 <template>
 	<nav class="flex max-w-lg">
-		<ol class="flex items-center">
+		<ol class="flex items-center text-sm">
 			<li v-for="(route, key, index) in breadcrumbs" :class="classes(index)" class="inline-flex items-center">
 				<Link :href="route" v-if="route"
 					class="capitalize hover:text-secondary-dark">

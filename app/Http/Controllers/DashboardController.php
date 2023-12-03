@@ -18,17 +18,4 @@ class DashboardController extends Controller
 			]
 		]);
     }
-
-	/**
-	 * Display a listing of the resource.
-	 */
-	public function indexAdmin()
-    {
-        return Inertia::render('DashboardAdmin', [
-			'title' => 'Admin Dashboard',
-			'breadcrumbs' => [
-				'Admin Dashboard' => null,
-			],
-		]);
-    }
 }
