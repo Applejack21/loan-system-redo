@@ -37,7 +37,7 @@ class CategoryController extends Controller
 
 		return Inertia::render('Admin/Category/Index', [
 			'title' => 'Categories',
-			'categories' => (new GetCategories())->execute($request),
+			'categories' => fn () => (new GetCategories())->execute($request),
 			'filters' => $request->only('search'),
 			'breadcrumbs' => [
 				'Admin Dashboard' => route('admin.dashboard.index'),
