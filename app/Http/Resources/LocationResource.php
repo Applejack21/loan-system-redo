@@ -17,7 +17,7 @@ class LocationResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-			'slug' => $this->slug,
+			'room_code' => $this->room_code,
 			'created_by' => new UserResource($this->whenLoaded('createdBy')),
 			'updated_by' => new UserResource($this->whenLoaded('updatedBy')),
 			// TODO: add equipment collection once model is done
