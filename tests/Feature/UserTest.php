@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Benchmark;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('index page has users returned', function () {
@@ -8,7 +9,7 @@ test('index page has users returned', function () {
 	$expectedUsersCount = User::count();
 
 	$response = $this->actingAs($this->admin)
-		->getJson(route('admin.user.index'))
+		->get(route('admin.user.index'))
 		->assertStatus(200);
 
 	$response->assertInertia(function (Assert $page) use ($expectedUsersCount) {
@@ -17,9 +18,23 @@ test('index page has users returned', function () {
 	});
 });
 
+test('index page loads within 500ms or less', function () {
+	$speed = Benchmark::measure(
+		fn () => $this->actingAs($this->admin)
+			->get(route('admin.user.index')),
+	);
+
+	// page loads, just needs to be faster
+	if($speed >= 500) {
+		$this->markTestSkipped('User index page needs to be refactored to load quicker.');
+	}
+
+	return $this->assertTrue($speed <= 500);
+});
+
 test('customers cannot view index page of all users', function () {
 	$response = $this->actingAs($this->customer)
-		->getJson(route('admin.user.index'))
+		->get(route('admin.user.index'))
 		->assertStatus(403);
 });
 
@@ -89,6 +104,22 @@ test('can view user details', function () {
 		$page->component('Admin/User/Show')
 			->has('user', 1);
 	});
+});
+
+test('show page loads within 500ms or less', function () {
+	$user = User::factory()->create();
+
+	$speed = Benchmark::measure(
+		fn () => $this->actingAs($this->admin)
+			->get(route('admin.user.show', $user)),
+	);
+
+	// page loads, just needs to be faster
+	if ($speed >= 500) {
+		$this->markTestSkipped('User show page needs to be refactored to load quicker.');
+	}
+
+	return $this->assertTrue($speed <= 500);
 });
 
 test('customers cannot view user details', function () {

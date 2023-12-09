@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Location>
  */
-class CategoryFactory extends Factory
+class LocationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,13 +19,16 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
 		$user = User::factory()->create(['type' => 'admin']);
-		$name = $this->faker->unique()->words(asText: true);
 
         return [
-            'created_by_user_id' => $user->id,
+			'created_by_user_id' => $user->id,
 			'last_updated_by_user_id' => $user->id,
-			'name' => $name,
-			'slug' => Str::slug($name),
+            'name' => $this->faker->words(asText: true),
+			'room_code' => sprintf(
+				"%s/%s",
+				Str::upper(Str::random(2)) . mt_rand(1, 9),
+				mt_rand(1, 25),
+			), // generate a room code, e.g. FL1/12 - Floor 1, room 12.
         ];
     }
 }
