@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController as FrontendDashboardController;
 use App\Http\Middleware\AdminRoutes;
@@ -49,6 +50,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 				Route::post('/category', 'store')->name('store');
 				Route::patch('category/{category}', 'update')->name('update');
 				Route::delete('category/{category}', 'destroy')->name('destroy');
+			});
+
+			Route::controller(LocationController::class)->name('location.')->group(function () {
+				Route::get('locations', 'index')->name('index');
+				Route::get('location/{location}', 'show')->name('show');
+				Route::post('/location', 'store')->name('store');
+				Route::patch('location/{location}', 'update')->name('update');
+				Route::delete('location/{location}', 'destroy')->name('destroy');
 			});
 		});
 	});

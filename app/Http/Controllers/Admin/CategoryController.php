@@ -28,13 +28,6 @@ class CategoryController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$categories = Category::search($request->search)
-			->orderBy('name')
-			->paginate()
-			->appends(['query' => null]);
-
-		$categories = CategoryResource::collection($categories);
-
 		return Inertia::render('Admin/Category/Index', [
 			'title' => 'Categories',
 			'categories' => fn () => (new GetCategories())->execute($request),

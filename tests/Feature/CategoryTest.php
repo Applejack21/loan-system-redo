@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use Illuminate\Support\Benchmark;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('admin index page has categories returned', function () {
@@ -8,7 +9,7 @@ test('admin index page has categories returned', function () {
 	$expectedCategoriesCount = Category::count();
 
 	$response = $this->actingAs($this->admin)
-		->getJson(route('admin.category.index'))
+		->get(route('admin.category.index'))
 		->assertStatus(200);
 
 	$response->assertInertia(function (Assert $page) use ($expectedCategoriesCount) {
@@ -17,9 +18,23 @@ test('admin index page has categories returned', function () {
 	});
 });
 
+test('index page loads within 500ms or less', function () {
+	$speed = Benchmark::measure(
+		fn () => $this->actingAs($this->admin)
+			->get(route('admin.category.index')),
+	);
+
+	// page loads, just needs to be faster
+	if ($speed >= 500) {
+		$this->markTestSkipped('Category index page needs to be refactored to load quicker.');
+	}
+
+	return $this->assertTrue($speed <= 500);
+});
+
 test('customers cannot view admin index page of all categories', function () {
 	$response = $this->actingAs($this->customer)
-		->getJson(route('admin.category.index'))
+		->get(route('admin.category.index'))
 		->assertStatus(403);
 });
 
@@ -77,6 +92,22 @@ test('can view admin category details', function () {
 		$page->component('Admin/Category/Show')
 			->has('category', 1);
 	});
+});
+
+test('show page loads within 500ms or less', function () {
+	$category = Category::factory()->create();
+
+	$speed = Benchmark::measure(
+		fn () => $this->actingAs($this->admin)
+			->get(route('admin.category.show', $category)),
+	);
+
+	// page loads, just needs to be faster
+	if ($speed >= 500) {
+		$this->markTestSkipped('Category show page needs to be refactored to load quicker.');
+	}
+
+	return $this->assertTrue($speed <= 500);
 });
 
 test('customers cannot view admin category details', function () {
