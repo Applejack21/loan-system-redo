@@ -270,7 +270,7 @@
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ref, computed } from 'vue'
 import { usePage, Head } from '@inertiajs/vue3'
-import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon, PlusIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
+import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon, PlusIcon, Squares2X2Icon, MapPinIcon } from '@heroicons/vue/24/outline'
 import { useSharedData } from "@/modules/sharedData.js";
 import { Breadcrumbs } from '@/Components';
 
@@ -294,6 +294,7 @@ const navigation = [
 const adminNavigation = [
 	{ name: 'Dashboard', icon: HomeIcon, href: route('admin.dashboard.index'), current: route().current('admin.dashboard.index') },
 	{ name: 'Categories', icon: Squares2X2Icon, href: route('admin.category.index'), current: route().current('admin.category.*') },
+	{ name: 'Locations', icon: MapPinIcon, href: route('admin.location.index'), current: route().current('admin.location.*') },
 	{ name: 'Users', icon: UserGroupIcon, href: route('admin.user.index'), current: route().current('admin.user.*') },
 ]
 

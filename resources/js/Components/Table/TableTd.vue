@@ -74,5 +74,3 @@ const headerConfig = {
 	xl: "xl:hidden",
 }
 </script>
-
-<style src="custom-css/popper.css"></style>
