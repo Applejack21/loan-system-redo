@@ -7,16 +7,16 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 */
-	public function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
         return Inertia::render('Admin/Dashboard', [
-			'title' => 'Admin Dashboard',
-			'breadcrumbs' => [
-				'Admin Dashboard' => null,
-			],
-		]);
+            'title' => 'Admin Dashboard',
+            'breadcrumbs' => [
+                'Admin Dashboard' => null,
+            ],
+        ]);
     }
 }

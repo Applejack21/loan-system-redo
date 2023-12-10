@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EquipmentController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController as FrontendDashboardController;
@@ -58,6 +59,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 				Route::post('/location', 'store')->name('store');
 				Route::patch('location/{location}', 'update')->name('update');
 				Route::delete('location/{location}', 'destroy')->name('destroy');
+			});
+
+			Route::controller(EquipmentController::class)->name('equipment.')->group(function () {
+				Route::get('equipments', 'index')->name('index');
+				Route::get('equipment/{equipment}', 'show')->name('show');
+				Route::post('/equipment', 'store')->name('store');
+				Route::patch('equipment/{equipment}', 'update')->name('update');
+				Route::delete('equipment/{equipment}', 'destroy')->name('destroy');
 			});
 		});
 	});

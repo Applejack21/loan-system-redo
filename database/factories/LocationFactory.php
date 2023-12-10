@@ -18,17 +18,17 @@ class LocationFactory extends Factory
      */
     public function definition(): array
     {
-		$user = User::factory()->create(['type' => 'admin']);
+        $user = User::factory()->create(['type' => 'admin']);
 
         return [
-			'created_by_user_id' => $user->id,
-			'last_updated_by_user_id' => $user->id,
+            'created_by_user_id' => $user->id,
+            'last_updated_by_user_id' => $user->id,
             'name' => $this->faker->words(asText: true),
-			'room_code' => sprintf(
-				"%s/%s",
-				Str::upper(Str::random(2)) . mt_rand(1, 9),
-				mt_rand(1, 25),
-			), // generate a room code, e.g. FL1/12 - Floor 1, room 12.
+            'room_code' => sprintf(
+                '%s/%s',
+                Str::upper(Str::random(2)) . mt_rand(1, 9),
+                mt_rand(1, 25),
+            ), // generate a room code, e.g. FL1/12 - Floor 1, room 12.
         ];
     }
 }

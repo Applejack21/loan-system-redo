@@ -17,10 +17,11 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-			'slug' => $this->slug,
-			'created_by' => new UserResource($this->whenLoaded('createdBy')),
-			'updated_by' => new UserResource($this->whenLoaded('updatedBy')),
-			// TODO: add equipment collection once model is done
+            'slug' => $this->slug,
+            'created_by' => new UserResource($this->whenLoaded('createdBy')),
+            'updated_by' => new UserResource($this->whenLoaded('updatedBy')),
+            'equipments' => EquipmentResource::collection($this->whenLoaded('equipment')),
+			'equipments_count' => $this->whenCounted('equipments'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,

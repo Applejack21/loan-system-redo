@@ -15,10 +15,10 @@ class AdminRoutes
      */
     public function handle(Request $request, Closure $next): Response
     {
-		if(auth()->user() && auth()->user()->isAdmin()) {
-			return $next($request);
-		}
+        if (auth()->user() && auth()->user()->isAdmin()) {
+            return $next($request);
+        }
 
-		return redirect()->to(route('login'));
+        return redirect()->to(route('login'));
     }
 }
