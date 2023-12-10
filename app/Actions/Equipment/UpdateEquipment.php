@@ -14,6 +14,7 @@ class UpdateEquipment
 
         $equipment->update([
             ...$request,
+			'last_updated_by_user_id' => auth()->user()->id,
         ]);
 
         return tap($equipment)->refresh();

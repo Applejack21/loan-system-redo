@@ -13,6 +13,8 @@ class CreateEquipment
 
         $equipment = Equipment::create([
             ...$request,
+			'created_by_user_id' => auth()->user()->id,
+            'last_updated_by_user_id' => auth()->user()->id,
         ]);
 
         return tap($equipment)->refresh();
