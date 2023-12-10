@@ -57,8 +57,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        // dd(UserResource::collection(collect($user)));
-        // dd(new UserResource($user));
         return Inertia::render('Admin/User/Show', [
             'title' => 'Viewing: ' . $user->name,
             'user' => new UserResource($user),
