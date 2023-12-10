@@ -12,10 +12,10 @@ class DashboardController extends Controller
     public function index()
     {
         return Inertia::render('Dashboard', [
-			'title' => 'Dashboard',
-			'breadcrumbs' => [
-				'Dashboard' => null,
-			]
-		]);
+            'title' => 'Dashboard',
+            'breadcrumbs' => [
+                'Dashboard' => null,
+            ],
+        ]);
     }
 }

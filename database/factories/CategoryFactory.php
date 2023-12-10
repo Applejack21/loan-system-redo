@@ -18,14 +18,14 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-		$user = User::factory()->create(['type' => 'admin']);
-		$name = $this->faker->unique()->words(asText: true);
+        $user = User::factory()->create(['type' => 'admin']);
+        $name = $this->faker->unique()->words(asText: true);
 
         return [
             'created_by_user_id' => $user->id,
-			'last_updated_by_user_id' => $user->id,
-			'name' => $name,
-			'slug' => Str::slug($name),
+            'last_updated_by_user_id' => $user->id,
+            'name' => $name,
+            'slug' => Str::slug($name),
         ];
     }
 }

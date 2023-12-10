@@ -11,12 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('equipments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by_user_id')->constrained('users');
             $table->foreignId('last_updated_by_user_id')->constrained('users');
+            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('location_id')->constrained('locations');
             $table->string('name');
-            $table->string('room_code')->nullable()->comment('If the location has a room code, e.g. FL1/12 (floor 1, room 12)');
+            $table->string('code')->unique()->nullable();
+            $table->longText('description')->nullable();
+            $table->float('price')->comment('Price of equipment, used to help with customer loan damages to equipment.');
+            $table->json('details')->nullable();
+            $table->integer('amount')->comment('How many of this equipment we have.');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('equipments');
     }
 };

@@ -23,9 +23,9 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
-			'type' => ['required', 'string', 'in:customer,admin'],
-			'address' => ['nullable', 'array'],
-			'phone_number' => ['nullable', 'string'],
+            'type' => ['required', 'string', 'in:customer,admin'],
+            'address' => ['nullable', 'array'],
+            'phone_number' => ['nullable', 'string'],
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
@@ -34,8 +34,8 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'type' => $input['type'],
-			'address' => $input['address'] ?? null,
-			'phone_number' => $input['phone_number'] ?? null,
+            'address' => $input['address'] ?? null,
+            'phone_number' => $input['phone_number'] ?? null,
         ]);
     }
 }

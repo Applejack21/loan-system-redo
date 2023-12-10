@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone_number')->after('role')->nullable();
-			$table->json('address')->after('phone_number')->nullable();
+            $table->json('address')->after('phone_number')->nullable();
         });
     }
 

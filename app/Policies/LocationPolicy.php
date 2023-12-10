@@ -9,14 +9,14 @@ use Illuminate\Auth\Access\Response;
 
 class LocationPolicy
 {
-	use HandlesAuthorization;
+    use HandlesAuthorization;
 
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): Response
     {
-		return $user->isAdmin() ? Response::allow() : Response::deny('You do not have permission to do this.');
+        return $user->isAdmin() ? $this->allow() : $this->deny('You do not have permission to do this.');
     }
 
     /**
@@ -24,7 +24,7 @@ class LocationPolicy
      */
     public function view(User $user, Location $location): Response
     {
-		return $user->isAdmin() ? Response::allow() : Response::deny('You do not have permission to do this.');
+        return $user->isAdmin() ? $this->allow() : $this->deny('You do not have permission to do this.');
     }
 
     /**
@@ -32,7 +32,7 @@ class LocationPolicy
      */
     public function create(User $user): Response
     {
-		return $user->isAdmin() ? Response::allow() : Response::deny('You do not have permission to do this.');
+        return $user->isAdmin() ? $this->allow() : $this->deny('You do not have permission to do this.');
     }
 
     /**
@@ -40,7 +40,7 @@ class LocationPolicy
      */
     public function update(User $user, Location $location): Response
     {
-		return $user->isAdmin() ? Response::allow() : Response::deny('You do not have permission to do this.');
+        return $user->isAdmin() ? $this->allow() : $this->deny('You do not have permission to do this.');
     }
 
     /**
@@ -48,7 +48,7 @@ class LocationPolicy
      */
     public function delete(User $user, Location $location): Response
     {
-		return $user->isAdmin() ? Response::allow() : Response::deny('You do not have permission to do this.');
+        return $user->isAdmin() ? $this->allow() : $this->deny('You do not have permission to do this.');
     }
 
     /**
@@ -56,7 +56,7 @@ class LocationPolicy
      */
     public function restore(User $user, Location $location): Response
     {
-		return $user->isAdmin() ? Response::allow() : Response::deny('You do not have permission to do this.');
+        return $user->isAdmin() ? $this->allow() : $this->deny('You do not have permission to do this.');
     }
 
     /**
@@ -64,6 +64,6 @@ class LocationPolicy
      */
     public function forceDelete(User $user, Location $location): Response
     {
-		return $user->isAdmin() ? Response::allow() : Response::deny('You do not have permission to do this.');
+        return $user->isAdmin() ? $this->allow() : $this->deny('You do not have permission to do this.');
     }
 }
