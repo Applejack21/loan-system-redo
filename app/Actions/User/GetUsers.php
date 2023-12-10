@@ -10,7 +10,7 @@ use Laravel\Scout\Builder;
 
 class GetUsers
 {
-    public function execute(Request $request): AnonymousResourceCollection
+    public function execute(Request $request, array $load = [], array $count = []): AnonymousResourceCollection
     {
         $users = User::search($request->search)
             ->when($request->type ?? false, function (Builder $query, string $type) {
@@ -23,6 +23,14 @@ class GetUsers
             ->orderBy('name')
             ->paginate()
             ->appends(['query' => null]);
+
+		if($load) {
+			$users->loadMissing($load);
+		}
+
+		if($count) {
+			$users->loadCount($count);
+		}
 
         return UserResource::collection($users);
     }
