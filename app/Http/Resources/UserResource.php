@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'phone_number' => $this->phone_number,
             'address' => $this->address,
             'profile_photo_url' => $this->profile_photo_url,
-			// TODO: add loans collection once model is done
+            // TODO: add loans collection once model is done
             'created_at' => $this->created_at->tz(config('app.convert_timezone'))->toDateTimeString(),
             'updated_at' => $this->updated_at->tz(config('app.convert_timezone'))->toDateTimeString(),
             'deleted_at' => $this->deleted_at?->tz(config('app.convert_timezone'))->toDateTimeString(),

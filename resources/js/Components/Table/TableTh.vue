@@ -1,9 +1,10 @@
 <template>
 	<div :class="[
 		{ 'w-px md:whitespace-nowrap': autoWidth },
-		'table-cell py-3.5 px-3 text-left text-gray-700 font-normal border-b border-accent bg-white align-middle'
+		{ 'whitespace-nowrap': nowrap },
+		'table-cell align-middle p-3 min-h-[49px] font-bold bg-white'
 	]">
-		<span :class="`text-${textSize}`">
+		<span>
 			<slot />
 		</span>
 	</div>
@@ -15,10 +16,9 @@ defineProps({
 		type: Boolean,
 		default: false
 	},
-	textSize: {
-		type: String,
-		required: false,
-		default: 'md',
+	nowrap: {
+		type: Boolean,
+		default: false,
 	}
 })
 </script>

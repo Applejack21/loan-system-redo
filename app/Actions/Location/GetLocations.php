@@ -9,21 +9,21 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GetLocations
 {
-	public function execute(Request $request, array $load = [], array $count = []): AnonymousResourceCollection
-	{
-		$locations = Location::search($request->search)
-			->orderBy('name')
-			->paginate()
-			->appends(['query' => null]);
+    public function execute(Request $request, array $load = [], array $count = []): AnonymousResourceCollection
+    {
+        $locations = Location::search($request->search)
+            ->orderBy('name')
+            ->paginate()
+            ->appends(['query' => null]);
 
-		if ($load) {
-			$locations->loadMissing($load);
-		}
+        if ($load) {
+            $locations->loadMissing($load);
+        }
 
-		if ($count) {
-			$locations->loadCount($count);
-		}
+        if ($count) {
+            $locations->loadCount($count);
+        }
 
-		return LocationResource::collection($locations);
-	}
+        return LocationResource::collection($locations);
+    }
 }

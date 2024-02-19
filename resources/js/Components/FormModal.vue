@@ -20,36 +20,37 @@
 		</template>
 
 		<template #footer>
-			<div class="flex-1 flex justify-end space-x-6">
-				<slot name="buttons" :form="form" :submit="submit" :closeModal="closeModal">
-					<slot name="extraButtons" />
-					<div class="flex flex-col space-y-1">
-						<AppButton colour="accent" @click="closeModal" :disabled="form.processing || !form.isDirty">
-							<template #iconLeft>
-								<XMarkIcon />
-							</template>
-							Nevermind
-						</AppButton>
-						<span class="text-xs text-center">
-							Esc to close
-						</span>
-					</div>
+			<slot names="buttons">
+				<slot name="extraButtons" />
 
-					<div class="flex flex-col space-y-1">
-						<AppButton @click="submit" :disabled="form.processing || !form.isDirty" :loading="form.processing"
-							colour="secondary">
-							<template #iconLeft>
-								<CheckIcon />
-							</template>
-							<slot name="submit-text">Save
-								Changes</slot>
-						</AppButton>
-						<span class="text-xs text-center">
-							Ctrl + enter to submit
-						</span>
-					</div>
-				</slot>
-			</div>
+				<div class="flex flex-col space-y-1">
+					<AppButton colour="red" @click="closeModal" :disabled="form.processing">
+						<template #iconRight>
+							<XMarkIcon />
+						</template>
+						Nevermind
+					</AppButton>
+					<span class="text-xs font-semibold text-center">
+						Esc to close
+					</span>
+				</div>
+
+				<div class="flex flex-col space-y-1">
+					<AppButton @click.prevent="submit" colour="secondary" :disabled="form.processing || !form.isDirty"
+						:loading="form.processing">
+						<template #iconRight>
+
+							<CheckIcon />
+						</template>
+						<slot name="subit-text">
+							Save Changes
+						</slot>
+					</AppButton>
+					<span class="text-xs font-semibold text-center">
+						Ctrl + enter to submit
+					</span>
+				</div>
+			</slot>
 		</template>
 	</DialogModal>
 </template>
@@ -67,7 +68,7 @@ const props = defineProps({
 		required: true
 	},
 	// Inertia route
-	route: {
+	urlRoute: {
 		type: String,
 		required: true
 	},
@@ -125,7 +126,7 @@ const {
 const submit = () => {
 	emit('submit')
 
-	props.form[props.method](props.route, {
+	props.form[props.method](props.urlRoute, {
 		...props.form,
 		onSuccess: () => {
 			emit('success', state);

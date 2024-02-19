@@ -33,7 +33,7 @@ class CategoryController extends Controller
             'categories' => fn () => (new GetCategories())->execute($request, count: ['equipments']),
             'filters' => $request->only('search'),
             'breadcrumbs' => [
-                'Admin Dashboard' => route('admin.dashboard.index'),
+                'Dashboard' => route('admin.dashboard.index'),
                 'Categories' => null,
             ],
         ]);
@@ -61,7 +61,7 @@ class CategoryController extends Controller
             'title' => $category->name,
             'category' => new CategoryResource($category->loadMissing('createdBy', 'updatedBy', 'equipments')),
             'breadcrumbs' => [
-                'Admin Dashboard' => route('admin.dashboard.index'),
+                'Dashboard' => route('admin.dashboard.index'),
                 'Categories' => route('admin.category.index'),
                 $category->name => null,
             ],

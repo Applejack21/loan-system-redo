@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Equipment;
 use Illuminate\Support\Benchmark;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -85,7 +86,7 @@ test('can view admin category details', function () {
     $category = Category::factory()->create();
 
     $response = $this->actingAs($this->admin)
-        ->get(route('admin.category.show', $category))
+        ->get(route('admin.category.show', $category->slug))
         ->assertStatus(200);
 
     $response->assertInertia(function (Assert $page) {
@@ -99,7 +100,7 @@ test('show page loads within 500ms or less', function () {
 
     $speed = Benchmark::measure(
         fn () => $this->actingAs($this->admin)
-            ->get(route('admin.category.show', $category)),
+            ->get(route('admin.category.show', $category->slug)),
     );
 
     // page loads, just needs to be faster
@@ -114,7 +115,7 @@ test('customers cannot view admin category details', function () {
     $category = Category::factory()->create();
 
     $response = $this->actingAs($this->customer)
-        ->get(route('admin.category.show', $category))
+        ->get(route('admin.category.show', $category->slug))
         ->assertStatus(403);
 });
 
@@ -179,4 +180,34 @@ test('customers cannot soft delete a category', function () {
         ->assertStatus(403);
 
     $this->assertNotSoftDeleted($category);
+});
+
+test('can link equipment to a category on create', function () {
+    $equipment = Equipment::factory()->create();
+    $data = Category::factory()->make()->toArray();
+    $data['equipments'] = [$equipment->id];
+
+    $response = $this->actingAs($this->admin)
+        ->post(route('admin.category.store'), $data);
+
+    $this->assertDatabaseCount('categories', 1);
+
+    $category = Category::where('name', $data['name'])->first();
+
+    expect($category->refresh()->equipments->count())->toBe(1);
+});
+
+test('can link equipment to a category on update', function () {
+    $equipment = Equipment::factory()->create();
+    $category = Category::factory()->create();
+
+    $data = [
+        ...$category->toArray(),
+        'equipments' => [$equipment->id],
+    ];
+
+    $response = $this->actingAs($this->admin)
+        ->patch(route('admin.category.update', $category->id), $data);
+
+    expect($category->refresh()->equipments->count())->toBe(1);
 });

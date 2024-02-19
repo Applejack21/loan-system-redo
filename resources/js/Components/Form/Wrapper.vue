@@ -2,8 +2,9 @@
 	<div class="space-y-4">
 		<p class="text-red-600" v-if="showIndicator">* Indicates
 			required</p>
-		<div class="space-y-4">
-			<Errors v-if="form" :form="form" class="my-2" />
+
+		<div>
+			<Errors v-if="form" :form="form" />
 			<slot />
 		</div>
 	</div>

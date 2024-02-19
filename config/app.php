@@ -73,11 +73,10 @@ return [
 
     'convert_timezone' => env('APP_TIMESTAMP_CONVERT', 'UTC'),
 
-
-	/**
-	 * Application currency
-	 */
-	'currency' => env('APP_CURRENCY', 'USD'),
+    /**
+     * Application currency
+     */
+    'currency' => env('APP_CURRENCY', 'GBP'),
 
     /*
     |--------------------------------------------------------------------------
@@ -116,7 +115,7 @@ return [
     |
     */
 
-    'faker_locale' => env('FAKER_LOCALE', 'en_US'),
+    'faker_locale' => env('FAKER_LOCALE', 'en_GB'),
 
     /*
     |--------------------------------------------------------------------------

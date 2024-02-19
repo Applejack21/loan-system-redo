@@ -14,5 +14,3 @@ defineProps({
 	//
 })
 </script>
-
-<style src="custom-css/popper.css"></style>

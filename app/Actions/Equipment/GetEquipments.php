@@ -16,13 +16,13 @@ class GetEquipments
             ->paginate()
             ->appends(['query' => null]);
 
-		if($load) {
-			$equipments->loadMissing($load);
-		}
+        if ($load) {
+            $equipments->loadMissing($load);
+        }
 
-		if($count) {
-			$equipments->loadCount($count);
-		}
+        if ($count) {
+            $equipments->loadCount($count);
+        }
 
         return EquipmentResource::collection($equipments);
     }

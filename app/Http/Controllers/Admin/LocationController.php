@@ -33,7 +33,7 @@ class LocationController extends Controller
             'locations' => fn () => (new GetLocations())->execute($request, count: ['equipments']),
             'filters' => $request->only('search'),
             'breadcrumbs' => [
-                'Admin Dashboard' => route('admin.dashboard.index'),
+                'Dashboard' => route('admin.dashboard.index'),
                 'Locations' => null,
             ],
         ]);
@@ -61,7 +61,7 @@ class LocationController extends Controller
             'title' => $location->name,
             'location' => new LocationResource($location->loadMissing('createdBy', 'updatedBy', 'equipments')),
             'breadcrumbs' => [
-                'Admin Dashboard' => route('admin.dashboard.index'),
+                'Dashboard' => route('admin.dashboard.index'),
                 'Locations' => route('admin.location.index'),
                 $location->name => null,
             ],
