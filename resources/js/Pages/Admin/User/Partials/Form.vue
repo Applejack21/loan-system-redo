@@ -1,7 +1,7 @@
 <template>
 	<Wrapper :form="form" :showIndicator="true">
 
-		<div class="-mt-5 bg-white gap-4 sm:p-6 grid grid-cols-2">
+		<div class="bg-white gap-4 sm:p-6 grid grid-cols-1 md:grid-cols-2">
 
 			<TextInput label="Name" v-model="form.name" id="name" name="name" required />
 			<TextInput label="Email" v-model="form.email" id="email" name="email" required />

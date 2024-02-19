@@ -1,18 +1,26 @@
 <template>
-	<div :class="[classConfig.default, classConfig.header, classConfig[breakpoint], `text-${textSize}`]">
-		<span :class="[headerConfig.default, headerConfig[breakpoint]]" v-if="$slots.header">
+	<div :class="[
+		classConfig.default,
+		classConfig[computedBreakpoint],
+		{ 'border-b border-grey-300 pb-1': border },
+		'lg:border-none',
+	]">
+		<span :class="[
+			headerConfig.default,
+			headerConfig[computedBreakpoint]
+		]" v-if="$slots.header">
 			<slot name="header" />
 		</span>
 		<span v-if="$slots.default">
 			<template v-if="popper">
-				<Popper arrow hover>
+				<Popper arrow hover class="max-w-full">
 					<!-- data to display in table -->
-					<div class="lg:underline lg:decoration-dotted hover:cursor-help flex items-end">
+					<div class="underline decoration-dotted hover:cursor-help">
 						<slot />
 					</div>
 					<template #content>
 						<!-- data to display on popper hover -->
-						<div>
+						<div id="popper-content">
 							<slot />
 						</div>
 					</template>
@@ -27,48 +35,52 @@
 
 <script setup>
 import Popper from "vue3-popper";
-import { inject } from "vue"
-
-const breakpoint = inject("tableBreakpoint", "lg")
+import { computed, inject } from "vue"
 
 const props = defineProps({
 	autoWidth: {
 		type: Boolean,
 		default: false
 	},
-	textSize: {
-		type: String,
-		required: false,
-		default: 'md',
-	},
 	popper: {
 		type: Boolean,
 		required: false,
 		default: false,
+	},
+	breakpoint: String,
+	border: {
+		type: Boolean,
+		default: true,
 	}
+});
+
+const computedBreakpoint = computed(() => {
+	const injectedValue = inject("tableBreakpoint", "lg")
+
+	return props.breakpoint || injectedValue
 })
 
 const classConfig = {
-	default: "flex flex-col text-md text-gray-700 align-middle",
+	default: "grid grid-cols-1 sm:grid-cols-2 text-md align-middle",
 	md: [
-		"md:table-cell md:py-3.5 md:px-3 md:h-[60px] md:whitespace-nowrap md:border-b md:border-gray-100",
+		"md:table-cell md:px-3 md:py-2.5 xl:h-[49px] md:whitespace-nowrap",
 		props.autoWidth ? "md:w-px" : "",
-		props.popper ? "md:truncate md:max-w-[200px]" : "",
+		props.popper ? "md:truncate md:w-1/4 md:max-w-[1px]" : "",
 	].join(" "),
 	lg: [
-		"lg:table-cell lg:py-3.5 lg:px-3 lg:h-[60px] lg:whitespace-nowrap lg:border-b lg:border-gray-100",
+		"lg:table-cell lg:px-3 lg:py-2.5 xl:h-[49px] lg:whitespace-nowrap",
 		props.autoWidth ? "lg:w-px" : "",
-		props.popper ? "lg:truncate lg:max-w-[200px]" : "",
+		props.popper ? "lg:truncate lg:w-1/4 lg:max-w-[1px]" : "",
 	].join(" "),
 	xl: [
-		"xl:table-cell xl:py-3.5 xl:px-3 xl:h-[60px] xl:whitespace-nowrap xl:border-b xl:border-gray-100",
+		"xl:table-cell xl:px-3 xl:py-2.5 xl:h-[49px] xl:whitespace-nowrap",
 		props.autoWidth ? "xl:w-px" : "",
-		props.popper ? "xl:truncate xl:max-w-[200px]" : "",
+		props.popper ? "xl:truncate xl:w-1/4 xl:max-w-[1px]" : "",
 	].join(" "),
 }
 
 const headerConfig = {
-	default: "font-semibold text-gray-800 mb-2",
+	default: "mb-2",
 	md: "md:hidden",
 	lg: "lg:hidden",
 	xl: "xl:hidden",

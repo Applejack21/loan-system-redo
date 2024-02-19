@@ -1,3 +1,21 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import '@vueform/multiselect/themes/default.css';
+@import 'custom-css/popper.css';
+
+/** unset any left element **/
+@layer utilities {
+	.left-unset {
+		left: unset;
+	}
+
+	.hyperlink {
+		@apply text-secondary hover:text-secondary-light underline
+	}
+
+	/** make text white if hyperlink on popper - mainly for tables **/
+	#popper-content .hyperlink {
+		@apply text-white underline
+	}
+}

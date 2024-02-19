@@ -8,7 +8,9 @@ use App\Actions\Equipment\GetEquipments;
 use App\Actions\Equipment\UpdateEquipment;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EquipmentResource;
+use App\Models\Category;
 use App\Models\Equipment;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -30,10 +32,12 @@ class EquipmentController extends Controller
 	{
 		return Inertia::render('Admin/Equipment/Index', [
 			'title' => 'Equipments',
-			'equipments' => fn () => (new GetEquipments())->execute($request, ['category', 'location']),
+			'equipments' => fn () => (new GetEquipments())->execute($request, ['categories', 'location'], ['categories']),
+			'categories' => fn () => Category::select('id', 'name')->get(),
+			'locations' => fn () => Location::select('id', 'name')->get(),
 			'filters' => $request->only('search'),
 			'breadcrumbs' => [
-				'Admin Dashboard' => route('admin.dashboard.index'),
+				'Dashboard' => route('admin.dashboard.index'),
 				'Equipments' => null,
 			],
 		]);
@@ -57,14 +61,19 @@ class EquipmentController extends Controller
 	 */
 	public function show(Equipment $equipment)
 	{
+		$equipment->loadMissing('createdBy', 'updatedBy', 'categories', 'location');
+		$equipment->loadCount('categories');
+
 		return Inertia::render('Admin/Equipment/Show', [
 			'title' => $equipment->name,
-			'equipment' => new EquipmentResource($equipment->loadMissing('createdBy', 'updatedBy', 'category', 'location')),
+			'equipment' => new EquipmentResource($equipment),
 			'breadcrumbs' => [
-				'Admin Dashboard' => route('admin.dashboard.index'),
+				'Dashboard' => route('admin.dashboard.index'),
 				'Equipments' => route('admin.equipment.index'),
 				$equipment->name => null,
 			],
+			'categories' => fn () => Category::select('id', 'name')->get(),
+			'locations' => fn () => Location::select('id', 'name')->get(),
 		]);
 	}
 

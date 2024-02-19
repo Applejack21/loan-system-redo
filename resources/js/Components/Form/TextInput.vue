@@ -1,6 +1,6 @@
 <template>
 	<div class="block">
-		<Label v-if="label" :for="$attrs.id" :required="required">
+		<Label v-if="label" :for="$attrs.id" :required="required" :popperText="popperText">
 			{{ label }}
 		</Label>
 		<div class="relative block">
@@ -51,6 +51,7 @@ const props = defineProps({
 		type: String,
 	},
 	required: Boolean,
+	popperText: String,
 });
 
 const input = ref(null);

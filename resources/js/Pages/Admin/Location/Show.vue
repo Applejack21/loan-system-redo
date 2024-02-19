@@ -2,97 +2,108 @@
 	<AppLayout :title="title" :breadcrumbs="breadcrumbs">
 		<div class="flex flex-col space-y-5">
 			<Card>
-				<CardHeader>
-					<template #button>
-						<FormModal :form="form" :route="route('admin.location.update', location.data)"
-							@success="(modalState) => modalState.visible = false" method="patch">
-							<template #open-text>
-								Edit
-							</template>
-							<template #open-icon>
-								<PencilSquareIcon />
-							</template>
-							<template #title>
-								{{ `Updating "${form.name}"` }}
-							</template>
-							<template #content>
-								<Form :form="form" />
-							</template>
-							<template #submit-text>
-								Update location
-							</template>
-						</FormModal>
-						<ConfirmDelete :action="route('admin.location.destroy', location.data)" />
-					</template>
-				</CardHeader>
-				<div class="px-4 flow-root sm:px-6 sm:flex-end sm:flex -mt-[5.5rem] w-4/5">
-					<div>
-						<div class="flex items-center">
-							<h3 class="sm:text-2xl font-bold text-neutral-dark-grey">
-								{{ location.data.name }}
-							</h3>
+				<CardBody>
+					<div class="px-4 flow-root sm:px-6 sm:flex-end sm:flex w-4/5">
+						<div class="sm:flex-1 sm:ml-6 sm:mt-6">
+							<div>
+								<div class="flex items-center">
+									<h3 class="text-2xl font-bold text-neutral-dark-grey">
+										{{ location.data.name }}
+									</h3>
+								</div>
+								<p class="flex items-center space-x-2">
+									<span class="text-sm">
+										{{ location.data.room_code }}
+									</span>
+								</p>
+							</div>
+							<div class="mt-5 flex space-x-5 justify-start">
+								<AppButton colour="secondary"
+									@click="openEdit(location.data, createEditForm(location.data))">
+									<template #icon>
+										<PencilSquareIcon />
+									</template>
+								</AppButton>
+								<AppButton colour="red" @click="openDelete(location.data)">
+									<template #icon>
+										<TrashIcon />
+									</template>
+								</AppButton>
+							</div>
 						</div>
-						<p class="flex items-center space-x-2">
-							<span class="text-sm">
-								{{ location.data.room_code }}
-							</span>
-						</p>
 					</div>
-				</div>
 
-				<div class="flex flex-col mt-5">
-					<dl class="divide-y-2 divide-neutral-dark-grey">
-						<div class="sm:py-5 sm:px-6 sm:flex sm:items-center">
-							<dt class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-								Created By
-							</dt>
-							<UserPreview :user="location.data.created_by" size="sm" />
-						</div>
-						<div class="sm:py-5 sm:px-6 sm:flex sm:items-center">
-							<dt class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-								Last Updated By
-							</dt>
-							<UserPreview :user="location.data.updated_by" size="sm" />
-						</div>
-						<div class="sm:py-5 sm:px-6 sm:flex">
-							<dt class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-								Created At
-							</dt>
-							<dd class="sm:m-0 sm:ml-6 text-sm">
-								<p>
-									{{ dayjs(location.data.created_at).format('DD/MM/YYYY @ H:m:s') }}
+					<div class="flex flex-col mt-5">
+						<dl class="divide-y-2 divide-accent-light">
+							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
+								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
+									Created By
+								</h4>
+								<UserPreview :user="location.data.created_by" size="sm" />
+							</div>
+							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
+								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
+									Last Updated By
+								</h4>
+								<UserPreview :user="location.data.updated_by" size="sm" />
+							</div>
+							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
+								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
+									Created At
+								</h4>
+								<p class="sm:ml-6">
+									{{ dayjs(location.data.created_at) }}
 								</p>
-							</dd>
-						</div>
-						<div class="sm:py-5 sm:px-6 sm:flex">
-							<dt class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-								Updated At
-							</dt>
-							<dd class="sm:m-0 sm:ml-6 text-sm">
-								<p>
-									{{ dayjs(location.data.updated_at).format('DD/MM/YYYY @ H:m:s') }}
+							</div>
+							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
+								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
+									Updated At
+								</h4>
+								<p class="sm:ml-6">
+									{{ dayjs(location.data.updated_at) }}
 								</p>
-							</dd>
-						</div>
-					</dl>
-				</div>
+							</div>
+						</dl>
+					</div>
+				</CardBody>
 			</Card>
 
 			<Card>
-				<div class="flex flex-col mt-5">
-					TODO: show a list of products this location has linked to it
-				</div>
+				<CardBody>
+					<div class="flex flex-col mt-5">
+						TODO: show a list of products this location has linked to it
+					</div>
+				</CardBody>
 			</Card>
 		</div>
+
+		<!-- edit modal -->
+		<FormModal v-if="state.selectedItem" :form="state.editForm" method="patch" :toggle="state.showEdit"
+			:urlRoute="route('admin.location.update', state.selectedItem)" :submitOptions="state.editForm" :button="false"
+			@close="closeEdit()" @success="closeEdit()">
+			<template #title>
+				{{ `Updating "${state.editForm.name}"` }}
+			</template>
+			<template #content>
+				<Form :form="state.editForm" />
+			</template>
+			<template #submit-text>
+				Update location
+			</template>
+		</FormModal>
+
+		<!-- delete modal -->
+		<ConfirmDelete :action="deleteAction" :button="false" :toggle="state.showDelete" @close="closeDelete()" />
 	</AppLayout>
 </template>
 
 <script setup>
-import { PencilSquareIcon } from '@heroicons/vue/24/outline'
+import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import dayjs from "dayjs";
 import { useForm } from "@inertiajs/vue3";
+import { useListPage } from '@/modules/listPage.js';
 import { FormModal, ConfirmDelete, UserPreview } from "@/Components";
-import { Card, CardHeader } from "@/Components/Card";
+import { Card, CardBody } from "@/Components/Card";
 import Form from "./Partials/Form.vue";
 
 const props = defineProps({
@@ -101,8 +112,19 @@ const props = defineProps({
 	breadcrumbs: Object,
 });
 
-const form = useForm({
-	name: props.location.data.name,
-	room_code: props.location.data.room_code,
-});
+const {
+	state,
+	openEdit,
+	closeEdit,
+	openDelete,
+	closeDelete,
+	deleteAction,
+} = useListPage('admin.location.destroy');
+
+const createEditForm = (location) => {
+	return useForm({
+		name: location.name,
+		room_code: location.room_code,
+	});
+}
 </script>

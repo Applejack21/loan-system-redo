@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,7 +23,6 @@ class EquipmentFactory extends Factory
         return [
             'created_by_user_id' => $user->id,
             'last_updated_by_user_id' => $user->id,
-            'category_id' => Category::factory()->create(),
             'location_id' => Location::factory()->create(),
             'name' => $this->faker->words(asText: true),
             'code' => $this->faker->boolean() ? $this->faker->unique()->word() : null,

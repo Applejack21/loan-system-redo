@@ -1,51 +1,77 @@
 <template>
-	<TableOuter :border="border">
-		<TableHeader class="sticky top-0 z-10">
-			<TableRow :hover="false">
-				<slot name="columns" :columns="columns">
-					<TableTh v-for="column in Object.keys(columns)" :autoWidth="columns[column].autoWidth"
-						:textSize="headerSize">
-						<slot :name="`th-${column}`" :column="columns[column]">
-							{{ columns[column].name }}
-						</slot>
-					</TableTh>
-				</slot>
-			</TableRow>
-		</TableHeader>
-		<TableBody>
-			<TableRow v-for="(row, index) in rows" :key="row.id || index"
-				@click="$emit('row-clicked', { row: row, index: index })">
-				<slot name="row" :row="row" :index="index">
-					<TableTd v-for="column in Object.keys(columns)" :class="{ 'cursor-pointer': clickable }"
-						:textSize="textSize" :popper="columns[column].popper">
-						<template #header>
-							{{ columns[column].name }}
-						</template>
-						<div :class="columns[column].popper === true ? 'truncate' : ''">
-							<slot :name="`td-${column}`" :row="row" :index="index" :cell="row[column]">
-								{{ row[column] ? row[column] :
-									"" }}
+	<div class="rounded-t-[10px]" :class="[
+		{ 'border-t-[10px] border-accent-light': border },
+	]">
+		<TableOuter>
+			<TableHeader class="sticky top-0 z-10">
+				<TableRow :hover="false">
+					<slot name="columns" :columns="columns">
+						<TableTh v-for="column in Object.keys(columns)" :autoWidth="columns[column].autoWidth"
+							:nowrap="columns[column].nowrap" :class="[
+								visibilityClasses(columns[column])
+							]">
+							<slot :name="`th-${column}`" :column="columns[column]">
+
+								<Body is="span" :colour="columns[column].headerColour ?? headerColour">
+									{{ columns[column].name }}
+								</Body>
 							</slot>
-						</div>
-					</TableTd>
-				</slot>
+						</TableTh>
+					</slot>
+				</TableRow>
+			</TableHeader>
+			<TableBody>
+				<TableRow v-for="(row, index) in   rows  " :key="row.id || index"
+					@click="$emit('row-clicked', { row: row, index: index })">
+					<slot name="row" :row="row" :index="index">
+						<TableTd v-for="column in   Object.keys(columns)  " :class="[
+							{ 'cursor-pointer': clickable },
+							visibilityClasses(columns[column])
+						]" :popper="columns[column]?.popper" :breakpoint="columns[column]?.hiddenUntil"
+							:border="columns[column]?.border">
+							<template #header>
+
+								<Body is="span" :colour="columns[column].colour ?? 'typography-neutral'" :class="[
+									visibilityClasses(columns[column]),
+								]">
+									{{ columns[column].name }}
+								</Body>
+							</template>
+							<div :class="[
+								{ 'flex': columns[column].popper === true },
+							]">
+								<slot :name="`td-${column}`" :row="row" :cell="row[column]">
+
+									<Body is="span" :colour="columns[column].colour ?? `typography-neutral`" :class="[
+										visibilityClasses(columns[column]),
+										{ 'truncate': columns[column].popper === true },
+									]
+										">
+										{{ row[column] }}
+									</Body>
+								</slot>
+							</div>
+						</TableTd>
+					</slot>
+				</TableRow>
+			</TableBody>
+			<slot name="extraBody" />
+		</TableOuter>
+		<div v-if="!rows.length && $slots.emptyText" class="w-full table">
+			<TableRow>
+				<TableTd>
+					<slot name="emptyText" />
+				</TableTd>
 			</TableRow>
-		</TableBody>
-	</TableOuter>
-	<Pagination v-if="paginationLinks" :links="paginationLinks" :only="only" class="my-5" />
+		</div>
+	</div>
+	<Pagination :links="paginationLinks" v-if="paginationLinks" :only="only" class="mt-[30px] flex justify-center" />
 </template>
 
 <script setup>
-import { provide } from "vue"
-import {
-	TableOuter,
-	TableHeader,
-	TableBody,
-	TableRow,
-	TableTd,
-	TableTh,
-} from "@/Components/Table"
-import { Pagination } from "@/Components/Pagination";
+import { provide } from "vue";
+import { TableBody, TableHeader, TableOuter, TableRow, TableTd, TableTh } from "@/Components/Table";
+import { Pagination } from '@/Components/Pagination';
 
 const props = defineProps({
 	breakpoint: {
@@ -68,23 +94,26 @@ const props = defineProps({
 		required: false,
 		default: () => { },
 	},
-	headerSize: {
-		type: String,
-		required: false,
-		default: 'md',
+	border: {
+		type: Boolean,
+		default: true,
 	},
-	textSize: {
-		type: String,
-		required: false,
-		default: 'md'
-	},
-	border: Boolean,
 	only: {
 		type: Array,
 		required: false,
 		default: () => [],
+	},
+	headerColour: {
+		type: String,
+		default: 'neutral',
 	}
 })
 
 provide("tableBreakpoint", props.breakpoint)
+
+const visibilityClasses = (column) => {
+	if (!column.hiddenUntil) return
+
+	return `hidden ${column.hiddenUntil}:table-cell`;
+}
 </script>

@@ -16,15 +16,15 @@ class LocationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'room_code' => $this->room_code,
             'created_by' => new UserResource($this->whenLoaded('createdBy')),
             'updated_by' => new UserResource($this->whenLoaded('updatedBy')),
             'equipments' => EquipmentResource::collection($this->whenLoaded('equipment')),
-			'equipments_count' => $this->whenCounted('equipments'),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'equipments_count' => $this->whenCounted('equipments'),
+            'name' => $this->name,
+            'room_code' => $this->room_code,
+            'created_at' => $this->created_at->tz(config('app.convert_timezone'))->toDateTimeString(),
+            'updated_at' => $this->updated_at->tz(config('app.convert_timezone'))->toDateTimeString(),
+            'deleted_at' => $this->deleted_at?->tz(config('app.convert_timezone'))->toDateTimeString(),
         ];
     }
 }

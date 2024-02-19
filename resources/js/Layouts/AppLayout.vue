@@ -257,7 +257,7 @@
 						</div>
 					</header>
 
-					<div class="p-5 bg-neutral-light-grey">
+					<div class="p-5 bg-neutral-light-grey min-h-screen">
 						<slot />
 					</div>
 				</div>
@@ -270,7 +270,7 @@
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ref, computed } from 'vue'
 import { usePage, Head } from '@inertiajs/vue3'
-import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon, PlusIcon, Squares2X2Icon, MapPinIcon } from '@heroicons/vue/24/outline'
+import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon, PlusIcon, Squares2X2Icon, MapPinIcon, ComputerDesktopIcon } from '@heroicons/vue/24/outline'
 import { useSharedData } from "@/modules/sharedData.js";
 import { Breadcrumbs } from '@/Components';
 
@@ -293,6 +293,7 @@ const navigation = [
 
 const adminNavigation = [
 	{ name: 'Dashboard', icon: HomeIcon, href: route('admin.dashboard.index'), current: route().current('admin.dashboard.index') },
+	{ name: 'Equipments', icon: ComputerDesktopIcon, href: route('admin.equipment.index'), current: route().current('admin.equipment.*') },
 	{ name: 'Categories', icon: Squares2X2Icon, href: route('admin.category.index'), current: route().current('admin.category.*') },
 	{ name: 'Locations', icon: MapPinIcon, href: route('admin.location.index'), current: route().current('admin.location.*') },
 	{ name: 'Users', icon: UserGroupIcon, href: route('admin.user.index'), current: route().current('admin.user.*') },

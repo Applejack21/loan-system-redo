@@ -24,13 +24,13 @@ class GetUsers
             ->paginate()
             ->appends(['query' => null]);
 
-		if($load) {
-			$users->loadMissing($load);
-		}
+        if ($load) {
+            $users->loadMissing($load);
+        }
 
-		if($count) {
-			$users->loadCount($count);
-		}
+        if ($count) {
+            $users->loadCount($count);
+        }
 
         return UserResource::collection($users);
     }

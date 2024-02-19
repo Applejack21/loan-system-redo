@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Equipment;
 use Illuminate\Support\Benchmark;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -157,4 +158,34 @@ test('customers cannot soft delete an equipment', function () {
         ->assertStatus(403);
 
     $this->assertNotSoftDeleted($equipment);
+});
+
+test('can link category to an equipment on create', function () {
+    $category = Category::factory()->create();
+    $data = Equipment::factory()->make()->toArray();
+    $data['categories'] = [$category->id];
+
+    $response = $this->actingAs($this->admin)
+        ->post(route('admin.equipment.store'), $data);
+
+    $this->assertDatabaseCount('equipments', 1);
+
+    $equipment = Equipment::where('name', $data['name'])->first();
+
+    expect($equipment->refresh()->categories->count())->toBe(1);
+});
+
+test('can link category to an equipment on update', function () {
+    $category = Category::factory()->create();
+    $equipment = Equipment::factory()->create();
+
+    $data = [
+        ...$equipment->toArray(),
+        'categories' => [$category->id],
+    ];
+
+    $response = $this->actingAs($this->admin)
+        ->patch(route('admin.equipment.update', $equipment->id), $data);
+
+    expect($equipment->refresh()->categories->count())->toBe(1);
 });

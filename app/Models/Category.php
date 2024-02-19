@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
@@ -27,9 +27,9 @@ class Category extends Model
         return $this->belongsTo(User::class, 'last_updated_by_user_id');
     }
 
-    public function equipments(): HasMany
+    public function equipments(): BelongsToMany
     {
-        return $this->hasMany(Equipment::class);
+        return $this->belongsToMany(Equipment::class, 'category_equipment');
     }
 
     /**

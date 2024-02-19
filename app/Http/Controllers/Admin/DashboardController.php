@@ -15,7 +15,7 @@ class DashboardController extends Controller
         return Inertia::render('Admin/Dashboard', [
             'title' => 'Admin Dashboard',
             'breadcrumbs' => [
-                'Admin Dashboard' => null,
+                'Dashboard' => null,
             ],
         ]);
     }

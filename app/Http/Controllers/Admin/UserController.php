@@ -33,7 +33,7 @@ class UserController extends Controller
             'users' => fn () => (new GetUsers())->execute($request),
             'filters' => $request->only('search', 'type'),
             'breadcrumbs' => [
-                'Admin Dashboard' => route('admin.dashboard.index'),
+                'Dashboard' => route('admin.dashboard.index'),
                 'Users' => null,
             ],
         ]);
@@ -61,7 +61,7 @@ class UserController extends Controller
             'title' => 'Viewing: ' . $user->name,
             'user' => new UserResource($user),
             'breadcrumbs' => [
-                'Admin Dashboard' => route('admin.dashboard.index'),
+                'Dashboard' => route('admin.dashboard.index'),
                 'Users' => route('admin.user.index'),
                 $user->name => null,
             ],
