@@ -37,7 +37,6 @@ class CreateEquipment
             foreach ($images as $image) {
                 (new SyncMedia())->execute($equipment, $image['data'], 'images');
             }
-            // (new SyncMedia())->addFromFile($equipment, $images, 'images', storage_path('app/public/temp/uploads/'));
         }
 
         return tap($equipment)->refresh();

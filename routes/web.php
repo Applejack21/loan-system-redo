@@ -63,7 +63,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
             Route::controller(EquipmentController::class)->name('equipment.')->group(function () {
                 Route::get('equipments', 'index')->name('index');
-                Route::get('equipment/{equipment}', 'show')->name('show');
+                Route::get('equipment/{equipment:slug}', 'show')->name('show');
                 Route::post('/equipment', 'store')->name('store');
                 Route::post('equipment/{equipment}', 'update')->name('update');
                 Route::delete('equipment/{equipment}', 'destroy')->name('destroy');

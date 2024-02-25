@@ -76,7 +76,7 @@ test('can view admin equipment details', function () {
 	$equipment = Equipment::factory()->create();
 
 	$response = $this->actingAs($this->admin)
-		->get(route('admin.equipment.show', $equipment))
+		->get(route('admin.equipment.show', $equipment->slug))
 		->assertStatus(200);
 
 	$response->assertInertia(function (Assert $page) {
@@ -90,7 +90,7 @@ test('show page loads within 500ms or less', function () {
 
 	$speed = Benchmark::measure(
 		fn () => $this->actingAs($this->admin)
-			->get(route('admin.equipment.show', $equipment)),
+			->get(route('admin.equipment.show', $equipment->slug)),
 	);
 
 	// page loads, just needs to be faster
@@ -105,7 +105,7 @@ test('customers cannot view admin equipment details', function () {
 	$equipment = Equipment::factory()->create();
 
 	$response = $this->actingAs($this->customer)
-		->get(route('admin.equipment.show', $equipment))
+		->get(route('admin.equipment.show', $equipment->slug))
 		->assertStatus(403);
 });
 

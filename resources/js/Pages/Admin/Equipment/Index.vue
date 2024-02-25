@@ -203,7 +203,7 @@ watch(filters, throttle(function (value) {
 
 const dropdownLinks = (equipment) => {
 	return [
-		{ name: 'View', href: route('admin.equipment.show', equipment.id) },
+		{ name: 'View', href: route('admin.equipment.show', equipment.slug) },
 	]
 }
 </script>
