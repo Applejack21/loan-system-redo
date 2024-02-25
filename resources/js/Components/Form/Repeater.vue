@@ -31,7 +31,7 @@
 
 		<div class="flex gap-2 items-center mt-5">
 			<AppButton @click.prevent="$emit('add-item')" type="button" v-if="allowAdd" colour="primary" :size="addSize">
-				Add Line
+				Add line
 				<template #iconRight>
 					<PlusSmallIcon />
 				</template>

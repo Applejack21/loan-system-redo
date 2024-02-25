@@ -1,7 +1,7 @@
 <template>
 	<slot name="button" :state="state" v-if="button">
 		<AppButton @click="state.visible = true" :size="buttonSize" :colour="buttonColour">
-			<slot name="open-text">Open Form</slot>
+			<slot name="open-text">Open form</slot>
 			<template #iconRight>
 				<slot name="open-icon">
 					<PlusIcon />
@@ -43,7 +43,7 @@
 							<CheckIcon />
 						</template>
 						<slot name="subit-text">
-							Save Changes
+							Save changes
 						</slot>
 					</AppButton>
 					<span class="text-xs font-semibold text-center">
@@ -127,12 +127,12 @@ const submit = () => {
 	emit('submit')
 
 	props.form[props.method](props.urlRoute, {
+		...props.submitOptions,
 		...props.form,
 		onSuccess: () => {
 			emit('success', state);
 		},
 		preserveState: (page) => Object.keys(page.props.errors).length,
-		...props.submitOptions
 	})
 }
 

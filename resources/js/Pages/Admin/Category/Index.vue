@@ -57,7 +57,7 @@
 			</CardBody>
 		</Card>
 
-		<FormModal v-if="state.selectedItem" :form="state.editForm" method="patch" :toggle="state.showEdit"
+		<FormModal v-if="state.selectedItem" :form="state.editForm" :toggle="state.showEdit"
 			:urlRoute="route('admin.category.update', state.selectedItem.id)"
 			:submitOptions="state.editForm && { preserveScroll: true }" :button="false" @close="closeEdit()"
 			@success="closeEdit()">
@@ -124,12 +124,14 @@ const tableColumns = {
 const form = useForm({
 	name: '',
 	slug: '',
+	image: null,
 });
 
 const createEditForm = (category) => {
 	return useForm({
 		name: category.name,
 		slug: category.slug,
+		image: category.image ?? null,
 	});
 }
 

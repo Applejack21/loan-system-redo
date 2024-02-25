@@ -22,9 +22,35 @@ class CategoryResource extends JsonResource
             'equipments_count' => $this->whenCounted('equipments'),
             'name' => $this->name,
             'slug' => $this->slug,
+            'image' => $this->getImage(),
+            'image_src' => $this->getImage(true),
             'created_at' => $this->created_at->tz(config('app.convert_timezone'))->toDateTimeString(),
             'updated_at' => $this->updated_at->tz(config('app.convert_timezone'))->toDateTimeString(),
             'deleted_at' => $this->deleted_at?->tz(config('app.convert_timezone'))->toDateTimeString(),
         ];
+    }
+
+    /**
+     * Get the image for this category including any responsive images that have been generated.
+     *
+     * @param  bool  $justSrc  Just return the src value for the image. Default is false.
+	 * @return string|array|null
+     */
+    private function getImage($justSrc = false): string|array|null
+    {
+        $image = $this->getMedia('image')->first();
+
+        if ($image) {
+            $image->src = $image->getSrcSet() !== '' ? $image->getSrcSet() : $image->getUrl();
+
+            if ($justSrc) {
+                return $image->src;
+            }
+
+            return $image->toArray();
+        }
+
+        // returns null if no image found
+        return $image;
     }
 }

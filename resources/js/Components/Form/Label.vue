@@ -8,7 +8,7 @@
 				*
 			</span>
 		</span>
-		<PopperWrapper hover arrow placement="top" v-if="popperText">
+		<PopperWrapper hover arrow :placement="popperPlacement" v-if="popperText">
 			<QuestionMarkCircleIcon class="w-5 h-5 fill-primary-light" />
 			<template #content>
 				<div>
@@ -28,5 +28,9 @@ import { PopperWrapper } from '@/Components';
 defineProps({
 	required: Boolean,
 	popperText: String,
+	popperPlacement: {
+		type: String,
+		default: 'top',
+	},
 })
 </script>

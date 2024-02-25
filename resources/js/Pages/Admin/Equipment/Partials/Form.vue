@@ -3,11 +3,19 @@
 
 		<div class="bg-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
 
-			<TextInput label="Name" v-model="form.name" id="name" name="name" required />
-			<TextInput label="Code" v-model="form.code" id="code" name="code" />
+			<TextInput label="Name" v-model="form.name" id="name" name="name" placeholder="Name" required />
 
-			<TextInput type="number" v-model="form.price" id="price" label="Price" name="price"
-				popperText="If loanee damages the equipment, how much they owe you." />
+			<TextInput label="Slug" v-model="form.slug" id="slug" name="slug" placeholder="Slug" required
+				popperText="Slug for URL" />
+
+			<TextInput label="Code" v-model="form.code" id="code" name="code" placeholder="Code"
+				popperText="If the equipment has an unique identifier." />
+
+			<TextInput type="number" step="0.01" min="0" v-model="form.price" id="price" label="Price" name="price"
+				placeholder="Price" popperText="If loanee damages the equipment, how much they owe you." required />
+
+			<TextInput type="number" step="1" min="0" v-model="form.amount" id="amount" label="Amount" name="amount"
+				placeholder="Amount" popperText="How much of this equipment you have available." required />
 
 			<div class="lg:col-span-1">
 				<Label for="location" required>
@@ -18,12 +26,13 @@
 					:canClear="false" />
 			</div>
 
-			<div class="lg:col-span-2">
+			<div class="lg:col-span-3">
 				<Label for="categories">
 					Categories
 				</Label>
 				<Multiselect id="categories" v-model="form.categories" :close-on-select="false" :searchable="true"
-					:options="categories" placeholder="Categories..." valueProp="id" trackBy="name" label="name" mode="tags" />
+					:options="categories" placeholder="Categories..." valueProp="id" trackBy="name" label="name"
+					mode="tags" />
 			</div>
 
 			<div class="md:col-span-2 lg:col-span-3">
@@ -38,10 +47,12 @@
 				removeSize="sm" addSize="sm">
 				<template #item="{ element, index }">
 					<div class="col-span-6 w-full">
-						<TextInput v-model="element.name" :label="index === 0 ? 'Detail Name' : ''" />
+						<TextInput v-model="element.name" :label="index === 0 ? 'Detail name' : ''"
+							placeholder="Detail name" />
 					</div>
 					<div class="col-span-6 w-full">
-						<TextInput v-model="element.value" :label="index === 0 ? 'Detail Value' : ''" />
+						<TextInput v-model="element.value" :label="index === 0 ? 'Detail value' : ''"
+							placeholder="Detail value" />
 					</div>
 				</template>
 				<template #no-items>
@@ -67,22 +78,38 @@
 					</span>
 				</template>
 			</Repeater>
+
+			<div class="md:col-span-2 lg:col-span-3 mt-2.5">
+				<Label popperText="Images will be displayed in a slider. Starting with the first image uploaded.">
+					Images
+				</Label>
+				<Dashboard :uppy="uppy" :showProgressDetails="true" :props="{
+					doneButtonHandler: null,
+					showRemoveButtonAfterComplete: true,
+					hideProgressAfterFinish: true,
+					height: 350,
+					hideUploadButton: true,
+				}" />
+			</div>
 		</div>
 	</Wrapper>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { ChevronDownIcon } from "@heroicons/vue/24/solid";
+import { Dashboard } from '@uppy/vue'
+import Uppy from '@uppy/core'
 import Editor from "@tinymce/tinymce-vue";
 import Multiselect from '@vueform/multiselect';
-import { ChevronDownIcon } from "@heroicons/vue/24/solid";
 import { Wrapper, TextInput, Label, Repeater } from "@/Components/Form";
 import { tinymceData } from "@/modules/tinymceData.js";
+import { addExistingFilesToUppy } from '@/modules/uppyHelpers';
 
 const {
 	apiKey,
 	options,
-} = tinymceData();
+} = tinymceData(500);
 
 const props = defineProps({
 	form: {
@@ -110,4 +137,30 @@ const addItem = () => {
 }
 
 const showExplanation = ref(false);
+
+const uppy = new Uppy({
+	id: 'uppy',
+	autoProceed: true,
+	debug: false,
+	restrictions: {
+		allowedFileTypes: ['image/*'],
+	},
+});
+
+// if there already are images for the equipment
+if (props.form.images) {
+	addExistingFilesToUppy(props.form.images, uppy);
+}
+
+uppy.on("complete", (result) => {
+	props.form.images = result.successful;
+});
+
+uppy.on('file-removed', (file, reason) => {
+	const fileId = file.id;
+	const index = props.form.images.findIndex(image => image.id === fileId);
+
+	// remove image from images
+	props.form.images.splice(index, 1);
+})
 </script>
