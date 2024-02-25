@@ -237,7 +237,7 @@
 								<template #iconRight>
 									<PlusIcon />
 								</template>
-								Request a Loan
+								Request a loan
 							</AppButton>
 						</div>
 					</div>

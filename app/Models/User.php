@@ -13,91 +13,89 @@ use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-	use HasApiTokens;
-	use HasFactory;
-	use HasProfilePhoto;
-	use Notifiable;
-	use Searchable;
-	use SoftDeletes;
-	use TwoFactorAuthenticatable;
+    use HasApiTokens;
+    use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use Searchable;
+    use SoftDeletes;
+    use TwoFactorAuthenticatable;
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var string[]
-	 */
-	protected $fillable = [
-		'name',
-		'email',
-		'password',
-		'type',
-		'phone_number',
-		'address',
-	];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'type',
+        'phone_number',
+        'address',
+    ];
 
-	/**
-	 * The attributes that should be hidden for serialization.
-	 *
-	 * @var array
-	 */
-	protected $hidden = [
-		'password',
-		'remember_token',
-		'two_factor_recovery_codes',
-		'two_factor_secret',
-	];
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
 
-	/**
-	 * The attributes that should be cast.
-	 *
-	 * @var array
-	 */
-	protected $casts = [
-		'email_verified_at' => 'datetime',
-		'address' => 'array',
-		'deleted_at' => 'datetime',
-	];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'address' => 'array',
+        'deleted_at' => 'datetime',
+    ];
 
-	/**
-	 * The accessors to append to the model's array form.
-	 *
-	 * @var array
-	 */
-	protected $appends = [
-		'profile_photo_url',
-	];
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'profile_photo_url',
+    ];
 
-	/**
-	 * Get the indexable data array for the model.
-	 *
-	 * @return array<string, mixed>
-	 */
-	public function toSearchableArray(): array
-	{
-		return [
-			'name' => $this->name,
-			'email' => $this->email,
-			'type' => $this->type,
-			'phone_number' => $this->phone_number,
-			'address' => $this->address,
-		];
-	}
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'type' => $this->type,
+            'phone_number' => $this->phone_number,
+            'address' => $this->address,
+        ];
+    }
 
-	/**
-	 * Determine if the user is a customer
-	 * @return bool
-	 */
-	public function isCustomer(): bool
-	{
-		return strtolower($this->type) == 'customer';
-	}
+    /**
+     * Determine if the user is a customer
+     */
+    public function isCustomer(): bool
+    {
+        return strtolower($this->type) == 'customer';
+    }
 
-	/**
-	 * Determine if the user is an admin
-	 * @return bool
-	 */
-	public function isAdmin(): bool
-	{
-		return strtolower($this->type) == 'admin';
-	}
+    /**
+     * Determine if the user is an admin
+     */
+    public function isAdmin(): bool
+    {
+        return strtolower($this->type) == 'admin';
+    }
 }

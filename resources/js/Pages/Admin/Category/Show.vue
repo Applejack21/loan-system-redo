@@ -6,11 +6,7 @@
 					<div class="px-4 flow-root sm:px-6 sm:flex-end sm:flex w-4/5">
 						<div>
 							<div class="flex -m-0.5">
-								<div
-									class="border-4 border-white rounded-lg overflow-hidden inline-flex lg:w-48 lg:h-48 sm:w-40 sm:h-40 flex-shrink-0 h-24 w-24">
-									<img :src="category.data.image"
-										alt="TODO: Show category image once media-library is done" />
-								</div>
+								<SingleImage :image="category.data?.image_src" />
 							</div>
 						</div>
 						<div class="sm:flex-1 sm:ml-6 sm:mt-6">
@@ -87,9 +83,9 @@
 		</div>
 
 		<!-- edit modal -->
-		<FormModal v-if="state.selectedItem" :form="state.editForm" method="patch" :toggle="state.showEdit"
-			:urlRoute="route('admin.category.update', state.selectedItem)" :submitOptions="state.editForm" :button="false"
-			@close="closeEdit()" @success="closeEdit()">
+		<FormModal v-if="state.selectedItem" :form="state.editForm" :toggle="state.showEdit"
+			:urlRoute="route('admin.category.update', state.selectedItem)" :button="false" @close="closeEdit()"
+			@success="closeEdit()">
 			<template #title>
 				{{ `Updating "${state.editForm.name}"` }}
 			</template>
@@ -111,7 +107,7 @@ import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import dayjs from "dayjs";
 import { useForm } from "@inertiajs/vue3";
 import { useListPage } from '@/modules/listPage.js';
-import { FormModal, ConfirmDelete, UserPreview } from "@/Components";
+import { FormModal, ConfirmDelete, UserPreview, SingleImage } from "@/Components";
 import { Card, CardBody } from "@/Components/Card";
 import Form from "./Partials/Form.vue";
 
@@ -134,6 +130,7 @@ const createEditForm = (category) => {
 	return useForm({
 		name: category.name,
 		slug: category.slug,
+		image: category.image ?? null,
 	});
 }
 </script>

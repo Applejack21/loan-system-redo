@@ -123,7 +123,7 @@ test('can update a category', function () {
     $category = Category::factory()->create();
 
     $response = $this->actingAs($this->admin)
-        ->patch(route('admin.category.update', $category), ['name' => 'new name', 'slug' => $category->slug]);
+        ->post(route('admin.category.update', $category), ['name' => 'new name', 'slug' => $category->slug]);
 
     expect($category->refresh()->name)->toBe('new name');
 });
@@ -135,7 +135,7 @@ test('cannot update a category with the same name', function () {
 
     // update category 2 to have same name as category
     $response = $this->actingAs($this->admin)
-        ->patch(route('admin.category.update', $category2), ['name' => $category->name]);
+        ->post(route('admin.category.update', $category2), ['name' => $category->name]);
 
     expect($category2->refresh()->name)->toBe($originalName);
 });
@@ -147,7 +147,7 @@ test('cannot update a category with the same slug', function () {
 
     // update category 2 to have same slug as category
     $response = $this->actingAs($this->admin)
-        ->patch(route('admin.category.update', $category2), ['slug' => $category->slug]);
+        ->post(route('admin.category.update', $category2), ['slug' => $category->slug]);
 
     expect($category2->refresh()->slug)->toBe($originalSlug);
 });
@@ -157,7 +157,7 @@ test('customers cannot update a category', function () {
     $currentName = $category->name;
 
     $response = $this->actingAs($this->customer)
-        ->patch(route('admin.category.update', $category), ['name' => 'new name'])
+        ->post(route('admin.category.update', $category), ['name' => 'new name'])
         ->assertStatus(403);
 
     expect($category->refresh()->name)->toBe($currentName);
@@ -207,7 +207,7 @@ test('can link equipment to a category on update', function () {
     ];
 
     $response = $this->actingAs($this->admin)
-        ->patch(route('admin.category.update', $category->id), $data);
+        ->post(route('admin.category.update', $category->id), $data);
 
     expect($category->refresh()->equipments->count())->toBe(1);
 });

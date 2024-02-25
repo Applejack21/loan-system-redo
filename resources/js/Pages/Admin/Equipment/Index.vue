@@ -36,14 +36,6 @@
 				<Table :rows="equipments.data" :columns="tableColumns" :paginationLinks="equipments.meta"
 					:only="['equipments']" :border="true">
 
-					<template #td-location="{ cell }">
-						<template v-if="cell">
-							<Link class="hyperlink" :href="route('admin.location.show', cell)">
-							{{ cell.name }}
-							</Link>
-						</template>
-					</template>
-
 					<template #td-amount_on_loan="{ cell }">
 						{{ cell }}
 					</template>
@@ -74,10 +66,9 @@
 			</CardBody>
 		</Card>
 
-		<FormModal v-if="state.selectedItem" :form="state.editForm" method="patch" :toggle="state.showEdit"
-			:urlRoute="route('admin.equipment.update', state.selectedItem.id)"
-			:submitOptions="state.editForm && { preserveScroll: true }" :button="false" @close="closeEdit()"
-			@success="closeEdit()" maxWidth="4xl">
+		<FormModal v-if="state.selectedItem" :form="state.editForm" :toggle="state.showEdit"
+			:urlRoute="route('admin.equipment.update', state.selectedItem.id)" :submitOptions="state.editForm"
+			:button="false" @close="closeEdit()" @success="closeEdit()" maxWidth="4xl">
 			<template #title>
 				{{ `Updating "${state.editForm.name}"` }}
 			</template>
@@ -131,13 +122,13 @@ const tableColumns = {
 		name: 'Name',
 		popper: true,
 	},
+	slug: {
+		name: 'Slug',
+		popper: true,
+	},
 	code: {
 		name: 'Code',
-	},
-	location: {
-		name: 'Location',
 		popper: true,
-		hiddenUntil: 'lg',
 	},
 	amount: {
 		name: 'Amount',
@@ -159,26 +150,32 @@ const tableColumns = {
 const form = useForm({
 	location_id: null,
 	name: '',
+	slug: '',
 	code: '',
 	description: '',
 	price: 0,
 	details: [],
 	amount: 0,
 	categories: [],
+	images: [],
 });
 
 const createEditForm = (equipment) => {
-	console.log(equipment);
+	const selectedCategories = equipment.categories.map(category => {
+		return category.id;
+	});
 
 	return useForm({
 		location_id: equipment?.location?.id,
 		name: equipment.name,
+		slug: equipment.slug,
 		code: equipment.code,
-		description: equipment.description ?? [],
+		description: equipment.description,
 		price: equipment.price,
 		details: equipment.details,
 		amount: equipment.amount,
-		categories: equipment.categories,
+		categories: selectedCategories,
+		images: equipment.images,
 	});
 }
 
@@ -206,7 +203,7 @@ watch(filters, throttle(function (value) {
 
 const dropdownLinks = (equipment) => {
 	return [
-		{ name: 'View', href: route('admin.equipment.show', equipment.id) },
+		{ name: 'View', href: route('admin.equipment.show', equipment.slug) },
 	]
 }
 </script>

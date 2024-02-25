@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-function tinymceData(maxHeight = 250) {
+export function tinymceData(maxHeight = 250) {
 
     const apiKey = computed(() => import.meta.env.VITE_TINY_MCE_API_KEY);
 
@@ -15,9 +15,4 @@ function tinymceData(maxHeight = 250) {
         apiKey,
         options,
     }
-}
-
-
-export {
-    tinymceData
 }

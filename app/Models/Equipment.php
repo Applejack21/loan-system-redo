@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Number;
 use Laravel\Scout\Searchable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Equipment extends Model
+class Equipment extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
     use Searchable;
     use SoftDeletes;
 
@@ -24,6 +28,19 @@ class Equipment extends Model
     protected $casts = [
         'details' => 'array',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images')
+            ->withResponsiveImages();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('preview')
+            ->performOnCollections('images')
+            ->nonQueued();
+    }
 
     public function createdBy(): BelongsTo
     {
@@ -54,7 +71,8 @@ class Equipment extends Model
     {
         return [
             'name' => $this->name,
-            'code' => $this->slug,
+            'slug' => $this->slug,
+            'code' => $this->code,
             'amount' => $this->amount,
             'details' => $this->details,
         ];
@@ -62,7 +80,6 @@ class Equipment extends Model
 
     /**
      * Return the price of the equipment based on currency and locale set in env.
-	 * @return string
      */
     public function priceFormatted(): string
     {

@@ -49,7 +49,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
                 Route::get('categories', 'index')->name('index');
                 Route::get('category/{category:slug}', 'show')->name('show');
                 Route::post('/category', 'store')->name('store');
-                Route::patch('category/{category}', 'update')->name('update');
+                Route::post('category/{category}', 'update')->name('update');
                 Route::delete('category/{category}', 'destroy')->name('destroy');
             });
 
@@ -63,9 +63,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
             Route::controller(EquipmentController::class)->name('equipment.')->group(function () {
                 Route::get('equipments', 'index')->name('index');
-                Route::get('equipment/{equipment}', 'show')->name('show');
+                Route::get('equipment/{equipment:slug}', 'show')->name('show');
                 Route::post('/equipment', 'store')->name('store');
-                Route::patch('equipment/{equipment}', 'update')->name('update');
+                Route::post('equipment/{equipment}', 'update')->name('update');
                 Route::delete('equipment/{equipment}', 'destroy')->name('destroy');
             });
         });

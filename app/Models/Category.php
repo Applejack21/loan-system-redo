@@ -8,14 +8,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Category extends Model
+class Category extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
     use Searchable;
     use SoftDeletes;
 
     protected $guarded = [];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('image')
+            ->withResponsiveImages();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('preview')
+            ->performOnCollections('image')
+            ->nonQueued();
+    }
 
     public function createdBy(): BelongsTo
     {

@@ -2,7 +2,7 @@ import { computed, watch } from "vue"
 import { usePage } from "@inertiajs/vue3"
 import { useToast } from "vue-toastification"
 
-function useSharedData() {
+export function useSharedData() {
 
 	// determine if user is viewing via a mobile device
 	const isMobile = () => {
@@ -67,8 +67,4 @@ function useSharedData() {
 		showMessage,
 		watchMessage
 	}
-}
-
-export {
-	useSharedData
 }

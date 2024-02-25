@@ -71,14 +71,21 @@
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Details
 								</h4>
-								<p class="ml-4 sm:ml-6">
-								<ul class="list-disc space-y-2">
-									<li v-for="detail in equipment.data.details">
-										Name: {{ detail.name }}<br>
-										Value: {{ detail.value }}
-									</li>
-								</ul>
-								</p>
+								<template v-if="equipment.data.details.length > 0">
+									<p class="ml-4 sm:ml-6">
+									<ul class="list-disc space-y-2">
+										<li v-for="detail in equipment.data.details">
+											Name: {{ detail.name }}<br>
+											Value: {{ detail.value }}
+										</li>
+									</ul>
+									</p>
+								</template>
+								<template v-else>
+									<p class="sm:ml-6 text-red-600">
+										No details added....
+									</p>
+								</template>
 							</div>
 							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
@@ -118,18 +125,38 @@
 					<CardHeader>
 						Description
 					</CardHeader>
-					<div class="prose" v-html="equipment.data.description" />
+					<div class="prose" v-if="equipment.data.description" v-html="equipment.data.description" />
+					<div v-else>
+						<p class="text-red-600">
+							No description added...
+						</p>
+					</div>
 				</CardBody>
 			</Card>
 
 			<Card>
 				<CardBody>
 					<CardHeader>
-						Images
+						Images/Files
 						<template #subTitle>
-							A list of images for this equipment.
+							A list of images/files for this equipment.
 						</template>
 					</CardHeader>
+					<div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+						<div>
+							<template v-if="equipment.data.images.length > 0">
+								<Carousel :items="equipment.data.images" />
+							</template>
+							<template v-else>
+								<span class="text-red-600">
+									No images added...
+								</span>
+							</template>
+						</div>
+						<div>
+							TODO add additional downloads for equipment (manuals, guides, etc).
+						</div>
+					</div>
 				</CardBody>
 			</Card>
 
@@ -153,7 +180,7 @@
 		</div>
 
 		<!-- edit modal -->
-		<FormModal v-if="state.selectedItem" :form="state.editForm" method="patch" :toggle="state.showEdit"
+		<FormModal v-if="state.selectedItem" :form="state.editForm" :toggle="state.showEdit"
 			:urlRoute="route('admin.equipment.update', state.selectedItem)" :submitOptions="state.editForm" :button="false"
 			@close="closeEdit()" @success="closeEdit()">
 			<template #title>
@@ -173,13 +200,13 @@
 </template>
 
 <script setup>
-import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
-import dayjs from "dayjs";
 import { useForm } from "@inertiajs/vue3";
 import { useListPage } from '@/modules/listPage.js';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import dayjs from "dayjs";
 import { DropdownMenu } from '@/Components/Dropdown';
 import { Table } from '@/Components/Table';
-import { FormModal, ConfirmDelete, UserPreview } from "@/Components";
+import { FormModal, ConfirmDelete, UserPreview, Carousel } from "@/Components";
 import { Card, CardBody, CardHeader } from "@/Components/Card";
 import Form from "./Partials/Form.vue";
 
@@ -208,12 +235,14 @@ const createEditForm = (equipment) => {
 	return useForm({
 		location_id: equipment?.location?.id,
 		name: equipment.name,
+		slug: equipment.slug,
 		code: equipment.code,
 		description: equipment.description,
 		price: equipment.price,
 		details: equipment.details,
 		amount: equipment.amount,
 		categories: selectedCategories,
+		images: equipment.images,
 	});
 }
 

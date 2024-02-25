@@ -2,6 +2,10 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import '@vueform/multiselect/themes/default.css';
+@import '@uppy/core/dist/style.css';
+@import '@uppy/dashboard/dist/style.css';
+@import '@uppy/drag-drop/dist/style.css';
+@import '@uppy/progress-bar/dist/style.css';
 @import 'custom-css/popper.css';
 
 /** unset any left element **/

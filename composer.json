@@ -17,6 +17,7 @@
         "laravel/telescope": "v4.16.4",
         "laravel/tinker": "v2.8.2",
         "predis/predis": "^2.2.2",
+        "spatie/laravel-medialibrary": "^11.0.0",
         "tightenco/ziggy": "^1.4"
     },
     "require-dev": {
