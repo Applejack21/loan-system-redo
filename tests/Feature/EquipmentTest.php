@@ -119,11 +119,11 @@ test('can update an equipment', function () {
 });
 
 test('cannot update an equipment with the same code', function () {
-	$equipment = Equipment::factory()->create(['code' => 'code']);
+	$equipment = Equipment::factory()->create();
 	$equipment2 = Equipment::factory()->create();
 	$originalCode = $equipment2->code;
 
-	// update equipment 2 to have same code as equipment
+	// try and update equipment 2 to have same code as equipment
 	$response = $this->actingAs($this->admin)
 		->post(route('admin.equipment.update', $equipment2), ['code' => $equipment->code]);
 

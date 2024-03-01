@@ -232,6 +232,9 @@
 						<MagnifyingGlassIcon class="h-full w-5 left-0 top-0 bottom-0 absolute" />
 					</form>
 					<div class="mt-2 sm:mt-0 gap-x-6 flex items-center pl-5">
+						<div class="rounded-full p-2 border border-primary">
+							<BellIcon class="w-5 h-5" />
+						</div>
 						<div class="ml-auto">
 							<AppButton>
 								<template #iconRight>
@@ -248,7 +251,7 @@
 			<main>
 				<div>
 					<header
-						class="bg-white shadow font-semibold text-lg text-gray-800 leading-tight py-6 px-9 border-b-2 border-b-secondary">
+						class="bg-white shadow font-semibold text-lg text-gray-800 leading-tight py-6 px-9 border-b-2 border-b-secondary w-full">
 						<div v-if="breadcrumbs">
 							<Breadcrumbs :breadcrumbs="breadcrumbs" />
 						</div>
@@ -270,7 +273,7 @@
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ref, computed } from 'vue'
 import { usePage, Head } from '@inertiajs/vue3'
-import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon, PlusIcon, Squares2X2Icon, MapPinIcon, ComputerDesktopIcon } from '@heroicons/vue/24/outline'
+import { HomeIcon, MagnifyingGlassIcon, Bars3BottomLeftIcon, XMarkIcon, UserGroupIcon, PlusIcon, Squares2X2Icon, MapPinIcon, ComputerDesktopIcon, RectangleStackIcon, BellIcon } from '@heroicons/vue/24/outline'
 import { useSharedData } from "@/modules/sharedData.js";
 import { Breadcrumbs } from '@/Components';
 
@@ -293,6 +296,7 @@ const navigation = [
 
 const adminNavigation = [
 	{ name: 'Dashboard', icon: HomeIcon, href: route('admin.dashboard.index'), current: route().current('admin.dashboard.index') },
+	{ name: 'Loans', icon: RectangleStackIcon, href: route('admin.loan.index'), current: route().current('admin.loan.*') },
 	{ name: 'Equipments', icon: ComputerDesktopIcon, href: route('admin.equipment.index'), current: route().current('admin.equipment.*') },
 	{ name: 'Categories', icon: Squares2X2Icon, href: route('admin.category.index'), current: route().current('admin.category.*') },
 	{ name: 'Locations', icon: MapPinIcon, href: route('admin.location.index'), current: route().current('admin.location.*') },

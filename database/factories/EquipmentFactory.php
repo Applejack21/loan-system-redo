@@ -28,7 +28,7 @@ class EquipmentFactory extends Factory
             'location_id' => Location::factory()->create(),
             'name' => $name,
             'slug' => Str::slug($name),
-            'code' => $this->faker->boolean() ? Str::uuid() : null,
+            'code' => $this->faker->boolean() ? Str::uuid()->toString() : null,
             'description' => $this->faker->boolean() ? $this->faker->realText() : null,
             'price' => $this->faker->randomFloat(min: 10, max: 50),
             'details' => null,

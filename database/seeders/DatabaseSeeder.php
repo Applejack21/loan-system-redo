@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             LocationSeeder::class,
             EquipmentSeeder::class,
+			LoanSeeder::class,
         ]);
     }
 }
