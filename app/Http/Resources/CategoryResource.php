@@ -24,9 +24,9 @@ class CategoryResource extends JsonResource
             'slug' => $this->slug,
             'image' => $this->getImage(),
             'image_src' => $this->getImage(true),
-            'created_at' => $this->created_at->tz(config('app.convert_timezone'))->toDateTimeString(),
-            'updated_at' => $this->updated_at->tz(config('app.convert_timezone'))->toDateTimeString(),
-            'deleted_at' => $this->deleted_at?->tz(config('app.convert_timezone'))->toDateTimeString(),
+            'created_at' => $this->created_at->tz(config('app.convert_timezone'))->format(config('app.date_time_format')),
+            'updated_at' => $this->updated_at->tz(config('app.convert_timezone'))->format(config('app.date_time_format')),
+            'deleted_at' => $this->deleted_at?->tz(config('app.convert_timezone'))->format(config('app.date_time_format')),
         ];
     }
 
@@ -34,7 +34,6 @@ class CategoryResource extends JsonResource
      * Get the image for this category including any responsive images that have been generated.
      *
      * @param  bool  $justSrc  Just return the src value for the image. Default is false.
-	 * @return string|array|null
      */
     private function getImage($justSrc = false): string|array|null
     {

@@ -1,15 +1,17 @@
-import Label from '@/Components/Form/Label.vue'
-import TextInput from '@/Components/Form/TextInput.vue'
+import Checkbox from '@/Components/Form/Checkbox.vue';
 import Errors from '@/Components/Form/Errors.vue'
-import Wrapper from '@/Components/Form/Wrapper.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
+import Label from '@/Components/Form/Label.vue'
 import Repeater from '@/Components/Form/Repeater.vue';
+import SelectInput from '@/Components/Form/SelectInput.vue';
+import TextInput from '@/Components/Form/TextInput.vue'
+import Wrapper from '@/Components/Form/Wrapper.vue';
 
 export {
-    Label,
-    TextInput,
+	Checkbox,
 	Errors,
-	Wrapper,
-	SelectInput,
+	Label,
 	Repeater,
+	SelectInput,
+	TextInput,
+	Wrapper,
 }

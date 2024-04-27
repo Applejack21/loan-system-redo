@@ -44,29 +44,24 @@
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Created By
 								</h4>
-								<UserPreview :user="category.data.created_by" size="sm" />
+								<div class="flex flex-col">
+									<UserPreview :user="category.data.created_by" size="sm" />
+									<span class="text-sm text-gray-600">
+										{{ category.data.created_at }}
+									</span>
+								</div>
+
 							</div>
 							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Last Updated By
 								</h4>
-								<UserPreview :user="category.data.updated_by" size="sm" />
-							</div>
-							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
-								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-									Created At
-								</h4>
-								<p class="sm:ml-6">
-									{{ dayjs(category.data.created_at) }}
-								</p>
-							</div>
-							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
-								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-									Updated At
-								</h4>
-								<p class="sm:ml-6">
-									{{ dayjs(category.data.updated_at) }}
-								</p>
+								<div class="flex flex-col">
+									<UserPreview :user="category.data.updated_by" size="sm" />
+									<span class="text-sm text-gray-600">
+										{{ category.data.updated_at }}
+									</span>
+								</div>
 							</div>
 						</dl>
 					</div>
@@ -104,7 +99,6 @@
 
 <script setup>
 import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
-import dayjs from "dayjs";
 import { useForm } from "@inertiajs/vue3";
 import { useListPage } from '@/modules/listPage.js';
 import { FormModal, ConfirmDelete, UserPreview, SingleImage } from "@/Components";

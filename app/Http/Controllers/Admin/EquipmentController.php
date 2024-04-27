@@ -12,7 +12,6 @@ use App\Models\Category;
 use App\Models\Equipment;
 use App\Models\Location;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 
 class EquipmentController extends Controller

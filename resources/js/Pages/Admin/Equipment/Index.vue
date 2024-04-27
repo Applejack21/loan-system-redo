@@ -142,7 +142,7 @@ const tableColumns = {
 	},
 	actions: {
 		name: '',
-		autoWidth: '',
+		autoWidth: true,
 		border: false,
 	},
 };

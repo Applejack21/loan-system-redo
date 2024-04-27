@@ -25,7 +25,7 @@
 						{ 'bg-accent-light ': active },
 						{ 'text-red-600': link.danger },
 						{ 'text-green-800': link.success },
-						'group flex w-full items-center rounded-md px-2 py-4 xl:py-2 transition-colors',
+						'group flex w-full items-center rounded-md px-2 py-2 xl:py-2 transition-colors',
 					]">
 					{{ link.name }}
 					</Link>
@@ -61,6 +61,10 @@ const props = defineProps({
 	alignmentClasses: {
 		type: String,
 		default: 'left-0 top-full lg:right-0 lg:left-unset mt-2'
+	},
+	breakpoint: {
+		type: String,
+		default: 'lg',
 	}
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col space-y-5 lg:flex lg:flex-row items-center space-x-0 min-h-[44px] mb-8 -mt-5">
+	<div class="flex flex-col space-y-5 md:flex md:flex-row items-center space-x-0 min-h-[44px] mb-8 -mt-5">
 		<div class="flex items-center flex-col space-y-2 md:flex-row w-full">
 			<div>
 				<slot name="title">

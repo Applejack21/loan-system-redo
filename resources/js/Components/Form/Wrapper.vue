@@ -4,7 +4,7 @@
 			required</p>
 
 		<div>
-			<Errors v-if="form" :form="form" />
+			<Errors v-if="form" :form="form" :showErrorIndexName="showErrorIndexName" />
 			<slot />
 		</div>
 	</div>
@@ -16,5 +16,9 @@ import Errors from './Errors.vue';
 defineProps({
 	showIndicator: Boolean,
 	form: Object,
+	showErrorIndexName: {
+		type: Boolean,
+		default: true,
+	}
 })
 </script>

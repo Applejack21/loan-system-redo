@@ -6,13 +6,14 @@
 					<XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
 				</div>
 				<div class="ml-3">
-					<h3 class="text-sm font-semibold text-red-800">There were errors with your submission. Please fix these
-						and try again.</h3>
+					<h3 class="text-sm font-semibold text-red-800">
+						There were errors with your submission. Please fix these and try again.
+					</h3>
 					<div class="mt-2 text-sm text-red-700">
 						<ul role="list" class="list-disc pl-5 space-y-1">
 							<template v-for="(errorMessage, errorName) in form.errors" :key="errorName">
 								<li class="list-disc">
-									<span class="capitalize">
+									<span class="capitalize" v-if="showErrorIndexName">
 										{{ removeUnderscores(errorName) }}:
 									</span>
 									{{ removeIdFromMessage(errorMessage) }}
@@ -34,6 +35,10 @@ const props = defineProps({
 		type: Object,
 		required: true
 	},
+	showErrorIndexName: {
+		type: Boolean,
+		default: true,
+	}
 })
 
 const removeUnderscores = (index) => {
