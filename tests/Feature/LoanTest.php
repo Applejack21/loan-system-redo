@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Equipment;
 use App\Models\Loan;
 use Illuminate\Support\Benchmark;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -40,6 +41,15 @@ test('customers cannot view index page of all loans', function () {
 
 test('can create a loan', function () {
 	$data = Loan::factory()->make()->toArray();
+	$equipment = Equipment::factory(2)->create();
+	$data['equipments'] = $equipment->map(function ($equipment) {
+		return [
+			'equipment_id' => $equipment->id,
+			'quantity' => 1,
+			'returned' => false,
+		];
+	})
+		->toArray();
 
 	$response = $this->actingAs($this->admin)
 		->post(route('admin.loan.store'), $data);

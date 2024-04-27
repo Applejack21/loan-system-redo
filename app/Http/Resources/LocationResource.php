@@ -22,9 +22,9 @@ class LocationResource extends JsonResource
             'equipments_count' => $this->whenCounted('equipments'),
             'name' => $this->name,
             'room_code' => $this->room_code,
-            'created_at' => $this->created_at->tz(config('app.convert_timezone'))->toDateTimeString(),
-            'updated_at' => $this->updated_at->tz(config('app.convert_timezone'))->toDateTimeString(),
-            'deleted_at' => $this->deleted_at?->tz(config('app.convert_timezone'))->toDateTimeString(),
+            'created_at' => $this->created_at->tz(config('app.convert_timezone'))->format(config('app.date_time_format')),
+            'updated_at' => $this->updated_at->tz(config('app.convert_timezone'))->format(config('app.date_time_format')),
+            'deleted_at' => $this->deleted_at?->tz(config('app.convert_timezone'))->format(config('app.date_time_format')),
         ];
     }
 }

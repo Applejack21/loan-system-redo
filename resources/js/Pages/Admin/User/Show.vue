@@ -88,7 +88,7 @@
 									Created At
 								</h4>
 								<p class="sm:ml-6">
-									{{ dayjs(user.data.created_at) }}
+									{{ user.data.created_at }}
 								</p>
 							</div>
 							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
@@ -96,7 +96,7 @@
 									Updated At
 								</h4>
 								<p class="sm:ml-6">
-									{{ dayjs(user.data.updated_at) }}
+									{{ user.data.updated_at }}
 								</p>
 							</div>
 						</dl>
@@ -136,7 +136,6 @@
 <script setup>
 import { computed } from 'vue';
 import { EnvelopeIcon, PhoneIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
-import dayjs from "dayjs";
 import { useForm, usePage } from "@inertiajs/vue3";
 import { useListPage } from '@/modules/listPage.js';
 import { FormModal, ConfirmDelete } from "@/Components";

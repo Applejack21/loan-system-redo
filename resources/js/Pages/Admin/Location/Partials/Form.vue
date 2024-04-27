@@ -6,7 +6,7 @@
 			<TextInput label="Name" v-model="form.name" id="name" name="name" required />
 
 			<TextInput v-model="form.room_code" id="room_code" name="room_code" label="Room Code"
-				popperText='If the location is a room that has a number or code (e.g. FL1/12 for "Floor 1, Room 12")' />
+				popperText='If the location is a room that has a number or code (e.g. FL1/12 for "Floor 1, Room 12").' />
 
 		</div>
 	</Wrapper>

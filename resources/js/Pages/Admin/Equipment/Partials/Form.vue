@@ -6,7 +6,7 @@
 			<TextInput label="Name" v-model="form.name" id="name" name="name" placeholder="Name" required />
 
 			<TextInput label="Slug" v-model="form.slug" id="slug" name="slug" placeholder="Slug" required
-				popperText="Slug for URL" />
+				popperText="Slug for URL." />
 
 			<TextInput label="Code" v-model="form.code" id="code" name="code" placeholder="Code"
 				popperText="If the equipment has an unique identifier." />
@@ -21,7 +21,7 @@
 				<Label for="location" required>
 					Location
 				</Label>
-				<Multiselect id="location" v-model="form.location_id" :close-on-select="true" :searchable="true"
+				<Multiselect id="location" v-model="form.location_id" :closeOnSelect="true" :searchable="true"
 					:options="locations" placeholder="Location..." valueProp="id" label="name" :canDeselect="false"
 					:canClear="false" />
 			</div>
@@ -30,7 +30,7 @@
 				<Label for="categories">
 					Categories
 				</Label>
-				<Multiselect id="categories" v-model="form.categories" :close-on-select="false" :searchable="true"
+				<Multiselect id="categories" v-model="form.categories" :closeOnSelect="false" :searchable="true"
 					:options="categories" placeholder="Categories..." valueProp="id" trackBy="name" label="name"
 					mode="tags" />
 			</div>
@@ -39,18 +39,20 @@
 				<Label for="description">
 					Description
 				</Label>
-				<Editor v-model="form.description" placeholder="Add a description..." id="description" name="description"
-					:init="options" :api-key="apiKey" />
+				<Editor v-model="form.description" placeholder="Add a description..." id="description"
+					name="description" :init="options" :api-key="apiKey" />
 			</div>
 
 			<Repeater :list="form.details" key="id" @add-item="addItem" :min="0" :reorder="true" reorderSize="sm"
-				removeSize="sm" addSize="sm">
+				removeSize="sm" addSize="sm" rowClasses="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-2">
 				<template #item="{ element, index }">
-					<div class="col-span-6 w-full">
+
+					<div class="col-span-1 sm:col-span-auto">
 						<TextInput v-model="element.name" :label="index === 0 ? 'Detail name' : ''"
 							placeholder="Detail name" />
 					</div>
-					<div class="col-span-6 w-full">
+
+					<div class="col-span-1 sm:col-span-auto">
 						<TextInput v-model="element.value" :label="index === 0 ? 'Detail value' : ''"
 							placeholder="Detail value" />
 					</div>
@@ -83,13 +85,7 @@
 				<Label popperText="Images will be displayed in a slider. Starting with the first image uploaded.">
 					Images
 				</Label>
-				<Dashboard :uppy="uppy" :showProgressDetails="true" :props="{
-					doneButtonHandler: null,
-					showRemoveButtonAfterComplete: true,
-					hideProgressAfterFinish: true,
-					height: 350,
-					hideUploadButton: true,
-				}" />
+				<Dashboard :uppy="uppy" :showProgressDetails="true" :props="uppyProps" />
 			</div>
 		</div>
 	</Wrapper>
@@ -132,6 +128,7 @@ const blankItem = () => {
 		value: '',
 	}
 }
+
 const addItem = () => {
 	props.form.details.push(blankItem())
 }
@@ -163,4 +160,12 @@ uppy.on('file-removed', (file, reason) => {
 	// remove image from images
 	props.form.images.splice(index, 1);
 })
+
+const uppyProps = ref({
+	doneButtonHandler: null,
+	showRemoveButtonAfterComplete: true,
+	hideProgressAfterFinish: true,
+	height: 350,
+	hideUploadButton: true,
+});
 </script>

@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EquipmentController;
+use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController as FrontendDashboardController;
@@ -70,7 +70,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
                 Route::delete('equipment/{equipment}', 'destroy')->name('destroy');
             });
 
-			Route::controller(LoanController::class)->name('loan.')->group(function () {
+            Route::controller(LoanController::class)->name('loan.')->group(function () {
                 Route::get('loans', 'index')->name('index');
                 Route::get('loan/{loan}', 'show')->name('show');
                 Route::post('/loan', 'store')->name('store');

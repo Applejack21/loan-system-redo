@@ -6,10 +6,10 @@ use App\Models\Loan;
 
 class DeleteLoan
 {
-	public function execute(Loan $loan): Loan
-	{
-		$loan->delete();
+    public function execute(Loan $loan): Loan
+    {
+        $loan->delete();
 
-		return tap($loan)->refresh();
-	}
+        return tap($loan)->refresh();
+    }
 }

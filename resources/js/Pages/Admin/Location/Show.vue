@@ -39,29 +39,24 @@
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Created By
 								</h4>
-								<UserPreview :user="location.data.created_by" size="sm" />
+								<div class="flex flex-col">
+									<UserPreview :user="location.data.created_by" size="sm" />
+									<span class="text-sm text-gray-600">
+										{{ location.data.created_at }}
+									</span>
+								</div>
+
 							</div>
 							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Last Updated By
 								</h4>
-								<UserPreview :user="location.data.updated_by" size="sm" />
-							</div>
-							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
-								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-									Created At
-								</h4>
-								<p class="sm:ml-6">
-									{{ dayjs(location.data.created_at) }}
-								</p>
-							</div>
-							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
-								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-									Updated At
-								</h4>
-								<p class="sm:ml-6">
-									{{ dayjs(location.data.updated_at) }}
-								</p>
+								<div class="flex flex-col">
+									<UserPreview :user="location.data.updated_by" size="sm" />
+									<span class="text-sm text-gray-600">
+										{{ location.data.updated_at }}
+									</span>
+								</div>
 							</div>
 						</dl>
 					</div>
@@ -79,8 +74,8 @@
 
 		<!-- edit modal -->
 		<FormModal v-if="state.selectedItem" :form="state.editForm" method="patch" :toggle="state.showEdit"
-			:urlRoute="route('admin.location.update', state.selectedItem)" :submitOptions="state.editForm" :button="false"
-			@close="closeEdit()" @success="closeEdit()">
+			:urlRoute="route('admin.location.update', state.selectedItem)" :submitOptions="state.editForm"
+			:button="false" @close="closeEdit()" @success="closeEdit()">
 			<template #title>
 				{{ `Updating "${state.editForm.name}"` }}
 			</template>
@@ -99,7 +94,6 @@
 
 <script setup>
 import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
-import dayjs from "dayjs";
 import { useForm } from "@inertiajs/vue3";
 import { useListPage } from '@/modules/listPage.js';
 import { FormModal, ConfirmDelete, UserPreview } from "@/Components";

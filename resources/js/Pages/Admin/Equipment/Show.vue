@@ -91,29 +91,24 @@
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Created By
 								</h4>
-								<UserPreview :user="equipment.data.created_by" size="sm" />
+								<div class="flex flex-col">
+									<UserPreview :user="equipment.data.created_by" size="sm" />
+									<span class="text-sm text-gray-600">
+										{{ equipment.data.created_at }}
+									</span>
+								</div>
+
 							</div>
 							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Last Updated By
 								</h4>
-								<UserPreview :user="equipment.data.updated_by" size="sm" />
-							</div>
-							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
-								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-									Created At
-								</h4>
-								<p class="sm:ml-6">
-									{{ dayjs(equipment.data.created_at) }}
-								</p>
-							</div>
-							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
-								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
-									Updated At
-								</h4>
-								<p class="sm:ml-6">
-									{{ dayjs(equipment.data.updated_at) }}
-								</p>
+								<div class="flex flex-col">
+									<UserPreview :user="equipment.data.updated_by" size="sm" />
+									<span class="text-sm text-gray-600">
+										{{ equipment.data.updated_at }}
+									</span>
+								</div>
 							</div>
 						</dl>
 					</div>
@@ -125,7 +120,7 @@
 					<CardHeader>
 						Description
 					</CardHeader>
-					<div class="prose" v-if="equipment.data.description" v-html="equipment.data.description" />
+					<div class="prose w-full" v-if="equipment.data.description" v-html="equipment.data.description" />
 					<div v-else>
 						<p class="text-red-600">
 							No description added...
@@ -181,8 +176,8 @@
 
 		<!-- edit modal -->
 		<FormModal v-if="state.selectedItem" :form="state.editForm" :toggle="state.showEdit"
-			:urlRoute="route('admin.equipment.update', state.selectedItem)" :submitOptions="state.editForm" :button="false"
-			@close="closeEdit()" @success="closeEdit()">
+			:urlRoute="route('admin.equipment.update', state.selectedItem)" :submitOptions="state.editForm"
+			:button="false" @close="closeEdit()" @success="closeEdit()">
 			<template #title>
 				{{ `Updating "${state.editForm.name}"` }}
 			</template>
@@ -203,7 +198,6 @@
 import { useForm } from "@inertiajs/vue3";
 import { useListPage } from '@/modules/listPage.js';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
-import dayjs from "dayjs";
 import { DropdownMenu } from '@/Components/Dropdown';
 import { Table } from '@/Components/Table';
 import { FormModal, ConfirmDelete, UserPreview, Carousel } from "@/Components";
@@ -255,7 +249,7 @@ const tableColumns = {
 	},
 	actions: {
 		name: '',
-		autoWidth: '',
+		autoWidth: true,
 		border: false,
 	},
 };

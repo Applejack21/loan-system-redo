@@ -5,12 +5,12 @@
 	<Dropdown align="left">
 		<template #trigger>
 			<template v-if="button">
-			<AppButton :colour="buttonColour" :size="buttonSize" >
-				<slot name="selectedItem" :item="selectedItem" />
-				<template #iconRight>
-					<ChevronDownIcon />
-				</template>
-			</AppButton>
+				<AppButton :colour="buttonColour" :size="buttonSize">
+					<slot name="selectedItem" :item="selectedItem" />
+					<template #iconRight>
+						<ChevronDownIcon />
+					</template>
+				</AppButton>
 			</template>
 			<template v-else>
 				<slot name="trigger">
@@ -21,7 +21,8 @@
 		<template #content>
 			<slot name="dropdownText" />
 
-			<div class="p-2 m-2 rounded-md hover:cursor-pointer" :class="listClasses" v-for="item in items" @click="[selectedItem = item]">
+			<div class="p-2 m-2 rounded-md hover:cursor-pointer" :class="listClasses" v-for="item in items"
+				@click="[selectedItem = item]">
 				<slot name="item" :item="item" />
 			</div>
 		</template>
@@ -59,7 +60,7 @@ const emit = defineEmits(['update:modelValue'])
 const selectedItem = ref(props.modelValue ?? null);
 
 watch(selectedItem, () => {
-	if(selectedItem.value !== null) {
+	if (selectedItem.value !== null) {
 		emit('update:modelValue', selectedItem.value[props.returnProperty]);
 	}
 }, { immediate: true })

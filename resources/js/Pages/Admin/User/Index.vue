@@ -28,15 +28,17 @@
 							<MagnifyingGlassIcon />
 						</template>
 					</TextInput>
-					<SelectInput v-model="filters.type" :items="types" buttonColour="secondary" returnProperty="value"
-						listClasses="hover:bg-gray-200">
-						<template #selectedItem="{ item }">
-							{{ item ? item.name : 'Filter by type' }}
-						</template>
-						<template #item="{ item }">
-							{{ item.name }}
-						</template>
-					</SelectInput>
+					<div class="flex justify-center sm:justify-start">
+						<SelectInput v-model="filters.type" :items="types" buttonColour="secondary"
+							returnProperty="value" listClasses="hover:bg-gray-200">
+							<template #selectedItem="{ item }">
+								{{ item ? item.name : 'Filter by type' }}
+							</template>
+							<template #item="{ item }">
+								{{ item.name }}
+							</template>
+						</SelectInput>
+					</div>
 				</div>
 				<Table :rows="users.data" :columns="tableColumns" :paginationLinks="users.meta" :only="['users']"
 					:border="true">
@@ -132,7 +134,7 @@ const tableColumns = {
 	},
 	actions: {
 		name: '',
-		autoWidth: '',
+		autoWidth: true,
 		border: false,
 	},
 };

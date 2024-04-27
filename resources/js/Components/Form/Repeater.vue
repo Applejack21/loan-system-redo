@@ -1,18 +1,18 @@
 <template>
-	<div class="w-full md:w-max">
+	<div class="w-full col-span-full">
 		<draggable :list="list" :item-key="listKey" tag="transition-group" :component-data="{
 			tag: 'ul',
 			type: 'transition-group',
 			name: 'flip-list',
 		}" v-bind="dragOptions" @start="drag = true" @end="drag = false" handle=".handle" v-if="list.length">
 			<template #item="{ element, index }">
-				<li class="list-group-item flex space-x-6 mb-2">
+				<li class="list-group-item flex space-x-6 space-y-5 mb-2">
 					<AppButton class="handle cursor-move mt-auto" v-if="reorder" colour="secondary" :size="reorderSize">
 						<template #icon>
 							<QueueListIcon />
 						</template>
 					</AppButton>
-					<div class="flex-1 grid grid-cols-12 gap-x-2">
+					<div :class="rowClasses">
 						<slot name="item" :element="element" :index="index" />
 					</div>
 					<AppButton class="mt-auto" :square="true" :disabled="list.length < min + 1"
@@ -30,7 +30,8 @@
 		</div>
 
 		<div class="flex gap-2 items-center mt-5">
-			<AppButton @click.prevent="$emit('add-item')" type="button" v-if="allowAdd" colour="primary" :size="addSize">
+			<AppButton @click.prevent="$emit('add-item')" type="button" v-if="allowAdd" colour="primary"
+				:size="addSize">
 				Add line
 				<template #iconRight>
 					<PlusSmallIcon />
@@ -84,6 +85,10 @@ const props = defineProps({
 		type: String,
 		default: 'md',
 	},
+	rowClasses: {
+		type: String,
+		default: 'flex justify-between w-full gap-5',
+	}
 })
 
 const emit = defineEmits(['add-item', 'remove-item'])

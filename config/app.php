@@ -73,6 +73,10 @@ return [
 
     'convert_timezone' => env('APP_TIMESTAMP_CONVERT', 'UTC'),
 
+    'date_format' => env('APP_DATE_FORMAT', 'd/m/Y'),
+
+    'date_time_format' => env('APP_DATE_TIME_FORMAT', 'd/m/Y @ H:i:s'),
+
     /**
      * Application currency
      */
