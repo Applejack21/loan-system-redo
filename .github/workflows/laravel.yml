@@ -23,8 +23,8 @@ jobs:
           echo -e "Start MYSQL service, it is off by default\n"
           sudo systemctl enable mysql.service
           sudo systemctl start mysql.service
-          echo -e "Creating Laravel Database\n"
-          mysql --host 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS laravel;'
+          echo -e "Creating Testing Database\n"
+          mysql --host 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS testing;'
           echo -e "Check new settings\n"
           mysql --host 127.0.0.1 -uroot -proot -e "SELECT @@global.secure_file_priv, @@global.local_infile"
 
