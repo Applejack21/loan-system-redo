@@ -13,66 +13,66 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class UpdateEquipment
 {
-    public function execute(Equipment $equipment, array $request): Equipment
-    {
-        $this->validate($request, $equipment);
+	public function execute(Equipment $equipment, array $request): Equipment
+	{
+		$this->validate($request, $equipment);
 
-        $categories = $request['categories'] ?? null;
-        $images = $request['images'] ?? null;
-        unset($request['categories']);
-        unset($request['images']);
+		$categories = $request['categories'] ?? null;
+		$images = $request['images'] ?? null;
+		unset($request['categories']);
+		unset($request['images']);
 
-        $equipment->update([
-            ...$request,
-            'slug' => Str::slug($request['slug']),
-            'last_updated_by_user_id' => auth()->user()->id,
-        ]);
+		$equipment->update([
+			...$request,
+			'slug' => Str::slug($request['slug']),
+			'last_updated_by_user_id' => auth()->user()->id,
+		]);
 
-        // Remove the images if it's empty (may have no images to remove).
-        if (empty($images)) {
-            $equipment->clearMediaCollection('images');
-        }
+		// Remove the images if it's empty (may have no images to remove).
+		if (empty($images)) {
+			$equipment->clearMediaCollection('images');
+		}
 
-        // Link categories to this equipment.
-        if (isset($categories) && ! is_null($categories) && is_array($categories)) {
-            (new SyncToPivot())->addData($categories, $equipment, 'categories');
-        }
+		// Link categories to this equipment.
+		if (isset($categories) && !is_null($categories) && is_array($categories)) {
+			(new SyncToPivot())->addData($categories, $equipment, 'categories');
+		}
 
-        if (! empty($images) && is_array($images)) {
-            $currentMedia = $equipment->getMedia('images');
-            $uuids = collect($images)->pluck('meta.uuid')->filter()->toArray();
+		if (!empty($images) && is_array($images)) {
+			$currentMedia = $equipment->getMedia('images');
+			$uuids = collect($images)->pluck('meta.uuid')->filter()->toArray();
 
-            // Remove media thats not in the incoming images array.
-            $currentMedia->each(function ($media) use ($uuids) {
-                if (! in_array($media->uuid, $uuids)) {
-                    $media->delete();
-                }
-            });
+			// Remove media thats not in the incoming images array.
+			$currentMedia->each(function ($media) use ($uuids) {
+				if (!in_array($media->uuid, $uuids)) {
+					$media->delete();
+				}
+			});
 
-            foreach ($images as $image) {
-                // Check if data is set and it's an instance of UploadedFile.
-                if (isset($image['data']) && $image['data'] instanceof UploadedFile) {
-                    // It'ss a new image.
-                    (new SyncMedia())->execute($equipment, $image['data'], 'images');
-                }
-            }
-        }
+			foreach ($images as $image) {
+				// Check if data is set and it's an instance of UploadedFile.
+				if (isset($image['data']) && $image['data'] instanceof UploadedFile) {
+					// It'ss a new image.
+					(new SyncMedia())->execute($equipment, $image['data'], 'images');
+				}
+			}
+		}
 
-        return tap($equipment)->refresh();
-    }
+		return tap($equipment)->refresh();
+	}
 
-    private function validate(array $request, Equipment $equipment): array
-    {
-        return Validator::validate($request, [
-            'location_id' => 'sometimes|required|exists:locations,id',
-            'name' => 'sometimes|required|max:255',
-            'slug' => ['sometimes', 'required', Rule::unique('equipments', 'slug')->ignore($equipment->id), 'max:255'],
-            'code' => ['sometimes', 'nullable', Rule::unique('equipments', 'code')->ignore($equipment->id), 'max:255'],
-            'description' => 'sometimes|nullable',
-            'price' => 'sometimes|required|numeric|min:0',
-            'details' => 'sometimes|nullable|array',
-            'amount' => 'sometimes|required|integer',
-            'categories' => 'sometimes|array',
-        ]);
-    }
+	private function validate(array $request, Equipment $equipment): array
+	{
+		return Validator::validate($request, [
+			'location_id' => 'sometimes|required|exists:locations,id',
+			'name' => 'sometimes|required|max:255',
+			'slug' => ['sometimes', 'required', Rule::unique('equipment', 'slug')->ignore($equipment->id), 'max:255'],
+			'code' => ['sometimes', 'nullable', Rule::unique('equipment', 'code')->ignore($equipment->id), 'max:255'],
+			'description' => 'sometimes|nullable',
+			'price' => 'sometimes|required|numeric|min:0',
+			'details' => 'sometimes|nullable|array',
+			'amount' => 'sometimes|required|integer',
+			'categories' => 'sometimes|array',
+		]);
+	}
 }
