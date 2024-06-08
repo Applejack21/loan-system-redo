@@ -22,7 +22,7 @@ return new class extends Migration
             $table->uuid('reference')->unique();
             $table->string('denied_reason')->nullable();
             $table->dateTime('approval_date')->nullable();
-            $table->datetime('start_date');
+            $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->dateTime('date_returned')->nullable();
             $table->timestamps();
@@ -30,7 +30,7 @@ return new class extends Migration
         });
 
         Schema::create('equipment_loans', function (Blueprint $table) {
-            $table->foreignId('equipment_id')->constrained('equipments');
+            $table->foreignId('equipment_id')->constrained('equipment');
             $table->foreignId('loan_id')->constrained('loans');
             $table->integer('quantity')->default(1);
             $table->boolean('returned')->default(false);

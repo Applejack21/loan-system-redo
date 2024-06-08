@@ -9,18 +9,31 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GetLocations
 {
-    public function execute(Request $request, array $load = [], array $count = []): AnonymousResourceCollection
+    /**
+     * Get data for this model.
+     *
+     * @param  Request  $request  The request data, mainly for search or filtering.
+     * @param  bool  $paginate  Decide if the data should be paginated. Default is true.
+     * @param  array  $loan  Load relationship data of the passed relationships in the array.
+     * @param  array  $count  Count relationship data of the passed relationships in the array.
+     */
+    public function execute(Request $request, bool $paginate = true, array $load = [], array $count = []): AnonymousResourceCollection
     {
         $locations = Location::search($request->search)
-            ->orderBy('name')
-            ->paginate()
-            ->appends(['query' => null]);
+            ->orderBy('name');
 
-        if ($load) {
+        if ($paginate) {
+            $locations = $locations->paginate($request->perPage ?? 15, page: $request->page ?? 1)
+                ->appends(['query' => null]);
+        } else {
+            $locations = $locations->get();
+        }
+
+        if (count($load) > 0) {
             $locations->loadMissing($load);
         }
 
-        if ($count) {
+        if (count($count) > 0) {
             $locations->loadCount($count);
         }
 

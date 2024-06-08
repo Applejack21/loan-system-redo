@@ -10,12 +10,12 @@
 					Image
 				</Label>
 				<Dashboard :uppy="uppy" :showProgressDetails="true" :props="{
-					doneButtonHandler: null,
-					showRemoveButtonAfterComplete: true,
-					hideProgressAfterFinish: true,
-					height: 350,
-					hideUploadButton: true,
-				}" />
+		doneButtonHandler: null,
+		showRemoveButtonAfterComplete: true,
+		hideProgressAfterFinish: true,
+		height: 350,
+		hideUploadButton: true,
+	}" />
 			</div>
 		</div>
 	</Wrapper>
@@ -47,7 +47,6 @@ const uppy = new Uppy({
 // if there already is an image for the category
 if (props.form.image) {
 	addExistingFilesToUppy([props.form.image], uppy);
-	console.log(uppy.getFiles());
 }
 
 uppy.on("complete", (result) => {

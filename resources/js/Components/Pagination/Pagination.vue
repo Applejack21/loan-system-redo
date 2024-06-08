@@ -47,6 +47,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { PaginationButton, PaginationDivider } from '@/Components/Pagination'
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/vue/20/solid'
 
@@ -60,4 +61,13 @@ const props = defineProps({
 		required: false,
 	}
 });
+
+// Return filters as well as anything else passed in the only array.
+// This way any filters on pagination will be retrieved as well.
+const only = computed(() => {
+	return [
+		'filters',
+		...props.only,
+	];
+})
 </script>

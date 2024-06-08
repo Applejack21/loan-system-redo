@@ -28,12 +28,12 @@ class UpdateEquipment
             'last_updated_by_user_id' => auth()->user()->id,
         ]);
 
-        // remove the images if its empty (may have no images to remove)
+        // Remove the images if it's empty (may have no images to remove).
         if (empty($images)) {
             $equipment->clearMediaCollection('images');
         }
 
-        // link categories to this equipment
+        // Link categories to this equipment.
         if (isset($categories) && ! is_null($categories) && is_array($categories)) {
             (new SyncToPivot())->addData($categories, $equipment, 'categories');
         }
@@ -42,7 +42,7 @@ class UpdateEquipment
             $currentMedia = $equipment->getMedia('images');
             $uuids = collect($images)->pluck('meta.uuid')->filter()->toArray();
 
-            // remove media thats not in the incoming images array
+            // Remove media thats not in the incoming images array.
             $currentMedia->each(function ($media) use ($uuids) {
                 if (! in_array($media->uuid, $uuids)) {
                     $media->delete();
@@ -50,9 +50,9 @@ class UpdateEquipment
             });
 
             foreach ($images as $image) {
-                // check if data is set and its an instance of UploadedFile
+                // Check if data is set and it's an instance of UploadedFile.
                 if (isset($image['data']) && $image['data'] instanceof UploadedFile) {
-                    // its a new image
+                    // It'ss a new image.
                     (new SyncMedia())->execute($equipment, $image['data'], 'images');
                 }
             }

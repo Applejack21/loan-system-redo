@@ -3,11 +3,11 @@
 		<div class="flex items-center flex-col space-y-2 md:flex-row w-full">
 			<div>
 				<slot name="title">
-					<h2 class="text-2xl font-bold text-center md:text-left">
+					<h2 class="font-bold text-center md:text-left" :class="headerSize">
 						<slot />
 					</h2>
 
-					<p class="text-base font-normal text-gray-700">
+					<p class="font-normal text-gray-700" :class="subTitleSize">
 						<slot name="subTitle" />
 					</p>
 				</slot>
@@ -18,3 +18,16 @@
 		</div>
 	</div>
 </template>
+
+<script setup>
+const props = defineProps({
+	headerSize: {
+		type: String,
+		default: 'text-2xl',
+	},
+	subTitleSize: {
+		type: String,
+		default: 'text-base',
+	},
+});
+</script>

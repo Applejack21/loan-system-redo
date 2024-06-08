@@ -5,6 +5,7 @@ namespace App\Actions\Loan;
 use App\Actions\General\SyncToPivot;
 use App\Helpers\StatusHelper;
 use App\Models\Loan;
+use App\Rules\EquipmentInStock;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -47,8 +48,9 @@ class CreateLoan
             'approval_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'date_returned' => ['nullable', 'date', 'after_or_equal:start_date'],
+            'date_collected' => ['nullable', 'date', 'after_or_equal:start_date'],
             'equipments' => ['required', 'array'],
-            'equipments.*.equipment_id' => ['required', 'exists:equipments,id'],
+            'equipments.*.equipment_id' => ['required', 'exists:equipment,id', new EquipmentInStock], // Make sure each one is still in stock.
             'equipments.*.quantity' => ['required', 'integer'],
             'equipments.*.returned' => ['required', 'boolean'],
         ], [

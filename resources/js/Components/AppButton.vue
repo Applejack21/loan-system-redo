@@ -1,22 +1,24 @@
 <template>
 	<component :is="is" :class="classes">
-		<span class="w-5 h-5 -ml-1 flex items-center" v-if="$slots.iconLeft">
-			<slot name="iconLeft" v-if="!loading" />
-			<ArrowPathIcon class="w-5 h-5 animate-spin" v-if="loading"/>
-		</span>
+		<div class="flex items-center space-x-1">
+			<span class="w-5 h-5 -ml-1" v-if="$slots.iconLeft">
+				<slot name="iconLeft" v-if="!loading" />
+				<ArrowPathIcon class="w-5 h-5 animate-spin" v-if="loading" />
+			</span>
 
-		<span class="w-5 h-5 flex items-center justify-center" v-if="$slots.icon">
-			<slot name="icon" />
-		</span>
+			<span class="w-5 h-5 justify-center" v-if="$slots.icon">
+				<slot name="icon" />
+			</span>
 
-		<span v-if="!$slots.icon">
-			<slot />
-		</span>
+			<span v-if="!$slots.icon">
+				<slot />
+			</span>
 
-		<span class="w-5 h-5 -mr-1 flex items-center" v-if="$slots.iconRight">
-			<slot name="iconRight" v-if="!loading" />
-			<ArrowPathIcon class="w-5 h-5 animate-spin" v-if="loading" />
-		</span>
+			<span class="w-5 h-5" v-if="$slots.iconRight">
+				<slot name="iconRight" v-if="!loading" />
+				<ArrowPathIcon class="w-5 h-5 animate-spin" v-if="loading" />
+			</span>
+		</div>
 	</component>
 </template>
 
@@ -28,7 +30,7 @@ const props = defineProps({
 	colour: {
 		type: String,
 		default: 'primary',
-		validator: (value) => ['primary', 'secondary', 'accent', 'light-grey', 'dark-grey', 'red'].includes(value)
+		validator: (value) => ['primary', 'secondary', 'accent', 'light-grey', 'dark-grey', 'red', 'dropdown'].includes(value)
 	},
 	size: {
 		type: String,
@@ -50,6 +52,7 @@ const getButtonColours = (colour) => {
 		case 'light-grey': return 'bg-neutral-light-grey text-white hover:bg-neutral-dark-grey focus:ring-neutral-light-grey'
 		case 'dark-grey': return 'bg-neutral-dark-grey text-white hover:bg-neutral-light-grey focus:ring-neutral-dark-grey'
 		case 'red': return 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-700'
+		case 'dropdown': return 'h-[37px] rounded-md !border-neutral-200 focus:!border-secondary focus:!ring-0'
 		default: return ''
 	}
 }

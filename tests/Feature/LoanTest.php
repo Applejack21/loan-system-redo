@@ -25,7 +25,7 @@ test('index page loads within 500ms or less', function () {
             ->get(route('admin.loan.index')),
     );
 
-    // page loads, just needs to be faster
+    // Page loads it just needs to be faster.
     if ($speed >= 500) {
         $this->markTestSkipped('Loan index page needs to be refactored to load quicker.');
     }
@@ -80,7 +80,7 @@ test('show page loads within 500ms or less', function () {
             ->get(route('admin.loan.show', $loan)),
     );
 
-    // page loads, just needs to be faster
+    // Page loads it just needs to be faster.
     if ($speed >= 500) {
         $this->markTestSkipped('Loan show page needs to be refactored to load quicker.');
     }

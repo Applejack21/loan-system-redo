@@ -69,59 +69,92 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    /**
+     * Returns a list of categories created by this user.
+     */
     public function createdCategories(): HasMany
     {
-        return $this->hasMany(Category::class, 'id', 'created_by_user_id');
+        return $this->hasMany(Category::class, 'created_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of categories updated by this user.
+     */
     public function updatedCategories(): HasMany
     {
-        return $this->hasMany(Category::class, 'id', 'last_updated_by_user_id');
+        return $this->hasMany(Category::class, 'last_updated_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of equipments created by this user.
+     */
     public function createdEquipments(): HasMany
     {
-        return $this->hasMany(Equipment::class, 'id', 'created_by_user_id');
+        return $this->hasMany(Equipment::class, 'created_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of equipments updated by this user.
+     */
     public function updatedEquipments(): HasMany
     {
-        return $this->hasMany(Equipment::class, 'id', 'last_updated_by_user_id');
+        return $this->hasMany(Equipment::class, 'last_updated_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of loans created by this user.
+     */
     public function createdLoans(): HasMany
     {
-        return $this->hasMany(Loan::class, 'id', 'created_by_user_id');
+        return $this->hasMany(Loan::class, 'created_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of loans updated by this user.
+     */
     public function updatedLoans(): HasMany
     {
-        return $this->hasMany(Loan::class, 'id', 'last_updated_by_user_id');
+        return $this->hasMany(Loan::class, 'last_updated_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of loans approved by this user.
+     */
     public function approvedLoans(): HasMany
     {
-        return $this->hasMany(Loan::class, 'id', 'approved_by_user_id');
+        return $this->hasMany(Loan::class, 'approved_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of loans denied by this user.
+     */
     public function deniedLoans(): HasMany
     {
-        return $this->hasMany(Loan::class, 'id', 'denied_by_user_id');
+        return $this->hasMany(Loan::class, 'denied_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of loans where the user is the loanee.
+     */
     public function loans(): HasMany
     {
-        return $this->hasMany(Loan::class, 'id', 'loanee_id');
+        return $this->hasMany(Loan::class, 'loanee_id', 'id');
     }
 
+    /**
+     * Returns a list of locations created by this user.
+     */
     public function createdLocations(): HasMany
     {
-        return $this->hasMany(Location::class, 'id', 'created_by_user_id');
+        return $this->hasMany(Location::class, 'created_by_user_id', 'id');
     }
 
+    /**
+     * Returns a list of locations updated by this user.
+     */
     public function updatedLocations(): HasMany
     {
-        return $this->hasMany(Location::class, 'id', 'last_updated_by_user_id');
+        return $this->hasMany(Location::class, 'last_updated_by_user_id', 'id');
     }
 
     /**
@@ -141,7 +174,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Determine if the user is a customer
+     * Determine if the user is a customer.
      */
     public function isCustomer(): bool
     {
@@ -149,7 +182,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Determine if the user is an admin
+     * Determine if the user is an admin.
      */
     public function isAdmin(): bool
     {
@@ -157,7 +190,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to only include customer users
+     * Scope a query to only include customer users.
      */
     public function scopeCustomerUsers(Builder $query): void
     {
@@ -165,7 +198,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to only include admin users
+     * Scope a query to only include admin users.
      */
     public function scopeAdminUsers(Builder $query): void
     {

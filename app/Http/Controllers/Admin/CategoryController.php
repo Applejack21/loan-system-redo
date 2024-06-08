@@ -8,6 +8,7 @@ use App\Actions\Category\GetCategories;
 use App\Actions\Category\UpdateCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\EquipmentResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -30,12 +31,12 @@ class CategoryController extends Controller
     {
         return Inertia::render('Admin/Category/Index', [
             'title' => 'Categories',
-            'categories' => fn () => (new GetCategories())->execute($request, count: ['equipments']),
             'filters' => $request->only('search'),
             'breadcrumbs' => [
                 'Dashboard' => route('admin.dashboard.index'),
                 'Categories' => null,
             ],
+            'categories' => fn () => (new GetCategories())->execute($request, count: ['equipments']),
         ]);
     }
 
@@ -57,9 +58,12 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        $equipments = $category->equipments()->orderBy('name')->paginate();
+
         return Inertia::render('Admin/Category/Show', [
             'title' => $category->name,
-            'category' => new CategoryResource($category->loadMissing('createdBy', 'updatedBy', 'equipments')),
+            'category' => fn () => new CategoryResource($category->loadMissing('createdBy', 'updatedBy', 'equipments')),
+            'equipments' => fn () => EquipmentResource::collection($equipments),
             'breadcrumbs' => [
                 'Dashboard' => route('admin.dashboard.index'),
                 'Categories' => route('admin.category.index'),

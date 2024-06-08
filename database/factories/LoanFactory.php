@@ -32,6 +32,7 @@ class LoanFactory extends Factory
             'start_date' => now()->toDateTimeString(),
             'end_date' => $this->faker->dateTimeBetween(today()->addDay(), today()->addDays(7)),
             'date_returned' => $this->faker->boolean() ? $this->faker->dateTimeBetween(today()->addDay(3), today()->addDays(15)) : null,
+            'date_collected' => null,
         ];
     }
 }

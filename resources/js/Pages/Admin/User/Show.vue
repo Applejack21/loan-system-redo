@@ -60,7 +60,8 @@
 										<PencilSquareIcon />
 									</template>
 								</AppButton>
-								<AppButton colour="red" @click="openDelete(user.data)" v-if="user.data.id !== authUser.id">
+								<AppButton colour="red" @click="openDelete(user.data)"
+									v-if="user.data.id !== authUser.id">
 									<template #icon>
 										<TrashIcon />
 									</template>
@@ -76,11 +77,14 @@
 									Address
 								</h4>
 								<p class="sm:ml-6">
-									<p v-if="user.data.address && user.data.address.length > 0"
-										v-html="formatAddress(user.data.address)" />
-								<p v-else class="text-red-600">
-									No address found...
-								</p>
+									<template v-if="formatAddress(user.data.address).length > 0">
+										<p v-html="formatAddress(user.data.address)" />
+									</template>
+									<template v-else>
+										<p class="text-red-600">
+											No address found...
+										</p>
+									</template>
 								</p>
 							</div>
 							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
@@ -106,9 +110,21 @@
 
 			<Card>
 				<CardBody>
-					<div class="flex flex-col mt-5">
-						TODO: show a list of loans this user has made
-					</div>
+					<CardHeader>
+						Loans
+					</CardHeader>
+					<Table :rows="loans.data" :columns="loanColumns" :paginationLinks="loans.meta"
+						:only="['user', 'loans']">
+						<template #td-status="{ cell }">
+							<Pill :colour="getPillColour(cell)">
+								{{ cell }}
+							</Pill>
+						</template>
+
+						<template #td-actions="{ row, index }">
+							<DropdownMenu :links="dropdownLoanLinks(row)" />
+						</template>
+					</Table>
 				</CardBody>
 			</Card>
 		</div>
@@ -138,13 +154,16 @@ import { computed } from 'vue';
 import { EnvelopeIcon, PhoneIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useForm, usePage } from "@inertiajs/vue3";
 import { useListPage } from '@/modules/listPage.js';
-import { FormModal, ConfirmDelete } from "@/Components";
-import { Card, CardBody } from "@/Components/Card";
+import { FormModal, ConfirmDelete, Pill } from "@/Components";
+import { Card, CardBody, CardHeader } from "@/Components/Card";
+import { Table } from '@/Components/Table';
+import { DropdownMenu } from '@/Components/Dropdown';
 import Form from "./Partials/Form.vue";
 
 const props = defineProps({
 	title: String,
 	user: Object,
+	loans: Object,
 	breadcrumbs: Object,
 });
 
@@ -182,4 +201,47 @@ const createEditForm = (user) => {
 }
 
 const authUser = computed(() => usePage().props.auth.user);
+
+const loanColumns = {
+	status: {
+		name: 'Status',
+	},
+	reference: {
+		name: 'Reference',
+		popper: true,
+	},
+	equipments_count: {
+		name: 'Equipment',
+	},
+	start_date_no_time: {
+		name: 'Start',
+	},
+	end_date_no_time: {
+		name: 'End',
+	},
+	actions: {
+		name: '',
+		autoWidth: true,
+		border: false,
+	},
+};
+
+const dropdownLoanLinks = (loan) => {
+	return [
+		{ name: 'View', href: route('admin.loan.show', loan.id) },
+	]
+}
+
+const getPillColour = (text) => {
+	switch (text.toLowerCase()) {
+		case 'requested': return 'amber'
+		case 'denied': return 'red'
+		case 'approved': return 'green'
+		case 'out on loan': return 'amber'
+		case 'overdue': return 'red'
+		case 'partially returned': return 'amber'
+		case 'complete': return 'green'
+		default: return ''
+	}
+}
 </script>

@@ -27,25 +27,40 @@
 				</CardHeader>
 				<div
 					class="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2 items-center mb-2 justify-center lg:justify-start">
+					<!-- Search -->
 					<TextInput type="search" placeholder="Search loans..." v-model="filters.search">
 						<template #iconLeft>
 							<MagnifyingGlassIcon />
 						</template>
 					</TextInput>
+
+					<!-- Status -->
 					<div class="flex justify-center sm:justify-start">
-						<SelectInput v-model="filters.status" :items="statuses" buttonColour="secondary"
-							returnProperty="value" listClasses="hover:bg-gray-200">
-							<template #selectedItem="{ item }">
-								{{ item ? item.name : 'Filter by status' }}
+						<Dropdown align="left">
+							<template #trigger>
+								<AppButton colour="dropdown">
+									{{ state.statusFilter?.name || 'All Statuses' }}
+									<template #iconRight>
+										<ChevronDownIcon />
+									</template>
+								</AppButton>
 							</template>
-							<template #item="{ item }">
-								{{ item.name }}
+							<template #content>
+								<span class="px-4 py-2">
+									Select status
+								</span>
+								<template v-for="status in state.statusFilters">
+									<DropdownLink as="button"
+										@click="[state.statusFilter = status, filters.status = status.value]">
+										{{ status.name }}
+									</DropdownLink>
+								</template>
 							</template>
-						</SelectInput>
+						</Dropdown>
 					</div>
 				</div>
 				<Table :rows="loans.data" :columns="tableColumns" :paginationLinks="loans.meta" :only="['loans']"
-					:border="true">
+					breakpoint="xl">
 
 					<template #td-loanee="{ cell }">
 						<Link :href="route('admin.user.show', cell.id)">
@@ -69,7 +84,7 @@
 					</template>
 
 					<template #td-actions="{ row, index }">
-						<DropdownMenu :links="dropdownLinks(row)" />
+						<DropdownMenu :links="dropdownLinks(row)" breakpoint="xl" />
 					</template>
 				</Table>
 			</CardBody>
@@ -80,15 +95,17 @@
 <script setup>
 import { reactive, watch, provide } from 'vue';
 import { useForm, router } from '@inertiajs/vue3';
-import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { MagnifyingGlassIcon, XMarkIcon, ChevronDownIcon } from '@heroicons/vue/24/outline';
 import throttle from "lodash/throttle";
+import dayjs from 'dayjs';
+import Dropdown from '@/Jetstream/Dropdown.vue';
+import DropdownLink from '@/Jetstream/DropdownLink.vue'
 import { Card, CardBody, CardHeader } from '@/Components/Card';
 import { Table } from '@/Components/Table';
 import { FormModal, UserPreview, Pill } from '@/Components';
-import { TextInput, SelectInput } from '@/Components/Form';
+import { TextInput } from '@/Components/Form';
 import { DropdownMenu } from '@/Components/Dropdown';
 import Form from './Partials/Form.vue';
-import dayjs from 'dayjs';
 
 const props = defineProps({
 	title: String,
@@ -108,22 +125,22 @@ provide('users', props.users);
 const tableColumns = {
 	loanee: {
 		name: 'Loanee',
-		popper: true,
 	},
 	status: {
 		name: 'Status',
 	},
 	reference: {
 		name: 'Reference',
+		popper: true,
 	},
 	equipments_count: {
-		name: 'Equipment Loaned',
+		name: 'Equipment',
 	},
 	start_date: {
-		name: 'Start date',
+		name: 'Start',
 	},
 	end_date: {
-		name: 'End date',
+		name: 'End',
 	},
 	actions: {
 		name: '',
@@ -139,12 +156,21 @@ const form = useForm({
 	approval_date: null,
 	start_date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 	end_date: dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
+	date_collected: null,
+	date_returned: null,
 	equipments: [],
 });
 
+const state = reactive({
+	statusFilters: props.statuses,
+	statusFilter: null,
+});
+
+state.statusFilter = state.statusFilters.find(filter => filter.value === props.filters.status) || state.statusFilters?.[0] || null;
+
 const filters = reactive({
 	search: props.filters?.search,
-	status: props.filters?.status ? props.statuses.find(status => status.value === props.filters.status) : null,
+	status: props.filters.status ?? state.statusFilter.name,
 });
 
 watch(filters, throttle(function (value) {
@@ -159,7 +185,7 @@ watch(filters, throttle(function (value) {
 	router.reload({
 		data: {
 			...data,
-			page: undefined, // reset page to find results on all pages
+			page: undefined, // Reset page filter so we start back on page 1.
 		},
 		only: ['loans'],
 	});

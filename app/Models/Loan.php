@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Helpers\StatusHelper;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +28,7 @@ class Loan extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'date_returned' => 'datetime',
+        'date_collected' => 'datetime',
     ];
 
     protected $attributes = [
@@ -120,5 +123,51 @@ class Loan extends Model
         $this->unsetRelation('equipments');
 
         return $fullyReturned;
+    }
+
+    /**
+     * Scope a query to only include overdue loans.
+     */
+    public function scopeOverdue(Builder $query): void
+    {
+        $query->where('status', StatusHelper::STATUS_OVERDUE);
+    }
+
+    // Convert dates from Loan forms into UTC BEFORE saving into the database.
+    public function setApprovalDateAttribute($value)
+    {
+        $this->attributes['approval_date'] = $this->convertToUtc($value);
+    }
+
+    public function setStartDateAttribute($value)
+    {
+        $this->attributes['start_date'] = $this->convertToUtc($value);
+    }
+
+    public function setEndDateAttribute($value)
+    {
+        $this->attributes['end_date'] = $this->convertToUtc($value);
+    }
+
+    public function setDateReturnedAttribute($value)
+    {
+        $this->attributes['date_returned'] = $this->convertToUtc($value);
+    }
+
+    public function setDateCollectedAttribute($value)
+    {
+        $this->attributes['date_collected'] = $this->convertToUtc($value);
+    }
+
+    // Helper function to convert dates to UTC.
+    // Only do this if value exists and isn't null.
+    private function convertToUtc($value)
+    {
+        if ($value) {
+            // Change times from the user's local timezone into UTC for database saving.
+            return Carbon::parse($value, config('app.convert_timezone'))->setTimezone('UTC');
+        }
+
+        return null;
     }
 }

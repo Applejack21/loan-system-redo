@@ -20,9 +20,6 @@ class Equipment extends Model implements HasMedia
     use Searchable;
     use SoftDeletes;
 
-    // should work without this but doesn't...
-    protected $table = 'equipments';
-
     protected $guarded = [];
 
     protected $casts = [
@@ -42,26 +39,41 @@ class Equipment extends Model implements HasMedia
             ->nonQueued();
     }
 
+    /**
+     * Return the user who created this equipment.
+     */
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_user_id');
     }
 
+    /**
+     * Return the user who updated this equipment.
+     */
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'last_updated_by_user_id');
     }
 
+    /**
+     * Return a list of categories linked to this equipment.
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'category_equipment');
     }
 
+    /**
+     * Return the location for this equipment.
+     */
     public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class);
     }
 
+    /**
+     * Return a list of loans this equipment is linked to.
+     */
     public function loans(): BelongsToMany
     {
         return $this->belongsToMany(Loan::class, 'equipment_loans')
@@ -120,5 +132,13 @@ class Equipment extends Model implements HasMedia
         $this->unsetRelation('loans');
 
         return $count;
+    }
+
+    /**
+     * Find out if the equipment is out of stock.
+     */
+    public function outOfStock(): bool
+    {
+        return $this->calculateAmountInStock() <= 0;
     }
 }

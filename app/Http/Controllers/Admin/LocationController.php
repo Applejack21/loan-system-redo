@@ -7,6 +7,7 @@ use App\Actions\Location\DeleteLocation;
 use App\Actions\Location\GetLocations;
 use App\Actions\Location\UpdateLocation;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EquipmentResource;
 use App\Http\Resources\LocationResource;
 use App\Models\Location;
 use Illuminate\Http\Request;
@@ -30,12 +31,12 @@ class LocationController extends Controller
     {
         return Inertia::render('Admin/Location/Index', [
             'title' => 'Locations',
-            'locations' => fn () => (new GetLocations())->execute($request, count: ['equipments']),
             'filters' => $request->only('search'),
             'breadcrumbs' => [
                 'Dashboard' => route('admin.dashboard.index'),
                 'Locations' => null,
             ],
+            'locations' => fn () => (new GetLocations())->execute($request, count: ['equipments']),
         ]);
     }
 
@@ -57,9 +58,12 @@ class LocationController extends Controller
      */
     public function show(Location $location)
     {
+        $equipments = $location->equipments()->orderBy('name')->paginate();
+
         return Inertia::render('Admin/Location/Show', [
             'title' => $location->name,
-            'location' => new LocationResource($location->loadMissing('createdBy', 'updatedBy', 'equipments')),
+            'location' => fn () => new LocationResource($location->loadMissing('createdBy', 'updatedBy')),
+            'equipments' => fn () => EquipmentResource::collection($equipments),
             'breadcrumbs' => [
                 'Dashboard' => route('admin.dashboard.index'),
                 'Locations' => route('admin.location.index'),

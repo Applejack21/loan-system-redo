@@ -30,7 +30,7 @@
 					</TextInput>
 				</div>
 				<Table :rows="categories.data" :columns="tableColumns" :paginationLinks="categories.meta"
-					:only="['categories']" :border="true">
+					:only="['categories']">
 					<template #td-actions="{ row, index }">
 						<DropdownMenu :links="dropdownLinks(row)">
 							<template #extra>
@@ -80,7 +80,7 @@
 
 <script setup>
 import { reactive, watch } from 'vue';
-import { useForm, router } from '@inertiajs/vue3';
+import { useForm, router, usePage } from '@inertiajs/vue3';
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
 import throttle from "lodash/throttle";
 import { Card, CardBody, CardHeader } from '@/Components/Card';
@@ -136,7 +136,7 @@ const createEditForm = (category) => {
 }
 
 const filters = reactive({
-	search: props.filters?.search,
+	search: props.filters?.search || props.filters?.query || null,
 });
 
 watch(filters, throttle(function (value) {
@@ -151,7 +151,7 @@ watch(filters, throttle(function (value) {
 	router.reload({
 		data: {
 			...data,
-			page: undefined, // reset page to find results on all pages
+			page: undefined, // Reset page filter so we start back on page 1.
 		},
 		only: ['categories'],
 	});

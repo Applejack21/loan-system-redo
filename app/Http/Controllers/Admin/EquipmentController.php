@@ -32,14 +32,14 @@ class EquipmentController extends Controller
     {
         return Inertia::render('Admin/Equipment/Index', [
             'title' => 'Equipments',
-            'equipments' => fn () => (new GetEquipments())->execute($request, ['categories', 'location'], ['categories']),
-            'categories' => fn () => Category::select('id', 'name')->get(),
-            'locations' => fn () => Location::select('id', 'name')->get(),
-            'filters' => $request->only('search'),
+            'filters' => $request->only('search', 'stock'),
             'breadcrumbs' => [
                 'Dashboard' => route('admin.dashboard.index'),
                 'Equipments' => null,
             ],
+            'equipments' => fn () => (new GetEquipments())->execute($request, load: ['categories', 'location'], count: ['categories']),
+            'categories' => fn () => Category::select('id', 'name')->get(),
+            'locations' => fn () => Location::select('id', 'name')->get(),
         ]);
     }
 

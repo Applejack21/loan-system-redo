@@ -14,11 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'type' => 'admin',
-        ]);
+        // Only add the user to the database if they don't exist.
+        if (! User::where('email', 'test@example.com')->first()) {
+            User::factory()->create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'type' => 'admin',
+            ]);
+        }
 
         User::factory(9)->create();
 

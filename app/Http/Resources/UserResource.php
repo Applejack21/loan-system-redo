@@ -16,7 +16,8 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            // TODO: add loans collection once model is done
+            'loans' => LoanResource::collection($this->whenLoaded('loans')),
+            'loans_count' => $this->whenCounted('loans'),
             'name' => $this->name,
             'email' => $this->email,
             'type' => $this->type,

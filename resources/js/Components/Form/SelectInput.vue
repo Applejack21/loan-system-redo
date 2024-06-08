@@ -42,7 +42,7 @@ const props = defineProps({
 	},
 	buttonColour: {
 		type: String,
-		default: 'primary',
+		default: 'dropdown',
 	},
 	items: Object,
 	label: String,

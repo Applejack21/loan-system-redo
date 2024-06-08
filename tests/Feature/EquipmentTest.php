@@ -25,7 +25,7 @@ test('index page loads within 500ms or less', function () {
             ->get(route('admin.equipment.index')),
     );
 
-    // page loads, just needs to be faster
+    // Page loads it just needs to be faster.
     if ($speed >= 500) {
         $this->markTestSkipped('Equipments index page needs to be refactored to load quicker.');
     }
@@ -93,7 +93,7 @@ test('show page loads within 500ms or less', function () {
             ->get(route('admin.equipment.show', $equipment->slug)),
     );
 
-    // page loads, just needs to be faster
+    // Page loads it just needs to be faster.
     if ($speed >= 500) {
         $this->markTestSkipped('Equipment show page needs to be refactored to load quicker.');
     }
@@ -123,7 +123,7 @@ test('cannot update an equipment with the same code', function () {
     $equipment2 = Equipment::factory()->create();
     $originalCode = $equipment2->code;
 
-    // try and update equipment 2 to have same code as equipment
+    // Try and update equipment 2 to have same code as equipment.
     $response = $this->actingAs($this->admin)
         ->post(route('admin.equipment.update', $equipment2), ['code' => $equipment->code]);
 

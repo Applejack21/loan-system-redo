@@ -24,7 +24,7 @@ test('index page loads within 500ms or less', function () {
             ->get(route('admin.user.index')),
     );
 
-    // page loads, just needs to be faster
+    // Page loads it just needs to be faster.
     if ($speed >= 500) {
         $this->markTestSkipped('User index page needs to be refactored to load quicker.');
     }
@@ -114,7 +114,7 @@ test('show page loads within 500ms or less', function () {
             ->get(route('admin.user.show', $user)),
     );
 
-    // page loads, just needs to be faster
+    // Page loads it just needs to be faster.
     if ($speed >= 500) {
         $this->markTestSkipped('User show page needs to be refactored to load quicker.');
     }
@@ -144,7 +144,7 @@ test('cannot update a user with the same email', function () {
     $user2 = User::factory()->create();
     $originalEmail = $user2->email;
 
-    // update user 2 to have same email as user
+    // Update user 2 to have same email as user.
     $response = $this->actingAs($this->admin)
         ->patch(route('admin.user.update', $user2), ['name' => $user2->name, 'email' => $user->email, 'type' => $user2->type]);
 

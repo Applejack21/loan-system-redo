@@ -1,5 +1,4 @@
 function addExistingFilesToUppy(existingImages, uppy) {
-	console.log(existingImages);
 	existingImages.forEach(image => {
 		const file = {
 			source: 'local',

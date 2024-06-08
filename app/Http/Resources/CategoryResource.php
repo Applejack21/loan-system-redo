@@ -49,7 +49,7 @@ class CategoryResource extends JsonResource
             return $image->toArray();
         }
 
-        // returns null if no image found
+        // Returns null if no image found
         return $image;
     }
 }

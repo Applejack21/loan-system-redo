@@ -9,8 +9,7 @@
 				<Label for="type" required>
 					Type
 				</Label>
-				<SelectInput v-model="form.type" :items="types" buttonColour="secondary" returnProperty="value"
-					listClasses="hover:bg-gray-200">
+				<SelectInput v-model="form.type" :items="types" returnProperty="value" listClasses="hover:bg-gray-200">
 					<template #selectedItem="{ item }">
 						{{ item ? item.name : 'Choose a type' }}
 					</template>
@@ -65,7 +64,7 @@ const types = [
 ];
 
 // if editing a user
-if(props.form.type) {
+if (props.form.type) {
 	props.form.type = types.find(type => type.value === props.form.type);
 }
 </script>

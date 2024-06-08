@@ -34,16 +34,25 @@ class Category extends Model implements HasMedia
             ->nonQueued();
     }
 
+    /**
+     * Return the user who created this category.
+     */
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_user_id');
     }
 
+    /**
+     * Return the user who updated this category.
+     */
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'last_updated_by_user_id');
     }
 
+    /**
+     * Return a list of equipment this category is linked to.
+     */
     public function equipments(): BelongsToMany
     {
         return $this->belongsToMany(Equipment::class, 'category_equipment');

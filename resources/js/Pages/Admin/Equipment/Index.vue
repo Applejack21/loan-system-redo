@@ -5,7 +5,7 @@
 				<CardHeader>
 					{{ title }}
 					<template #subTitle>
-						View and manage equipments.
+						View and manage equipment.
 					</template>
 					<template #button>
 						<FormModal :form="form" :urlRoute="route('admin.equipment.store')"
@@ -27,18 +27,14 @@
 				</CardHeader>
 				<div
 					class="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2 items-center mb-2 justify-center lg:justify-start">
-					<TextInput type="search" placeholder="Search equipments..." v-model="filters.search">
+					<TextInput type="search" placeholder="Search equipment..." v-model="filters.search">
 						<template #iconLeft>
 							<MagnifyingGlassIcon />
 						</template>
 					</TextInput>
 				</div>
 				<Table :rows="equipments.data" :columns="tableColumns" :paginationLinks="equipments.meta"
-					:only="['equipments']" :border="true">
-
-					<template #td-amount_on_loan="{ cell }">
-						{{ cell }}
-					</template>
+					:only="['equipments']">
 
 					<template #td-actions="{ row, index }">
 						<DropdownMenu :links="dropdownLinks(row)">
@@ -94,7 +90,7 @@ import throttle from "lodash/throttle";
 import { Card, CardBody, CardHeader } from '@/Components/Card';
 import { Table } from '@/Components/Table';
 import { FormModal, ConfirmDelete } from '@/Components';
-import { TextInput } from '@/Components/Form';
+import { TextInput, SelectInput } from '@/Components/Form';
 import { DropdownMenu, DropdownItem } from '@/Components/Dropdown';
 import { useListPage } from "@/modules/listPage.js";
 import Form from './Partials/Form.vue';
@@ -135,10 +131,10 @@ const tableColumns = {
 		hiddenUntil: 'lg',
 	},
 	amount_in_stock: {
-		name: 'Amount in stock',
+		name: 'Stock',
 	},
 	amount_on_loan: {
-		name: 'Amount on loan',
+		name: 'Loaned',
 	},
 	actions: {
 		name: '',
@@ -195,7 +191,7 @@ watch(filters, throttle(function (value) {
 	router.reload({
 		data: {
 			...data,
-			page: undefined, // reset page to find results on all pages
+			page: undefined, // Reset page filter so we start back on page 1.
 		},
 		only: ['equipments'],
 	});

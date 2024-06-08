@@ -28,23 +28,23 @@ class UpdateCategory
             'last_updated_by_user_id' => auth()->user()->id,
         ]);
 
-        // link equipment to this category
+        // Link equipment to this category.
         if (isset($equipments) && ! is_null($equipments) && is_array($equipments)) {
             (new SyncToPivot())->addData($equipments, $category, 'equipments');
         }
 
-        // remove the image if null - i.e the user doesn't want an image
+        // Remove the image if null - i.e the user doesn't want an image.
         if (is_null($image)) {
             $category->clearMediaCollection('image');
         }
 
-        // only update the image if its new - i.e. it's an UploadedFile instance
-        // data will only be returned if its a new image uploaded
+        // Only update the image if its new - i.e. it's an UploadedFile instance.
+        // Data will only be returned if its a new image uploaded.
         if (isset($image) && ! is_null($image) && $image['data'] instanceof UploadedFile) {
-            // remove current image
+            // Remove current image.
             $category->clearMediaCollection('image');
 
-            // save new image
+            // Save new image.
             (new SyncMedia())->execute($category, $image['data'], 'image');
         }
 

@@ -24,7 +24,7 @@ test('index page loads within 500ms or less', function () {
             ->get(route('admin.location.index')),
     );
 
-    // page loads, just needs to be faster
+    // Page loads it just needs to be faster.
     if ($speed >= 500) {
         $this->markTestSkipped('Location index page needs to be refactored to load quicker.');
     }
@@ -82,7 +82,7 @@ test('show page loads within 500ms or less', function () {
             ->get(route('admin.location.show', $location)),
     );
 
-    // page loads, just needs to be faster
+    // Page loads it just needs to be faster.
     if ($speed >= 500) {
         $this->markTestSkipped('Location show page needs to be refactored to load quicker.');
     }
