@@ -14,11 +14,11 @@ class GetLoans
      * Get data for this model.
      *
      * @param  Request  $request  The request data, mainly for search or filtering.
+     * @param  bool  $paginate  Decide if the data should be paginated. Default is true.
      * @param  array  $loan  Load relationship data of the passed relationships in the array.
      * @param  array  $count  Count relationship data of the passed relationships in the array.
-     * @param  array  $map  Only get the data that is passed in the array. Pass an array containing fields for this model. E.g ['id', 'name', 'email'].
      */
-    public function execute(Request $request, array $load = [], array $count = [], array $map = []): AnonymousResourceCollection
+    public function execute(Request $request, bool $paginate = true, array $load = [], array $count = []): AnonymousResourceCollection
     {
         $loans = Loan::search($request->search)
             ->when($request->status ?? false, function (Builder $query, string $status) {
@@ -28,22 +28,21 @@ class GetLoans
 
                 $query->where('status', $status);
             })
-            ->orderBy('created_at', 'desc')
-            ->paginate()
-            ->appends(['query' => null]);
+            ->orderBy('created_at', 'desc');
 
-        if ($load) {
+        if ($paginate) {
+            $loans = $loans->paginate($request->perPage ?? 15, page: $request->page ?? 1)
+                ->appends(['query' => null]);
+        } else {
+            $loans = $loans->get();
+        }
+
+        if (count($load) > 0) {
             $loans->loadMissing($load);
         }
 
-        if ($count) {
+        if (count($count) > 0) {
             $loans->loadCount($count);
-        }
-
-        if ($map) {
-            $loans = $loans->map(function ($loan) use ($map) {
-                return $loan->only($map);
-            });
         }
 
         return LoanResource::collection($loans);

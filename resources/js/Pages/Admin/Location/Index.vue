@@ -30,7 +30,7 @@
 					</TextInput>
 				</div>
 				<Table :rows="locations.data" :columns="tableColumns" :paginationLinks="locations.meta"
-					:only="['locations']" :border="true">
+					:only="['locations']">
 					<template #td-actions="{ row, index }">
 						<DropdownMenu :links="dropdownLinks(row)">
 							<template #extra>
@@ -149,7 +149,7 @@ watch(filters, throttle(function (value) {
 	router.reload({
 		data: {
 			...data,
-			page: undefined, // reset page to find results on all pages
+			page: undefined, // Reset page filter so we start back on page 1.
 		},
 		only: ['locations'],
 	});

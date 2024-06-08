@@ -1,5 +1,5 @@
 <template>
-	<Menu as="div" class="relative items-center text-left hidden lg:inline-flex">
+	<Menu as="div" :class="[classConfig.default, classConfig[breakpoint]]">
 		<div class="flex items-center">
 			<MenuButton as="template" v-slot="{ open }" @click.stop>
 				<slot name="button" :open="open">
@@ -11,22 +11,23 @@
 			</MenuButton>
 		</div>
 
-		<transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0"
-			enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-in"
-			leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
+		<transition enter-active-class="transition duration-100 ease-out"
+			enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
+			leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
+			leave-to-class="transform scale-95 opacity-0">
 			<MenuItems :class="['absolute z-20 w-56 origin-top-right divide-y bg-white shadow-card ring-1 ring-black ring-opacity-5 focus:outline-none',
-				alignmentClasses,
-			]">
+		alignmentClasses,
+	]">
 
 				<div class="px-1 py-1" v-if="links.length > 0">
 					<MenuItem as="div" v-slot="{ active }" v-for="link in links" :key="link.name">
 
 					<Link :href="link.href" class="text-gray-800" :class="[
-						{ 'bg-accent-light ': active },
-						{ 'text-red-600': link.danger },
-						{ 'text-green-800': link.success },
-						'group flex w-full items-center rounded-md px-2 py-2 xl:py-2 transition-colors',
-					]">
+		{ 'bg-accent-light ': active },
+		{ 'text-red-600': link.danger },
+		{ 'text-green-800': link.success },
+		'group flex w-full items-center rounded-md px-2 py-2 xl:py-2 transition-colors',
+	]">
 					{{ link.name }}
 					</Link>
 
@@ -39,8 +40,9 @@
 			</MenuItems>
 		</transition>
 	</Menu>
-	<div class="lg:hidden grid grid-cols-1 lg:grid-cols-2 justify-start gap-x-4 gap-y-3" v-if="links.length > 0">
-		<AppButton class="justify-center" v-for="link in links" :is="Link" :key="link.name" :href="link.href" :colour="link.colour ?? 'primary'" :size="link.size ?? 'md'">
+	<div :class="[classConfigButtons.default, classConfigButtons[breakpoint]]" v-if="links.length > 0">
+		<AppButton class="justify-center" v-for="link in links" :is="Link" :key="link.name" :href="link.href"
+			:colour="link.colour ?? 'primary'" :size="link.size ?? 'md'">
 			{{ link.name }}
 		</AppButton>
 
@@ -67,4 +69,20 @@ const props = defineProps({
 		default: 'lg',
 	}
 });
+
+const classConfig = {
+	default: 'relative items-center text-left hidden',
+	sm: 'sm:inline-flex',
+	md: 'md:inline-flex',
+	lg: 'lg:inline-flex',
+	xl: 'xl:inline-flex',
+};
+
+const classConfigButtons = {
+	default: 'grid grid-cols-1 lg:grid-cols-2 justify-start gap-x-4 gap-y-3',
+	sm: 'sm:hidden',
+	md: 'md:hidden',
+	lg: 'lg:hidden',
+	xl: 'xl:hidden',
+};
 </script>

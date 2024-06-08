@@ -7,6 +7,7 @@ use App\Actions\User\DeleteUser;
 use App\Actions\User\GetUsers;
 use App\Actions\User\UpdateUser;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\LoanResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,12 +31,12 @@ class UserController extends Controller
     {
         return Inertia::render('Admin/User/Index', [
             'title' => 'Users',
-            'users' => fn () => (new GetUsers())->execute($request),
             'filters' => $request->only('search', 'type'),
             'breadcrumbs' => [
                 'Dashboard' => route('admin.dashboard.index'),
                 'Users' => null,
             ],
+            'users' => fn () => (new GetUsers())->execute($request),
         ]);
     }
 
@@ -57,9 +58,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        // Get loans here so we can paginate them.
+        $loans = $user->loans()->orderBy('created_at', 'desc')->paginate();
+
         return Inertia::render('Admin/User/Show', [
             'title' => 'Viewing: ' . $user->name,
-            'user' => new UserResource($user),
+            'user' => fn () => new UserResource($user),
+            'loans' => fn () => LoanResource::collection($loans->loadCount('equipments')),
             'breadcrumbs' => [
                 'Dashboard' => route('admin.dashboard.index'),
                 'Users' => route('admin.user.index'),

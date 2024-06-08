@@ -30,7 +30,7 @@ class EquipmentFactory extends Factory
             'slug' => Str::slug($name),
             'code' => $this->faker->boolean() ? Str::uuid()->toString() : null,
             'description' => $this->faker->boolean() ? $this->faker->realText() : null,
-            'price' => $this->faker->randomFloat(min: 10, max: 50),
+            'price' => $this->faker->randomFloat(2, 10, 50),
             'details' => null,
             'amount' => $this->faker->randomDigitNotZero(),
         ];

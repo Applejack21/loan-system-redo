@@ -7,21 +7,21 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
-    use CreatesApplication;
+	use CreatesApplication;
+	use CreatesApplication;
 
-    public User $admin;
+	public User $admin;
 
-    public User $customer;
+	public User $customer;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+	protected function setUp(): void
+	{
+		parent::setUp();
 
-        $this->admin = User::factory(['type' => 'admin'])->create();
-        $this->customer = User::factory(['type' => 'customer'])->create();
+		$this->admin = User::factory(['type' => 'admin'])->create();
+		$this->customer = User::factory(['type' => 'customer'])->create();
 
-        // remove vite from testing
-        $this->withoutVite();
-    }
+		// Remove vite from testing
+		$this->withoutVite();
+	}
 }

@@ -28,7 +28,7 @@ class LocationFactory extends Factory
                 '%s/%s',
                 Str::upper(Str::random(2)) . mt_rand(1, 9),
                 mt_rand(1, 25),
-            ), // generate a room code, e.g. FL1/12 - Floor 1, room 12.
+            ), // Generate a room code, e.g. FL1/12 means Floor 1, room 12.
         ];
     }
 }

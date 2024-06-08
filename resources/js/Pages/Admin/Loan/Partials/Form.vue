@@ -49,6 +49,22 @@
 					<DatePicker v-model.string="form.approval_date" mode="dateTime" :masks="masks" is24hr
 						hide-time-header />
 				</div>
+
+				<div>
+					<Label for="Collected Date">
+						Collected Date
+					</Label>
+					<DatePicker v-model.string="form.date_collected" mode="dateTime" :masks="masks" is24hr
+						hide-time-header />
+				</div>
+
+				<div>
+					<Label for="Returned Date">
+						Returned Date
+					</Label>
+					<DatePicker v-model.string="form.date_returned" mode="dateTime" :masks="masks" is24hr
+						hide-time-header />
+				</div>
 			</div>
 			<Repeater :list="form.equipments" key="id" @add-item="addItem" :min="1" reorderSize="sm" removeSize="sm"
 				addSize="sm" :reorder="true" rowClasses="grid grid-cols-2 md:grid-cols-3 gap-y-5 gap-x-2">
@@ -76,7 +92,7 @@
 				</template>
 				<template #no-items>
 					<span class="text-md text-red-600">
-						There are no equipments added for this loan. Click the button below to add one.
+						There are no equipment added for this loan. Click the button below to add one.
 					</span>
 				</template>
 			</Repeater>
@@ -85,9 +101,10 @@
 </template>
 
 <script setup>
-import { ref, inject } from "vue";
+import { ref, inject, watch } from "vue";
 import { DatePicker } from 'v-calendar';
 import Multiselect from '@vueform/multiselect';
+import dayjs from 'dayjs';
 import { Wrapper, Label, TextInput, Repeater, Checkbox } from "@/Components/Form";
 
 const props = defineProps({
@@ -117,7 +134,7 @@ if (statuses[0].name === 'All') {
 }
 
 const masks = ref({
-	modelValue: 'YYYY-MM-DD H:mm:ss',
+	modelValue: 'YYYY-MM-DD HH:mm:ss',
 });
 
 const blankItem = () => {
@@ -136,4 +153,16 @@ if (!props.editing) {
 const addItem = () => {
 	props.form.equipments.push(blankItem())
 }
+
+watch(() => props.form.status, (newValue) => {
+	const lowerStatus = newValue.toLowerCase();
+
+	// If the new value they have chose is "Approved" and the approval_date hasn't been manually set yet.
+	if (lowerStatus === 'approved' && props.form.approval_date === null) {
+		props.form.approval_date = dayjs().format('YYYY-MM-DD H:mm:ss');
+	} else if (lowerStatus == 'denied') {
+		// If the status is "denied" set this as null.
+		props.form.approval_date = null;
+	}
+});
 </script>

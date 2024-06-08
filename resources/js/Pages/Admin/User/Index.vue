@@ -23,25 +23,42 @@
 				</CardHeader>
 				<div
 					class="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2 items-center mb-2 justify-center lg:justify-start">
+					<!-- Search -->
 					<TextInput type="search" placeholder="Search users..." v-model="filters.search">
 						<template #iconLeft>
 							<MagnifyingGlassIcon />
 						</template>
 					</TextInput>
+
+					<!-- Type -->
 					<div class="flex justify-center sm:justify-start">
-						<SelectInput v-model="filters.type" :items="types" buttonColour="secondary"
-							returnProperty="value" listClasses="hover:bg-gray-200">
-							<template #selectedItem="{ item }">
-								{{ item ? item.name : 'Filter by type' }}
+						<Dropdown align="left">
+							<template #trigger>
+								<AppButton colour="dropdown">
+									{{ filterState.typeFilter?.name || 'All Types' }}
+									<template #iconRight>
+										<ChevronDownIcon />
+									</template>
+								</AppButton>
 							</template>
-							<template #item="{ item }">
-								{{ item.name }}
+							<template #content>
+								<span class="px-4 py-2">
+									Select type
+								</span>
+								<template v-for="userType in filterState.typeFilters">
+									<DropdownLink as="button"
+										@click="[filterState.typeFilter = userType, filters.type = userType.value]">
+										{{ userType.name }}
+									</DropdownLink>
+								</template>
 							</template>
-						</SelectInput>
+						</Dropdown>
 					</div>
 				</div>
-				<Table :rows="users.data" :columns="tableColumns" :paginationLinks="users.meta" :only="['users']"
-					:border="true">
+				<Table :rows="users.data" :columns="tableColumns" :paginationLinks="users.meta" :only="['users']">
+					<template #td-name="{ row }">
+						<UserPreview size="sm" :user="row" />
+					</template>
 					<template #td-actions="{ row, index }">
 						<DropdownMenu :links="dropdownLinks(row)">
 							<template #extra>
@@ -93,11 +110,13 @@
 <script setup>
 import { computed, reactive, watch } from 'vue';
 import { useForm, router, usePage } from '@inertiajs/vue3';
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
+import { MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/vue/24/outline';
 import throttle from "lodash/throttle";
+import Dropdown from '@/Jetstream/Dropdown.vue';
+import DropdownLink from '@/Jetstream/DropdownLink.vue'
 import { Card, CardBody, CardHeader } from '@/Components/Card';
 import { Table } from '@/Components/Table';
-import { FormModal, ConfirmDelete } from '@/Components';
+import { FormModal, ConfirmDelete, UserPreview } from '@/Components';
 import { TextInput, SelectInput } from '@/Components/Form';
 import { DropdownMenu, DropdownItem } from '@/Components/Dropdown';
 import { useListPage } from "@/modules/listPage.js";
@@ -122,9 +141,11 @@ const {
 const tableColumns = {
 	name: {
 		name: 'Name',
+		popper: true,
 	},
 	email: {
 		name: 'Email',
+		popper: true,
 	},
 	type: {
 		name: 'Type',
@@ -173,22 +194,29 @@ const createEditForm = (user) => {
 
 const types = [
 	{
-		name: 'All types',
+		name: 'All',
 		value: 'all',
 	},
 	{
-		name: 'Admin type',
+		name: 'Admins',
 		value: 'admin',
 	},
 	{
-		name: 'Customer type',
+		name: 'Customers',
 		value: 'customer',
 	},
 ];
 
+const filterState = reactive({
+	typeFilters: types,
+	typeFilter: null,
+});
+
+filterState.typeFilter = filterState.typeFilters.find(filter => filter.value === props.filters.type) || filterState.typeFilters?.[0] || null;
+
 const filters = reactive({
 	search: props.filters?.search,
-	type: props.filters?.type ? types.find(type => type.value === props.filters.type) : null,
+	type: props.filters.type ?? filterState.typeFilter.name,
 });
 
 watch(filters, throttle(function (value) {
@@ -203,7 +231,7 @@ watch(filters, throttle(function (value) {
 	router.reload({
 		data: {
 			...data,
-			page: undefined, // reset page to find results on all pages
+			page: undefined, // Reset page filter so we start back on page 1.
 		},
 		only: ['users'],
 	});

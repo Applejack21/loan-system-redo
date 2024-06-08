@@ -210,7 +210,6 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
-
     ],
 
     /*

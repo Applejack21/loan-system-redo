@@ -17,16 +17,25 @@ class Location extends Model
 
     protected $guarded = [];
 
+    /**
+     * Return the user who created this location.
+     */
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_user_id');
     }
 
+    /**
+     * Return the user who updated this location.
+     */
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'last_updated_by_user_id');
     }
 
+    /**
+     * Return a list of equipments this location has.
+     */
     public function equipments(): HasMany
     {
         return $this->hasMany(Equipment::class);

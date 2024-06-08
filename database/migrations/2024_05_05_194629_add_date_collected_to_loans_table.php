@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('equipment', function (Blueprint $table) {
-            $table->string('slug')->after('name')->unique();
+        Schema::table('loans', function (Blueprint $table) {
+            $table->dateTime('date_collected')->after('date_returned')->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('equipment', function (Blueprint $table) {
-            $table->dropColumn('slug');
+        Schema::table('loans', function (Blueprint $table) {
+            $table->dropColumn('date_collected');
         });
     }
 };

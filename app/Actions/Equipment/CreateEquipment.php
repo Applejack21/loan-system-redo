@@ -27,12 +27,12 @@ class CreateEquipment
             'last_updated_by_user_id' => auth()->user()->id,
         ]);
 
-        // link categories to this equipment
+        // Link categories to this equipment.
         if (isset($categories) && ! is_null($categories) && is_array($categories)) {
             (new SyncToPivot())->addData($categories, $equipment, 'categories');
         }
 
-        // link images to this equipment
+        // Link images to this equipment.
         if (isset($images) && ! is_null($images) && is_array($images) && count($images) > 0) {
             foreach ($images as $image) {
                 (new SyncMedia())->execute($equipment, $image['data'], 'images');
@@ -47,8 +47,8 @@ class CreateEquipment
         return Validator::validate($request, [
             'location_id' => 'required|exists:locations,id',
             'name' => 'required|max:255',
-            'slug' => 'required|unique:equipments,slug|max:255',
-            'code' => 'nullable|unique:equipments,code|max:255',
+            'slug' => 'required|unique:equipment,slug|max:255',
+            'code' => 'nullable|unique:equipment,code|max:255',
             'description' => 'nullable',
             'price' => 'required|numeric',
             'details' => 'nullable|array',

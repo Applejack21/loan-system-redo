@@ -32,24 +32,24 @@ class SyncMedia
     public function addFromFile(Model $model, array $media, string $collection, string $filePath, bool $removeTempImage = true): void
     {
         foreach ($media as $image) {
-            // get the file
+            // Get the file.
             $file = $filePath . $image['name'];
 
-            // use file name/extension keys otherwise attempt to get from file name
+            // Use file name/extension keys otherwise attempt to get from file name.
             $convertedName = $image['file_name'] ?? Str::beforeLast(Str::afterLast($image['name'], '_'), '.');
             $extension = '.' . ($image['extension'] ?? Str::afterLast($image['name'], '.'));
 
-            // add media using converted name above
+            // Add media using converted name above.
             $addMedia = $model->addMedia($file)
                 ->usingName($convertedName)
                 ->usingFileName($convertedName . $extension);
 
-            // decide if the original image should stay in the file path
+            // Decide if the original image should stay in the file path.
             if (! $removeTempImage) {
                 $addMedia->preserveOriginal();
             }
 
-            // save the media
+            // Save the media.
             $addMedia->toMediaCollection($collection);
         }
     }

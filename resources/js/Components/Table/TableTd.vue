@@ -3,27 +3,21 @@
 		classConfig.default,
 		classConfig[computedBreakpoint],
 		{ 'border-b border-grey-300 pb-1': border },
-		'lg:border-none',
+		borderClass[computedBreakpoint],
 	]">
 		<span :class="[
-			headerConfig.default,
-			headerConfig[computedBreakpoint]
-		]" v-if="$slots.header">
+		headerConfig.default,
+		headerConfig[computedBreakpoint]
+	]" v-if="$slots.header">
 			<slot name="header" />
 		</span>
 		<span v-if="$slots.default">
 			<template v-if="popper">
-				<Popper arrow hover class="max-w-full">
-					<!-- data to display in table -->
+				<!-- Data to display in the table. -->
+				<Popper arrow hover class="max-w-full" :content="popperContent">
 					<div class="underline decoration-dotted hover:cursor-help">
 						<slot />
 					</div>
-					<template #content>
-						<!-- data to display on popper hover -->
-						<div id="popper-content">
-							<slot />
-						</div>
-					</template>
 				</Popper>
 			</template>
 			<template v-else>
@@ -51,7 +45,11 @@ const props = defineProps({
 	border: {
 		type: Boolean,
 		default: true,
-	}
+	},
+	popperContent: {
+		type: String,
+		required: false,
+	},
 });
 
 const computedBreakpoint = computed(() => {
@@ -84,5 +82,11 @@ const headerConfig = {
 	md: "md:hidden",
 	lg: "lg:hidden",
 	xl: "xl:hidden",
+}
+
+const borderClass = {
+	md: 'md:border-none',
+	lg: 'lg:border-none',
+	xl: 'xl:border-none',
 }
 </script>

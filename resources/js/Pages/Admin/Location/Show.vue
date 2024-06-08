@@ -65,9 +65,15 @@
 
 			<Card>
 				<CardBody>
-					<div class="flex flex-col mt-5">
-						TODO: show a list of products this location has linked to it
-					</div>
+					<CardHeader>
+						Equipment
+					</CardHeader>
+					<Table :rows="equipments.data" :columns="equipmentColumns" :paginationLinks="equipments.meta"
+						:only="['equipments']">
+						<template #td-actions="{ row, index }">
+							<DropdownMenu :links="dropdownEquipmentLinks(row)" />
+						</template>
+					</Table>
 				</CardBody>
 			</Card>
 		</div>
@@ -97,12 +103,15 @@ import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useForm } from "@inertiajs/vue3";
 import { useListPage } from '@/modules/listPage.js';
 import { FormModal, ConfirmDelete, UserPreview } from "@/Components";
-import { Card, CardBody } from "@/Components/Card";
+import { Card, CardBody, CardHeader } from "@/Components/Card";
+import { Table } from '@/Components/Table';
+import { DropdownMenu } from '@/Components/Dropdown';
 import Form from "./Partials/Form.vue";
 
 const props = defineProps({
 	title: String,
 	location: Object,
+	equipments: Object,
 	breadcrumbs: Object,
 });
 
@@ -120,5 +129,30 @@ const createEditForm = (location) => {
 		name: location.name,
 		room_code: location.room_code,
 	});
+}
+
+const equipmentColumns = {
+	name: {
+		name: 'Name',
+		popper: true,
+	},
+	slug: {
+		name: 'Slug',
+		popper: true,
+	},
+	code: {
+		name: 'Code',
+	},
+	actions: {
+		name: '',
+		autoWidth: true,
+		border: false,
+	},
+};
+
+const dropdownEquipmentLinks = (equipment) => {
+	return [
+		{ name: 'View', href: route('admin.equipment.show', equipment.slug) },
+	]
 }
 </script>

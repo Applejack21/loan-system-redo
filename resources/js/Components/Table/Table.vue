@@ -1,20 +1,16 @@
 <template>
-	<div class="rounded-t-[10px]" :class="[
-		{ 'border-t-[10px] border-accent-light': border },
-	]">
+	<div class="rounded-t-[10px]" :class="[{ 'border-t-[10px] border-accent-light': border }]">
 		<TableOuter>
 			<TableHeader class="sticky top-0 z-10">
 				<TableRow :hover="false">
 					<slot name="columns" :columns="columns">
 						<TableTh v-for="column in Object.keys(columns)" :autoWidth="columns[column].autoWidth"
-							:nowrap="columns[column].nowrap" :class="[
-								visibilityClasses(columns[column])
-							]">
+							:nowrap="columns[column].nowrap" :class="[visibilityClasses(columns[column])]">
 							<slot :name="`th-${column}`" :column="columns[column]">
 
-								<Body is="span" :colour="columns[column].headerColour ?? headerColour">
+								<span is="span" :class="columns[column].headerColour ?? headerColour">
 									{{ columns[column].name }}
-								</Body>
+								</span>
 							</slot>
 						</TableTh>
 					</slot>
@@ -24,31 +20,24 @@
 				<TableRow v-for="(row, index) in   rows  " :key="row.id || index"
 					@click="$emit('row-clicked', { row: row, index: index })">
 					<slot name="row" :row="row" :index="index">
-						<TableTd v-for="column in   Object.keys(columns)  " :class="[
-							{ 'cursor-pointer': clickable },
-							visibilityClasses(columns[column])
-						]" :popper="columns[column]?.popper" :breakpoint="columns[column]?.hiddenUntil"
-							:border="columns[column]?.border">
+						<TableTd v-for="column in   Object.keys(columns)  "
+							:class="[{ 'cursor-pointer': clickable }, visibilityClasses(columns[column])]"
+							:popper="columns[column]?.popper" :breakpoint="columns[column]?.hiddenUntil"
+							:border="columns[column]?.border" :popperContent="row[column]">
+							<!-- For mobile headers. -->
 							<template #header>
-
-								<Body is="span" :colour="columns[column].colour ?? 'typography-neutral'" :class="[
-									visibilityClasses(columns[column]),
-								]">
+								<span
+									:class="[visibilityClasses(columns[column]), columns[column].colour ?? 'text-neutral-600']">
 									{{ columns[column].name }}
-								</Body>
+								</span>
 							</template>
-							<div :class="[
-								{ 'flex': columns[column].popper === true },
-							]">
+							<div :class="[{ 'flex': columns[column].popper === true },]">
 								<slot :name="`td-${column}`" :row="row" :cell="row[column]">
 
-									<Body is="span" :colour="columns[column].colour ?? `typography-neutral`" :class="[
-										visibilityClasses(columns[column]),
-										{ 'truncate': columns[column].popper === true },
-									]
-										">
+									<span
+										:class="[visibilityClasses(columns[column]), columns[column].colour ?? 'text-neutral-600', { 'truncate': columns[column].popper === true }]">
 										{{ row[column] }}
-									</Body>
+									</span>
 								</slot>
 							</div>
 						</TableTd>
@@ -57,10 +46,14 @@
 			</TableBody>
 			<slot name="extraBody" />
 		</TableOuter>
-		<div v-if="!rows.length && $slots.emptyText" class="w-full table">
+		<div v-if="!rows.length" class="w-full table">
 			<TableRow>
 				<TableTd>
-					<slot name="emptyText" />
+					<slot name="emptyText">
+						<div class="text-neutral-600">
+							No data found.
+						</div>
+					</slot>
 				</TableTd>
 			</TableRow>
 		</div>
@@ -105,7 +98,7 @@ const props = defineProps({
 	},
 	headerColour: {
 		type: String,
-		default: 'neutral',
+		default: 'text-neutral-600',
 	}
 })
 

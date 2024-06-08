@@ -1,4 +1,5 @@
 <template>
+
 	<Head>
 		<title>
 			{{ title }} - {{ appName }}
@@ -9,9 +10,9 @@
 		<!-- mobile navbar -->
 		<TransitionRoot as="template" :show="sidebarOpen">
 			<Dialog as="div" class="relative z-40 md:hidden" @close="sidebarOpen = false">
-				<TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0"
-					enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100"
-					leave-to="opacity-0">
+				<TransitionChild as="template" enter="transition-opacity ease-linear duration-300"
+					enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300"
+					leave-from="opacity-100" leave-to="opacity-0">
 					<div class="fixed inset-0 bg-gray-600 bg-opacity-75" />
 				</TransitionChild>
 
@@ -212,7 +213,7 @@
 		<div class="md:pl-72">
 			<!-- top row -->
 			<div
-				class="px-8 gap-x-6 shadow-sm bg-neutral-white border border-gray-200 items-center h-16 flex z-40 top-0 sticky">
+				class="px-8 gap-x-6 shadow-sm bg-neutral-white border border-gray-200 items-center h-16 flex z-[60] top-0 sticky">
 
 				<!-- mobile button to open sidebar -->
 				<button type="button"
@@ -227,7 +228,8 @@
 				<!-- search/request a loan button -->
 				<div class="gap-x-6 self-stretch flex-1 sm:flex sm:divide-x-2">
 					<form class="hidden sm:flex flex-1 relative w-full">
-						<input class="mt-2 text-sm text-neutral-dark-grey pr-0 pl-8 pt-0 border-0 w-full block focus:ring-0"
+						<input
+							class="mt-2 text-sm text-neutral-dark-grey pr-0 pl-8 pt-0 border-0 w-full block focus:ring-0"
 							type="search" placeholder="Search equipment..." name="search" />
 						<MagnifyingGlassIcon class="h-full w-5 left-0 top-0 bottom-0 absolute" />
 					</form>
@@ -297,7 +299,7 @@ const navigation = [
 const adminNavigation = [
 	{ name: 'Dashboard', icon: HomeIcon, href: route('admin.dashboard.index'), current: route().current('admin.dashboard.index') },
 	{ name: 'Loans', icon: RectangleStackIcon, href: route('admin.loan.index'), current: route().current('admin.loan.*') },
-	{ name: 'Equipments', icon: ComputerDesktopIcon, href: route('admin.equipment.index'), current: route().current('admin.equipment.*') },
+	{ name: 'Equipment', icon: ComputerDesktopIcon, href: route('admin.equipment.index'), current: route().current('admin.equipment.*') },
 	{ name: 'Categories', icon: Squares2X2Icon, href: route('admin.category.index'), current: route().current('admin.category.*') },
 	{ name: 'Locations', icon: MapPinIcon, href: route('admin.location.index'), current: route().current('admin.location.*') },
 	{ name: 'Users', icon: UserGroupIcon, href: route('admin.user.index'), current: route().current('admin.user.*') },

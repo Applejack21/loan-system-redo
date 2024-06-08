@@ -27,12 +27,12 @@ class CreateCategory
             'last_updated_by_user_id' => auth()->user()->id,
         ]);
 
-        // link equipment to this category
+        // Link equipment to this category.
         if (isset($equipments) && ! is_null($equipments) && is_array($equipments)) {
             (new SyncToPivot())->addData($equipments, $category, 'equipments');
         }
 
-        // add an image to this category if we have one
+        // Add an image to this category if we have one passed.
         if (isset($image) && ! is_null($image)) {
             (new SyncMedia())->execute($category, $image['data'], 'image');
         }

@@ -46,7 +46,7 @@
 									Equipment Loaned
 								</h4>
 								<template v-if="loanEquipment.length > 0">
-									<p class="ml-4 sm:ml-6">
+									<p class="ml-4">
 									<ol class="space-y-2">
 										<template v-for="equipment in loanEquipment">
 											<li class="list-disc">
@@ -106,15 +106,36 @@
 								<h4 class="lg:w-48 sm:flex-wrap sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Dates
 								</h4>
-								<p>
-									Start Date - {{ loan.data.start_date }}
-								</p>
-								<p class="sm:ml-6">
-									End Date - {{ loan.data.end_date }}
-								</p>
-								<p class="sm:ml-6" v-if="loan.data.date_returned">
-									Date Returned - {{ loan.data.date_returned }}
-								</p>
+								<ul class="list-disc ml-4">
+									<li>
+										Start Date: {{ loan.data.start_date }}
+									</li>
+									<li>
+										End Date: {{ loan.data.end_date }}
+									</li>
+									<li>
+										Date Returned:
+										<template v-if="loan.data.date_returned">
+											{{ loan.data.date_returned }}
+										</template>
+										<template v-else>
+											<span class="text-red-600">
+												N/A
+											</span>
+										</template>
+									</li>
+									<li>
+										Date Collected:
+										<template v-if="loan.data.date_collected">
+											{{ loan.data.date_collected }}
+										</template>
+										<template v-else>
+											<span class="text-red-600">
+												N/A
+											</span>
+										</template>
+									</li>
+								</ul>
 							</div>
 							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
@@ -148,7 +169,7 @@
 		<!-- edit modal -->
 		<FormModal v-if="state.selectedItem" :form="state.editForm" :toggle="state.showEdit"
 			:urlRoute="route('admin.loan.update', state.selectedItem)" :submitOptions="state.editForm" :button="false"
-			@close="closeEdit()" @success="closeEdit()" maxWidth="4xl">
+			@close="closeEdit()" @success="closeEdit()" maxWidth="4xl" method="patch">
 			<template #title>
 				{{ `Updating Loan For "${loan.data.loanee.name}"` }}
 			</template>
@@ -202,17 +223,20 @@ const createEditForm = (loan) => {
 	const equipment = props.loanEquipment.map(equipment => {
 		return {
 			equipment_id: equipment.id,
-			name: equipment.name,
 			quantity: equipment.pivot.quantity,
 			returned: equipment.pivot.returned === 0 ? false : true,
 		}
 	});
 
+	console.log(loan);
+
 	return useForm({
 		loanee_id: loan.loanee.id,
 		status: loan.status,
 		denied_reason: loan.denied_reason,
-		approval_date: loan.approval_date,
+		approval_date: loan.approval_date_no_format ? dayjs(loan.approval_date_no_format).format('YYYY-MM-DD HH:mm:ss') : null,
+		date_collected: loan.date_collected_no_format ? dayjs(loan.date_collected_no_format).format('YYYY-MM-DD HH:mm:ss') : null,
+		date_returned: loan.date_returned_no_format ? dayjs(loan.date_returned_no_format).format('YYYY-MM-DD HH:mm:ss') : null,
 		start_date: dayjs(loan.start_date_no_format).format('YYYY-MM-DD HH:mm:ss'),
 		end_date: dayjs(loan.end_date_no_format).format('YYYY-MM-DD HH:mm:ss'),
 		equipments: equipment,

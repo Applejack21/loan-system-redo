@@ -33,11 +33,16 @@ class LoanController extends Controller
     {
         return Inertia::render('Admin/Loan/Index', [
             'title' => 'Loans',
-            'loans' => fn () => (new GetLoans())->execute($request, ['loanee'], ['equipments']),
+            'filters' => $request->only('search', 'status'),
+            'breadcrumbs' => [
+                'Dashboard' => route('admin.dashboard.index'),
+                'Loans' => null,
+            ],
+            'loans' => fn () => (new GetLoans())->execute($request, load: ['loanee'], count: ['equipments']),
             'equipments' => fn () => Equipment::orderBy('name')->get()->map(function ($equipment) {
                 $id = $equipment->id;
                 $name = $equipment->name;
-                $notInStock = $equipment->calculateAmountInStock() === 0;
+                $notInStock = $equipment->outOfStock();
 
                 if ($notInStock) {
                     $name = $name . ' - Not in stock';
@@ -69,11 +74,6 @@ class LoanController extends Controller
                     'profile_photo_url' => $user->profile_photo_url,
                 ];
             }),
-            'filters' => $request->only('search', 'status'),
-            'breadcrumbs' => [
-                'Dashboard' => route('admin.dashboard.index'),
-                'Loans' => null,
-            ],
         ]);
     }
 
