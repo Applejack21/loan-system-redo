@@ -176,13 +176,19 @@ const {
 	deleteAction,
 } = useListPage('admin.user.destroy');
 
-const formatAddress = (address) => [
-	address.line_one || null,
-	address.line_two || null,
-	address.line_three || null,
-	address.city || null,
-	address.postcode || null,
-].filter(Boolean).join(', <br>');
+const formatAddress = (address) => {
+	if (address) {
+		return [
+			address.line_one || null,
+			address.line_two || null,
+			address.line_three || null,
+			address.city || null,
+			address.postcode || null,
+		].filter(Boolean).join(', <br>');
+	}
+
+	return [];
+}
 
 const createEditForm = (user) => {
 	return useForm({
