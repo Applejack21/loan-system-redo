@@ -37,6 +37,17 @@
 						<dl class="divide-y-2 divide-accent-light">
 							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
 								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
+									Avg. Rating
+								</h4>
+								<p class="sm:ml-6">
+									{{ equipment.data.avg_rating }} (TODO: update to star component)
+								</p>
+								<p class="sm:ml-6">
+									From {{ equipment.data.ratings_count }} ratings
+								</p>
+							</div>
+							<div class="sm:py-5 sm:px-6 sm:flex items-center py-2">
+								<h4 class="lg:w-48 sm:flex-shrink-0 sm:w-40 text-neutral-dark-grey font-medium text-sm">
 									Location
 								</h4>
 								<Link v-if="equipment.data.location"
